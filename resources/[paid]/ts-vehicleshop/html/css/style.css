@@ -1,0 +1,396 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+body{
+	width: 100vw;
+	height: 100vh;
+	margin: 0;
+	/*overflow: hidden;*/
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/* background: #777; */
+	font-family: 'Lato', sans-serif;
+
+}
+
+.autosalon header {
+    height: 30px;
+    width: 1280px;
+    display: flex;
+    position: absolute;
+    margin-top: -30px;
+}
+
+.autosalon header .ukoso_nesto{
+	transform: skew(-15deg);
+	background: #ff2626;
+	width: 200px;
+	box-shadow: 0px 0px 10px #ff2626;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	margin-left: 4px;
+}
+.autosalon header .ukoso_nesto.v2{
+	margin-left: 0px;
+	box-shadow: none;
+	background: #1d1d1d;
+	width: calc(1280px - 200px);
+
+	transform: perspective(calc(1280px - 200px)) rotateX(15deg);
+    transform-origin: 100% 50%;
+
+    border-radius: 0px 3px 0px 0px;
+}
+.autosalon header .ukoso_nesto.v2 p{
+	transform: skew(8deg);
+    transform-origin: 100% 50%;
+}
+.autosalon header p{
+	margin: 0;
+	padding: 0;
+	transform: skew(15deg);
+	color: white;
+	font-weight: bold;
+	letter-spacing: 2px;
+	font-size: 14px;
+
+}
+
+.autosalon{
+	width: 1280px;
+	height: 820px;
+	background: url("https://i.imgur.com/iGm2bM6.png");
+	border-radius: 3px;
+}
+
+.autosalon nav {
+    width: 100%;
+    height: 60px;
+    background: #c6c6c6;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Add this line to center the items */
+    overflow: auto;
+    overflow-y: hidden;
+}
+
+.autosalon nav .item {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Add this line to center the text */
+    background: #efefef;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 35px;
+    border-radius: 7px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin: 5px;
+    color: #ff2626;
+    transition: 0.2s;
+}
+.autosalon nav .item p{
+	display: flex;
+	align-items: center;
+}
+.autosalon nav .item span{
+	color: #777;
+	font-size: 10px;
+	letter-spacing: 1px;
+	margin-left: 5px;
+	transition: 0.2s;
+}
+.autosalon nav .item:hover{
+	color: #fff;
+	background: #ff2626;
+	box-shadow: 0px 0px 0px 2px #ff2626 inset, 0px 0px 20px #ff2626;
+	cursor: pointer;
+}
+.autosalon nav .item:hover span{
+	color: white;
+}
+.autosalon nav .item.aktivan{
+	color: #fff;
+	background: #ff2626;
+	box-shadow: 0px 0px 0px 2px #ff2626 inset, 0px 0px 20px #ff2626;
+	cursor: pointer;
+}
+.autosalon nav .item.aktivan span{
+	color: white;
+}
+.autosalon nav .item img{
+	width: 20px;
+}
+
+.autosalon .auto_lista{
+	width: 100%;
+	max-height: calc(100% - 94px);
+	overflow: auto;
+	overflow-x: hidden;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+
+
+
+
+.autosalon .auto_lista .item{
+	width: 300px;
+	height: 340px;
+	background: #c6c6c6;
+	margin: 9px;
+	border-radius: 3px;
+	box-shadow: 0px 0px 0px 1px #eee;
+
+	transition: 0.2s;
+}
+.autosalon .auto_lista .item.lock{
+	opacity: 0.3;
+	user-select: none;
+}
+
+.autosalon .auto_lista .item.lock:hover{
+	box-shadow: 0px 0px 0px 1px #eee;
+}
+
+
+.autosalon .auto_lista .item:hover{
+	box-shadow: 0px 0px 0px 1px #ff2626, 0px 0px 10px #ff262650 inset;
+}
+
+
+.autosalon .auto_lista .item .naslov{
+	width: 100%;
+	height: 35px;
+	border-radius: 3px 3px 0px 0px;
+	background: #1d1d1d;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 0px -1px white inset;
+}
+.autosalon .auto_lista .item .naslov h1{
+	margin: 0;
+	padding: 0;
+	font-size: 18px;
+	/*color: #ff2626;*/
+	color: #fff;
+	letter-spacing: 1px;
+}
+.autosalon .auto_lista .item .slika{
+	height: 150px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.autosalon .auto_lista .item .slika img{
+	width: 240px;
+}
+
+
+.autosalon .auto_lista .item .informacije{
+	width: 100%;
+	background: transparent;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.autosalon .auto_lista .item .informacije .box{
+	display: flex;
+	justify-content: space-between;
+	width: 90%;
+
+}
+.autosalon .auto_lista .item .informacije .box.new{
+	margin-top: 5px;
+}
+.autosalon .auto_lista .item .informacije .box p{
+	margin: 0;
+	padding: 0;
+
+	padding: 5px;
+	/*padding-right: 20px;
+	#padding-left: 20px;*/
+	min-width: 111px;
+	background: #eee;
+	border-radius: 3px;
+
+	/*color: #ff2626;*/
+	color: #000;
+	font-weight: bold;
+	letter-spacing: 1px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+}
+
+
+.autosalon .auto_lista .item .informacije .box label{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+.autosalon .auto_lista .item .informacije .box p.naslov{
+	padding: 0;
+	margin: 0;
+	background: transparent;
+	box-shadow: none;
+	border: 0;
+	font-size: 14px;
+	height: auto;
+	padding-bottom: 3px;
+	color: #1d1d1d;
+}
+.autosalon .auto_lista .item .informacije .box p .boja{
+	width: 16px;
+	height: 16px;
+	border-radius: 2px;
+	margin: 1px;
+}
+.autosalon .auto_lista .item .informacije .btn{
+	width: 90%;
+	height: 53px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.autosalon .auto_lista .item .informacije .btn button{
+	width: 121px;
+	height: 30px;
+
+	border: 0;
+	outline: 0;
+	background: #eee;
+	border-radius: 5px;/*3*/
+	color: #ff2626;
+	transition: 0.2s;
+	font-weight: bold;
+	box-shadow: 0px 0px 0px 1px #ff2626 inset;
+}
+.autosalon .auto_lista .item .informacije .btn button:hover{
+	background: #ff2626;
+	box-shadow: 0px 0px 0px 1px #ff2626 inset, 0px 0px 10px #ff262660, 0px 0px 10px #ff262650 inset;
+	color: #eee;
+	cursor: pointer;
+}
+
+
+::-webkit-scrollbar {
+  width: 1px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; 
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: #ff2626; 
+}
+
+.autosalon .auto_lista .item .informacije .btn button.lock{
+	opacity: 0.5;
+	cursor: default;
+}
+.autosalon .auto_lista .item .informacije .btn button.lock:hover{
+
+	border: 0;
+	outline: 0;
+	background: #eee;
+	border-radius: 3px;
+	color: #ff2626;
+	transition: 0.2s;
+	font-weight: bold;
+	box-shadow: 0px 0px 0px 1px #ff2626 inset;
+}
+
+.autosalon .raspored {
+    width: 100%;
+    height: 40px;
+    background: #1d1d1d; /* Changed to black background */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: -7px;
+    color: #efefef;
+}
+
+.autosalon .raspored p {
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.autosalon .raspored .item {
+    width: 120px;
+    height: 25px;
+    background: transparent;
+    box-shadow: 0px 0px 0px 1.5px #efefef inset;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px;
+    transition: 0.2s;
+    color: #efefef;
+}
+
+.autosalon .raspored .item:hover {
+    cursor: pointer;
+    background: #efefef;
+    color: #ff2626;
+}
+
+.autosalon .raspored .item.aktivan_sort {
+    cursor: pointer;
+    background: #efefef;
+    color: #ff2626;
+}
+
+.autosalon .raspored .item p {
+    margin: 0;
+    padding: 0;
+    letter-spacing: 1px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: -2px;
+}
+
+
+@media screen and (max-width: 1320px) {
+	body{
+		align-items: center;
+		justify-content: center;
+	}
+	.autosalon header{
+		width: 95%;
+	}
+	.autosalon{
+		width: 95%;
+		height: 80%;
+	}
+
+}
+
+.search-input-container {
+    margin-left: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#searchInput {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    outline: none;
+}

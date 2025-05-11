@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="en-US" dir="ltr"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Inventory</title>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/quasar@2.1.0/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- jQuery UI -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js" defer=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.1.0/dist/quasar.umd.prod.js" defer=""></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js" integrity="sha256-xH4q8N0pEzrZMaRmd7gQVcTZiFei+HfRTBPJ1OGXC0k=" crossorigin="anonymous"></script>
+</head>
+<body style="background-color: rgba(0, 0, 0, 0)" class="desktop no-touch within-iframe body--light">
+    <div id="qbcore-inventory" style=""> 
+        <div class="inv-dialog-body" style="display:none;">
+          <div class="inv-dialog-main">
+            <div class="inv-dialog-title">
+              How much would you like to sell them for?
+            </div>
+
+            <div class="inv-dialog-amount-box">
+              <input type="number" min="0" max="100000000" class="inv-dialog-amount" id="inv-dialog-amount" placeholder="0">
+            </div>
+
+            <div class="inv-dialog-buttons">
+              <div class="btn-cancel">
+                Cancel
+              </div>
+
+              <div class="btn-confirm">
+                Confirm
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="inv-container">
+              <div class="player-inventory-bg">
+                <div class="player-inv-info">
+                  <div class="inv-info-extra">
+                    <div id="player-inv-label">Player</div>
+                    <span id="player-inv-money"><i class="fas fa-wallet"></i> 0</span>
+                    <span id="player-inv-weight"><i class="fas fa-dumbbell"></i> 9.23/65.00</span>
+                  </div>
+                  <div>
+                    <div id="progressbar">
+                      <div class="pro" style="width: 14.2%;"></div>
+                      <div class="pro_black" style="width: 85.8%;"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="player-inventory" data-inventory="player"><div class="item-slot item-drag ui-draggable ui-draggable-handle ui-droppable" data-slot="1"><div class="item-slot-key"><p>1</p></div><div class="item-slot-img"><img src="images/scrap.png" "="" alt="scrap"></div><div class="item-slot-amount"><p>8</p></div><div class="item-slot-name"><p> 0.1</p></div><div class="item-slot-label"><p>Scrap Metal</p></div></div><div class="item-slot item-drag ui-draggable ui-draggable-handle ui-droppable" data-slot="2"><div class="item-slot-key"><p>2</p></div><div class="item-slot-img"><img src="images/plastic.png" "="" alt="plastic"></div><div class="item-slot-amount"><p>7</p></div><div class="item-slot-name"><p> 0.1</p></div><div class="item-slot-label"><p>Plastic</p></div></div><div class="item-slot item-drag ui-draggable ui-draggable-handle ui-droppable" data-slot="3"><div class="item-slot-key"><p>3</p></div><div class="item-slot-img"><img src="images/pizzabox.png" "="" alt="pizzabox"></div><div class="item-slot-amount"><p>1</p></div><div class="item-slot-name"><p> 3.0</p></div><div class="item-slot-label"><p>Pizza Box</p></div></div><div class="item-slot item-drag ui-draggable ui-draggable-handle ui-droppable" data-slot="4"><div class="item-slot-key"><p>4</p></div><div class="item-slot-img"><img src="images/weapon_assaultrifle.png" "="" alt="weapon_assaultrifle"></div><div class="item-slot-amount"><p>1</p></div><div class="item-slot-name"><p> 4.0</p></div><div class="item-slot-quality"><div class="item-slot-quality-bar" style="width: 100%; background-color: rgb(15, 255, 213);"><p>100</p></div></div><div class="item-slot-label"><p>Assault Rifle</p></div></div><div class="item-slot item-drag ui-draggable ui-draggable-handle ui-droppable" data-slot="5"><div class="item-slot-key"><p>5</p></div><div class="item-slot-img"><img src="images/weapon_pistol.png" "="" alt="weapon_pistol"></div><div class="item-slot-amount"><p>1</p></div><div class="item-slot-name"><p> 2.0</p></div><div class="item-slot-quality"><div class="item-slot-quality-bar" style="width: 100%; background-color: rgb(15, 255, 213);"><p>100</p></div></div><div class="item-slot-label"><p>Pistol</p></div></div><div class="item-slot ui-droppable" data-slot="6"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="7"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot item-drag ui-draggable ui-draggable-handle ui-droppable" data-slot="8"><div class="item-slot-img"><img src="images/iron.png" "="" alt="iron"></div><div class="item-slot-amount"><p>8</p></div><div class="item-slot-name"><p> 0.1</p></div><div class="item-slot-label"><p>Iron</p></div></div><div class="item-slot ui-droppable" data-slot="9"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="10"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="11"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="12"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="13"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="14"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="15"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="16"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="17"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="18"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="19"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="20"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="21"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="22"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="23"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="24"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="25"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="26"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="27"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="28"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="29"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="30"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="31"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="32"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="33"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="34"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="35"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="36"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="37"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="38"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="39"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="40"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="41"><div class="item-slot-key"><p>6 <i class="fas fa-lock"></i></p></div><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div></div>
+              </div>
+            </div>
+            <div class="inv-options">
+                <div class="notify" style="opacity: 0;">
+                  <div class="notify-content">
+                    <div class="notify-title">Notification</div>
+                    <div class="notify-line"></div>
+                    <div class="notify-description"></div>
+                  </div>
+                </div>
+                <div class="money-actions">
+                    <div class="option" id="give-money"><img src="./buttons/givemoney.png"></div>
+                    <div class="m-divider"></div>
+                    <div class="option" id="rob-money"><img src="./buttons/robmoney.png"></div>
+                </div>
+                <div class="inv-options-list">
+                    <input type="number" id="item-amount" class="inv-option-item" min="1" max="100000" placeholder="Amount" pattern="[0-9]" onfocus="this.value=''" oninput="validity.valid||(value='');">
+                    <div class="inv-option-item ui-droppable" id="item-use"><p>Use</p></div>
+                    <div class="inv-option-item ui-droppable" id="item-give"><p>Give</p></div>
+                    <div class="inv-option-item" id="inv-close"><p>Close</p></div>
+                    <div class="combine-option-container">
+                      <div class="btn-combine CombineItem" id="btn-combine"><p>Combine</p></div>
+                    </div>
+                    <div class="compost-option-container">
+                      <div class="btn-compost CompostItem" id="btn-compost"><p>Compost</p></div>
+                  </div>
+                </div>
+            </div>
+            <div class="oth-inv-container">
+                <div class="other-inventory-bg">
+                    <div class="other-inv-info">
+                        <div class="inv-info-extra">
+                            <div id="other-inv-label">Drop</div>
+                            <span id="other-inv-money"></span>
+                            <div id="other-inv-weight"><i class="fas fa-dumbbell"></i> 0.00/100.00</div>
+                        </div>
+                        <!-- <img class="weight-img-other" src="images/weight.png"> -->
+                        <div>
+                            <div id="progressbar-other">
+                                <div class="pro1" style="width: 0%;"></div>
+                                <div class="pro1_black" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="other-inventory" data-inventory="0">
+                            <!-- auto generated -->
+                    <div class="item-slot ui-droppable" data-slot="1" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="2" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="3" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="4" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="5" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="6" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="7" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="8" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="9" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="10" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="11" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="12" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="13" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="14" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="15" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="16" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="17" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="18" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="19" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="20" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="21" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="22" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="23" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="24" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="25" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="26" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="27" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="28" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="29" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div><div class="item-slot ui-droppable" data-slot="30" style="background-color: rgba(0, 0, 0, 0.3);"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="ply-hotbar-inventory" data-inventory="hotbar">
+                <!-- auto generated -->
+        </div>
+        <div class="ply-iteminfo-container" style="opacity: 1;">
+            <div class="ply-iteminfo">
+                <div class="iteminfo-content">
+                    <div class="item-info-title"><p>Pizza Box</p></div>
+                    <div class="item-info-line"></div>
+                    <div class="item-info-description"><p>Smell's like a pizza. But maybe it's not at all</p></div>
+                    <div class="colour-box" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+        <div id="inventory-menus" data-v-app=""><div class="row justify-center"><button class="q-btn q-btn-item non-selectable no-outline q-btn--standard q-btn--rectangle bg-button text-white q-btn--actionable q-focusable q-hoverable" tabindex="0" type="button" role="button" style="top: 20vh; margin-right: 1vh;"><span class="q-focus-helper"></span><span class="q-btn__content text-center col items-center q-anchor--skip justify-center row"><i class="notranslate material-icons q-icon" aria-hidden="true" role="img">settings_suggest</i></span></button><button class="q-btn q-btn-item non-selectable no-outline q-btn--standard q-btn--rectangle bg-button text-white q-btn--actionable q-focusable q-hoverable" tabindex="0" type="button" role="button" style="top: 20vh;"><span class="q-focus-helper"></span><span class="q-btn__content text-center col items-center q-anchor--skip justify-center row"><i class="notranslate material-icons q-icon" aria-hidden="true" role="img">help</i></span></button><!----><!----></div></div>
+        <div class="inv-background"></div>
+    
+    <div class="weapon-attachments-container">
+        <div class="weapon-attachments-container-title">Pistol | <span style="font-size: 2vh;">9mm</span></div>
+        <div class="weapon-attachments-container-description">This is a water gun yaay ...</div>
+        <div class="weapon-attachments-container-details"><span style="font-weight: bold; letter-spacing: .1vh;">Serial Number</span><br> 12345678<br><br><span style="font-weight: bold; letter-spacing: .1vh;">Durability</span> <div class="weapon-attachments-container-detail-durability"><div class="weapon-attachments-container-detail-durability-total"></div></div></div>
+        <img src="./attachment_images/weapon_pistol.png" class="weapon-attachments-container-image">
+
+        <div class="weapon-attachments-title"><span style="font-weight: bold; letter-spacing: .1vh;">Attachments</span></div>
+        <div class="weapon-attachments">
+        </div>
+
+        <div class="weapon-attachments-remove"><i class="fas fa-trash"></i></div>
+
+        <div class="weapon-attachments-back"><p>RETURN</p></div>
+    </div>
+    <div class="itemboxes-container"></div>
+    <div class="itembox-container template"></div>
+    <div class="requiredItem-container">
+    </div>
+    <div class="z-hotbar-inventory"></div>
+    <div id="id-card" style="display:none;">
+      <div id="nearPlayers"></div>
+      <div id="topline">
+        <p id="firstname"></p>
+        <p id="lastname"></p>
+      </div>
+      <div id="inline">
+        <p id="dob"></p>
+        <p id="sex"></p>
+      </div>
+      <div id="outline"></div>
+    </div>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="js/app.js" defer=""></script>
+
+
+<div id="q-loading-bar" data-v-app=""><div class="q-loading-bar q-loading-bar--top" aria-hidden="true" style="transform: translate3d(-100%, -200%, 0px); height: 2px; opacity: 0;"></div></div><div id="q-notify" data-v-app=""><div class="q-notifications"><div class="q-notifications__list q-notifications__list--top fixed column no-wrap items-start"></div><div class="q-notifications__list q-notifications__list--top fixed column no-wrap items-end"></div><div class="q-notifications__list q-notifications__list--bottom fixed column no-wrap items-start"></div><div class="q-notifications__list q-notifications__list--bottom fixed column no-wrap items-end"></div><div class="q-notifications__list q-notifications__list--top fixed column no-wrap items-center"></div><div class="q-notifications__list q-notifications__list--bottom fixed column no-wrap items-center"></div><div class="q-notifications__list q-notifications__list--center fixed column no-wrap items-start justify-center"></div><div class="q-notifications__list q-notifications__list--center fixed column no-wrap items-end justify-center"></div><div class="q-notifications__list q-notifications__list--center fixed column no-wrap flex-center"></div></div></div></body></html>

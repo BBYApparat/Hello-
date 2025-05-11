@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Vehicle Shop</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="app.css" type="text/css">
+    </head>
+    <body>
+        <div class="vehicle-container" id="carshop" style="display: none;">
+            <div class="vehicle-main-content">
+                <header>
+                    <h1>PDM Catalogue</h1>
+                    <a id="fechar" class="close-btn"><i class="fas fa-times"></i></a>
+                </header>
+                <div class="pages" id="pages">
+                    <!-- Dynamic vehicle content will be appended here -->
+                </div>
+                <div id="navigationButtons">
+                    <button id="prevButton" onclick="previousPage()">&larr; Previous</button>
+                    <button id="nextButton" onclick="nextPage()">Next &rarr;</button>
+                </div>
+            </div>
+            <aside class="sidebar">
+                <button class="class-button" onclick="loadVehicles('s')">S Class</button>
+                <button class="class-button" onclick="loadVehicles('a')">A Class</button>
+                <button class="class-button" onclick="loadVehicles('b')">B Class</button>
+                <button class="class-button" onclick="loadVehicles('c')">C Class</button>
+                <button class="class-button" onclick="loadVehicles('d')">D Class</button>
+                <button class="class-button" onclick="loadVehicles('drift')">Drift Cars</button>
+            </aside>            
+        </div>
+        <script src="script.js" type="text/javascript"></script>
+    </body>
+</html>

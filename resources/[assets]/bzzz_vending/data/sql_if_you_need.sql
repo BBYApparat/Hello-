@@ -1,0 +1,20 @@
+INSERT INTO `items` (`name`, `label`, `weight`,`rare`, `can_remove`) VALUES
+	('bzzz_vending_prop_chips_a', 'Supersalt chips', 1, 0, 0),
+	('bzzz_vending_prop_chips_b', 'Salt & Sauce chips', 1, 0, 0),
+    ('bzzz_vending_prop_chips_c', 'Crinkle chips - Paprika', 1, 0, 0),
+	('bzzz_vending_prop_chips_d', 'Big cheese chips', 1, 0, 0),
+	('bzzz_vending_prop_chips_e', 'Crinkle chips - Habanero', 1, 0, 0),
+	('bzzz_vending_prop_chips_f', 'Stick ribs chips', 1, 0, 0),
+    ('bzzz_vending_prop_candybox', 'Ps&Qs', 1, 0, 0),
+	('bzzz_vending_prop_captains', 'Captains Log', 1, 0, 0),
+	('bzzz_vending_prop_cbbrown', 'CandyBox brown', 1, 0, 0),
+	('bzzz_vending_prop_cbred', 'CandyBox red', 1, 0, 0),
+    ('bzzz_vending_prop_cbgreen', 'CandyBox green', 1, 0, 0),
+	('bzzz_vending_prop_cbyellow', 'CandyBox yellow', 1, 0, 0),
+	('bzzz_vending_prop_nothings', 'Nothings', 1, 0, 0),
+	('bzzz_vending_prop_zebrabar', 'Zebra bar', 1, 0, 0),
+    ('bzzz_vending_prop_relblue', 'Release blue', 1, 0, 0),
+	('bzzz_vending_prop_relgreen', 'Release green', 1, 0, 0),
+	('bzzz_vending_prop_relpink', 'Release pink', 1, 0, 0),
+	('bzzz_vending_prop_meteorite', 'Meteorite', 1, 0, 0)
+;

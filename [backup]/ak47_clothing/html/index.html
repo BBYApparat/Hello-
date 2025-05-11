@@ -1,0 +1,2578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+	<link rel="stylesheet" href="./reset.css">
+	<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet" href="./screen.css">
+	<title>Ak47 Clothing</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="change-camera-buttons">
+		</div>
+		<div class="clothing-menu-container">
+			<div class="clothing-menu-header">
+			</div>
+			<div class="clothing-menu-header-cameras">
+				<div class="clothing-menu-header-camera-btn" data-value="0">
+					<img class="png-icon" src='./icons/full.png'>
+				</div>
+				<div class="clothing-menu-header-camera-btn" data-value="1">
+					<img class="png-icon" src='./icons/face.png'>
+				</div>
+				<div class="clothing-menu-header-camera-btn" data-value="2">
+					<img class="png-icon" src='./icons/shirt.png'>
+				</div>
+				<div class="clothing-menu-header-camera-btn" data-value="3">
+					<img class="png-icon" src='./icons/pant.png'>
+				</div>
+				<br><br>
+				<div class="clothing-menu-header-remove-btn" data-value="hat">
+					<img class="png-icon" src='./icons/hat.png'>
+				</div>
+				<div class="clothing-menu-header-remove-btn" data-value="glasses">
+					<img class="png-icon" src='./icons/glasses.png'>
+				</div>
+				<div class="clothing-menu-header-remove-btn" data-value="ear">
+					<img class="png-icon" src='./icons/ear.png'>
+				</div>
+				<div class="clothing-menu-header-remove-btn" data-value="mask">
+					<img class="png-icon" src='./icons/mask.png'>
+				</div>
+				<div class="clothing-menu-header-remove-btn" data-value="chain">
+					<img class="png-icon" src='./icons/chain.png'>
+				</div>
+				<div class="clothing-menu-header-remove-btn" data-value="shirt">
+					<img class="png-icon" src='./icons/shirt.png'>
+				</div>
+				<div class="clothing-menu-header-remove-btn" data-value="vest">
+					<img class="png-icon" src='./icons/vest.png'>
+				</div>
+				<div class="clothing-menu-header-remove-btn" data-value="bag">
+					<img class="png-icon" src='./icons/bag.png'>
+				</div>
+				<div class="clothing-menu-header-remove-btn" data-value="watch">
+					<img class="png-icon" src='./icons/watch.png'>
+				</div>
+				<div class="clothing-menu-header-remove-btn" data-value="pant">
+					<img class="png-icon" src='./icons/pant.png'>
+				</div>
+				<div class="clothing-menu-header-remove-btn" data-value="shoes">
+					<img class="png-icon" src='./icons/shoes.png'>
+				</div>
+			</div>
+
+			<div class="clothing-menu-character-container">
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>sex</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="sex">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="ped">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>ped</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>age</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="age_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="age_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r3-box">
+					<div class="clothing-menu-option-header">
+						<p>Parents</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="mom">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="mom_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="dad">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="dad_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="face_md_weight">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="100" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="skin_md_weight">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="100" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r2-c2-box">
+					<div class="clothing-menu-option-header">
+						<p>hair</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="hair_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="hair_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item item-color" data-type="hair_color_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches haircol">
+						        
+						   	</div>
+						</div>
+					</div>
+					<div class="clothing-menu-option-item item-color" data-type="hair_color_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches haircol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r2-c1-box">
+					<div class="clothing-menu-option-header">
+						<p>beard</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="beard_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="beard_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="beard_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches haircol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>Eye</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="eye_color">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="eye_squint">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r3-c0-box">
+					<div class="clothing-menu-option-header">
+						<p>eyebrows</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="eyebrows_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="eyebrows_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="eyebrows_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches haircol">
+						        
+						   	</div>
+						</div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="eyebrows_5">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+  
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="eyebrows_6">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r3-box">
+					<div class="clothing-menu-option-header">
+						<p>Nose</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="nose_1">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item" data-type="nose_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="nose_3">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="nose_4">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="nose_5">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item" data-type="nose_6">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r2-box">
+					<div class="clothing-menu-option-header">
+						<p>Cheeks & lips</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="cheeks_1">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="cheeks_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="cheeks_3">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="lip_thickness">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>jaw</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="jaw_1">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="jaw_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r2-box">
+					<div class="clothing-menu-option-header">
+						<p>chin</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="chin_1">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="chin_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="chin_3">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="chin_4">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>neck</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="neck_thickness">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="-10" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r2-c2-box">
+					<div class="clothing-menu-option-header">
+						<p>makeup</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="makeup_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="makeup_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="makeup_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches makeupcol">
+						        
+						   	</div>
+						</div>
+					</div>
+					<div class="clothing-menu-option-item item-color" data-type="makeup_4">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches makeupcol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r2-c1-box">
+					<div class="clothing-menu-option-header">
+						<p>lipstick</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="lipstick_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="lipstick_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="lipstick_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches makeupcol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>blemishes</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="blemishes_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="blemishes_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r2-c1-box">
+					<div class="clothing-menu-option-header">
+						<p>blush</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="blush_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="blush_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="blush_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches makeupcol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>complexion</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="complexion_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="complexion_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>sun</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="sun_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="sun_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>moles</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="moles_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="moles_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+
+				<div class="clothing-menu-option r4-box">
+					<div class="clothing-menu-option-header">
+						<p>Body</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="chest_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="chest_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="chest_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches haircol">
+						        
+						   	</div>
+						</div>
+					</div>
+                    <div class="clothing-menu-option-item" data-type="bodyb_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="bodyb_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Skin color</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item" data-type="bodyb_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="bodyb_4">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+			</div>
+
+			<div class="clothing-menu-barber-container">
+				<div class="clothing-menu-option r2-c2-box">
+					<div class="clothing-menu-option-header">
+						<p>hair</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="hair_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="hair_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item item-color" data-type="hair_color_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches haircol">
+						        
+						   	</div>
+						</div>
+					</div>
+					<div class="clothing-menu-option-item item-color" data-type="hair_color_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches haircol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r2-c1-box">
+					<div class="clothing-menu-option-header">
+						<p>beard</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="beard_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="beard_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="beard_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches haircol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r2-c1-box">
+					<div class="clothing-menu-option-header">
+						<p>eyebrows</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="eyebrows_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="eyebrows_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="eyebrows_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches haircol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r2-c2-box">
+					<div class="clothing-menu-option-header">
+						<p>makeup</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="makeup_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="makeup_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="makeup_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches makeupcol">
+						        
+						   	</div>
+						</div>
+					</div>
+					<div class="clothing-menu-option-item item-color" data-type="makeup_4">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches makeupcol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r2-c1-box">
+					<div class="clothing-menu-option-header">
+						<p>lipstick</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="lipstick_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="lipstick_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="lipstick_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches makeupcol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r2-c1-box">
+					<div class="clothing-menu-option-header">
+						<p>blush</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="blush_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="blush_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="blush_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches makeupcol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>vest</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="bproof_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="bproof_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r2-c1-box">
+					<div class="clothing-menu-option-header">
+						<p>Body</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="chest_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="chest_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Type</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="0" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+					<div class="clothing-menu-option-item item-color" data-type="chest_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="panel-row">
+						      <div class="swatches default-swatches haircol">
+						        
+						   	</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="clothing-menu-clothing-container">
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>tshirt</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="tshirt_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="tshirt_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>torso</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="torso_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="torso_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>arms</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="arms">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="arms_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>vest</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="bproof_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="bproof_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>decals</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="decals_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="decals_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>pants</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="pants_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="pants_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>shoes</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="shoes_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="shoes_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="clothing-menu-accessoires-container">
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>Hat</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="helmet_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="helmet_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>glasses</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="glasses_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="glasses_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>ears</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="ears_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="ears_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>mask</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="mask_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="mask_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>chain</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="chain_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="chain_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r2-box">
+					<div class="clothing-menu-option-header">
+						<p>watche & bracelet</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="watches_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="watches_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="bracelets_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="bracelets_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+
+				<div class="clothing-menu-option r1-box">
+					<div class="clothing-menu-option-header">
+						<p>bags</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="bags_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Type</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="bags_2">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Skin color</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+				</div>
+			</div>
+			<div class="clothing-menu-tattoos-container">
+				<div class="clothing-menu-option r10-box">
+					<div class="clothing-menu-option-header">
+						<p>Hair</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_hair_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_hair_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_hair_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_hair_4">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_hair_5">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_hair_6">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_hair_7">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_hair_8">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_hair_9">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_hair_10">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_hair_11">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_hair_12">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_hair_13">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_hair_14">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_hair_15">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_hair_16">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_hair_17">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_hair_18">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_hair_19">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_hair_20">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+				<div class="clothing-menu-option r10-box">
+					<div class="clothing-menu-option-header">
+						<p>Head</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_head_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_head_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_head_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_head_4">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_head_5">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_head_6">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_head_7">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_head_8">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_head_9">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_head_10">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_head_11">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_head_12">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_head_13">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_head_14">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_head_15">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_head_16">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_head_17">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_head_18">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_head_19">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_head_20">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+				<div class="clothing-menu-option r10-box">
+					<div class="clothing-menu-option-header">
+						<p>Torso</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_torso_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_torso_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_torso_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_torso_4">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_torso_5">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_torso_6">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_torso_7">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_torso_8">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_torso_9">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_torso_10">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_torso_11">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_torso_12">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_torso_13">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_torso_14">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_torso_15">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_torso_16">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_torso_17">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_torso_18">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_torso_19">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_torso_20">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+				<div class="clothing-menu-option r10-box">
+					<div class="clothing-menu-option-header">
+						<p>Left Arm</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_larm_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_larm_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_larm_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_larm_4">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_larm_5">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_larm_6">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_larm_7">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_larm_8">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_larm_9">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_larm_10">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_larm_11">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_larm_12">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_larm_13">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_larm_14">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_larm_15">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_larm_16">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_larm_17">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_larm_18">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_larm_19">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_larm_20">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+				<div class="clothing-menu-option r10-box">
+					<div class="clothing-menu-option-header">
+						<p>Right Arm</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rarm_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rarm_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rarm_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rarm_4">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rarm_5">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rarm_6">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rarm_7">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rarm_8">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rarm_9">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rarm_10">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rarm_11">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rarm_12">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rarm_13">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rarm_14">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rarm_15">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rarm_16">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rarm_17">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rarm_18">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rarm_19">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rarm_20">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+				<div class="clothing-menu-option r10-box">
+					<div class="clothing-menu-option-header">
+						<p>Left Leg</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_lleg_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_lleg_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_lleg_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_lleg_4">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_lleg_5">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_lleg_6">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_lleg_7">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_lleg_8">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_lleg_9">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_lleg_10">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_lleg_11">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_lleg_12">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_lleg_13">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_lleg_14">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_lleg_15">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_lleg_16">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_lleg_17">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_lleg_18">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_lleg_19">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_lleg_20">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+				<div class="clothing-menu-option r10-box">
+					<div class="clothing-menu-option-header">
+						<p>Right Leg</p>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rleg_1">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rleg_2">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rleg_3">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rleg_4">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rleg_5">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rleg_6">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rleg_7">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rleg_8">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rleg_9">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rleg_10">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rleg_11">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rleg_12">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rleg_13">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rleg_14">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rleg_15">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rleg_16">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rleg_17">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rleg_18">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+                    <div class="clothing-menu-option-item" data-type="t_rleg_19">
+						<div class="clothing-menu-option-item-header" data-headertype="item-header">
+							<p>Tattoo</p>
+						</div>
+						<div class="clothing-menu-option-item-left" data-type="item"><i
+								class="fa fa-caret-left left-right-icon-size"></i></div>
+						<input type="number" class="item-number" data-type="item" value="0">
+						<div class="clothing-menu-option-item-right" data-type="item"><i
+								class="fa fa-caret-right left-right-icon-size"></i></div>
+					</div>
+					<div class="clothing-menu-option-item" data-type="t_rleg_20">
+                        <div class="clothing-menu-option-item-header" data-slidertype="item-slider">
+                            <p>Opacity</p>
+                        </div>
+                        <input data-type="item" class="clothing-menu-option-item-slider slider item-number" type="range" min="1" step="1" max="10" value="0" id="shapeMix">
+                    </div>
+				</div>
+			</div>
+
+			<div class="clothing-menu-myOutfits-container">
+			</div>
+
+			<div class="clothing-menu-option-buttons">
+				<div class="clothing-menu-option-button" id="save-menu">
+					<p>Buy</p>
+				</div>
+				<div class="clothing-menu-option-button" id="cancel-menu">
+					<p>Cancel</p>
+				</div>
+				<div class="clothing-menu-option-button" id="save-outfit">
+					<p>Save</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="clothing-menu-save-outfit-name">
+			<div class="clothing-menu-save-outfit-name-header">
+				<p>Save this outfit</p>
+			</div>
+
+			<input type="text" id="outfit-name" placeholder="Name">
+
+			<div class="clothing-menu-save-outfit-name-buttons">
+				<div class="clothing-menu-save-outfit-name-button" id="save-outfit-save">
+					<p>Save</p>
+				</div>
+				<div class="clothing-menu-save-outfit-name-button" id="cancel-outfit-save">
+					<p>Cancel</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="./script.js"></script>
+
+</html>

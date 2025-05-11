@@ -1,0 +1,384 @@
+local configFile = LoadResourceFile(GetCurrentResourceName(), "config/config.json")
+local cfgFile = json.decode(configFile)
+
+local localsFile = LoadResourceFile(GetCurrentResourceName(), "locals/"..cfgFile['locals']..".json")
+local lang = json.decode(localsFile)
+
+if lang == nil then
+    print('^5[discord_logs] ^1Error: Could not load language file. Make sure you didn\'t make a typo.^0')
+    return StopResource(GetCurrentResourceName())
+end
+
+if cfgFile == nil then
+    print('^5[discord_logs] ^1Error: Could not load config file. Make sure you didn\'t make a typo.^0')
+    return StopResource(GetCurrentResourceName())
+end
+
+AddEventHandler('esx:onPlayerDeath', function(data)
+	local DeathReason, Killer, DeathCauseHash, Weapon
+	local PedKiller = data.PedKiller
+	local killername = GetPlayerName(PedKiller)
+	DeathCauseHash = data.deathCause
+	Weapon = ClientWeapons.WeaponNames[tostring(DeathCauseHash)]
+	if IsEntityAPed(PedKiller) and IsPedAPlayer(PedKiller) then
+		Killer = NetworkGetPlayerIndexFromPed(PedKiller)
+	elseif IsEntityAVehicle(PedKiller) and IsEntityAPed(GetPedInVehicleSeat(PedKiller, -1)) and IsPedAPlayer(GetPedInVehicleSeat(PedKiller, -1)) then
+		Killer = NetworkGetPlayerIndexFromPed(GetPedInVehicleSeat(PedKiller, -1))
+	end
+	if (Killer == PlayerId()) then
+		DeathReason = lang['DeathReasons'].Suicide
+	elseif (Killer == nil) then
+		DeathReason = lang['DeathReasons'].Died
+	else
+		if ClientFunc.IsMelee(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Murdered
+		elseif ClientFunc.IsTorch(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Torched
+		elseif ClientFunc.IsKnife(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Knifed
+		elseif ClientFunc.IsPistol(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Pistoled
+		elseif ClientFunc.IsSub(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Riddled
+		elseif ClientFunc.IsRifle(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Rifled
+		elseif ClientFunc.IsLight(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].MachineGunned
+		elseif ClientFunc.IsShotgun(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Pulverized
+		elseif ClientFunc.IsSniper(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Sniped
+		elseif ClientFunc.IsHeavy(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Obliterated
+		elseif ClientFunc.IsMinigun(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Shredded
+		elseif ClientFunc.IsBomb(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Bombed
+		elseif ClientFunc.IsVeh(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].MowedOver
+		elseif ClientFunc.IsVK(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Flattened
+		else
+			DeathReason = lang['DeathReasons'].Killed
+		end
+	end
+	if DeathReason == lang['DeathReasons'].Suicide or DeathReason == lang['DeathReasons'].Died then
+		TriggerServerEvent('Prefech:playerDied', { type = 1, player_id = GetPlayerServerId(PlayerId()), death_reason = DeathReason, weapon = Weapon })
+	else
+		TriggerServerEvent('Prefech:playerDied', { type = 2, player_id = GetPlayerServerId(PlayerId()), player_2_id = GetPlayerServerId(Killer), death_reason = DeathReason, weapon = Weapon })
+	end
+end)
+
+AddEventHandler('esx:onPlayerDown', function(data)
+	local DeathReason, Killer, DeathCauseHash, Weapon
+	local PedKiller = data.PedKiller
+	local killername = GetPlayerName(PedKiller)
+	DeathCauseHash = data.deathCause
+	Weapon = ClientWeapons.WeaponNames[tostring(DeathCauseHash)]
+	if IsEntityAPed(PedKiller) and IsPedAPlayer(PedKiller) then
+		Killer = NetworkGetPlayerIndexFromPed(PedKiller)
+	elseif IsEntityAVehicle(PedKiller) and IsEntityAPed(GetPedInVehicleSeat(PedKiller, -1)) and IsPedAPlayer(GetPedInVehicleSeat(PedKiller, -1)) then
+		Killer = NetworkGetPlayerIndexFromPed(GetPedInVehicleSeat(PedKiller, -1))
+	end
+	if (Killer == PlayerId()) then
+		DeathReason = lang['DeathReasons'].Suicide
+	elseif (Killer == nil) then
+		DeathReason = lang['DeathReasons'].Died
+	else
+		if ClientFunc.IsMelee(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Murdered
+		elseif ClientFunc.IsTorch(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Torched
+		elseif ClientFunc.IsKnife(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Knifed
+		elseif ClientFunc.IsPistol(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Pistoled
+		elseif ClientFunc.IsSub(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Riddled
+		elseif ClientFunc.IsRifle(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Rifled
+		elseif ClientFunc.IsLight(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].MachineGunned
+		elseif ClientFunc.IsShotgun(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Pulverized
+		elseif ClientFunc.IsSniper(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Sniped
+		elseif ClientFunc.IsHeavy(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Obliterated
+		elseif ClientFunc.IsMinigun(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Shredded
+		elseif ClientFunc.IsBomb(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Bombed
+		elseif ClientFunc.IsVeh(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].MowedOver
+		elseif ClientFunc.IsVK(DeathCauseHash) then
+			DeathReason = lang['DeathReasons'].Flattened
+		else
+			DeathReason = lang['DeathReasons'].Killed
+		end
+	end
+	if DeathReason == lang['DeathReasons'].Suicide or DeathReason == lang['DeathReasons'].Died then
+		TriggerServerEvent('Prefech:playerDied', { type = 1, player_id = GetPlayerServerId(PlayerId()), death_reason = DeathReason, weapon = Weapon })
+	else
+		TriggerServerEvent('Prefech:playerDied', { type = 2, player_id = GetPlayerServerId(PlayerId()), player_2_id = GetPlayerServerId(Killer), death_reason = DeathReason, weapon = Weapon })
+	end
+end)
+
+RegisterNetEvent('Prefech:RequestSS', function(hook, requestId)
+	if not hook or hook == "" then
+		print("Logs: No hook found of reqId: ", requestId)
+		return false
+	end
+	exports['screenshot-basic']:requestScreenshotUpload(hook, 'files[]', function(data)
+		local resp = json.decode(data)
+		TriggerServerEvent('Prefech:DeliverSS', resp.attachments[1].url, requestId)
+	end)
+end)
+
+RegisterNetEvent('Prefech:ClientCreateScreenshot')
+AddEventHandler('Prefech:ClientCreateScreenshot', function(args)
+	if args.url ~= "" and args.url ~= nil and args.url ~= 'DISCORD_WEBHOOK' then
+		exports['screenshot-basic']:requestScreenshotUpload(args.url, 'files[]', function(data)
+			local resp = json.decode(data)
+			if resp.attachments then
+				args['responseUrl'] = resp.attachments[1].url
+				TriggerServerEvent('Prefech:ClientUploadScreenshot', args)
+			else
+				TriggerServerEvent('Prefech:discord_logs:Debug', 'Screenshot Failed.', "Make sure you have setup screenshot-basic correctly.")
+			end
+		end)
+	else
+		TriggerServerEvent('Prefech:discord_logs:Debug', 'Screenshot Failed.', "No webhook url found in imageStore.")
+	end
+end)
+
+RegisterNetEvent('ACScreenshot')
+AddEventHandler('ACScreenshot', function(args)
+	exports['screenshot-basic']:requestScreenshotUpload(args.url, 'files[]', function(data)
+		local resp = json.decode(data)
+		if resp.attachments then
+			args['responseUrl'] = resp.attachments[1].url
+			args.screenshot = nil
+			TriggerServerEvent('ACCheatAlert', args)
+		end
+	end)
+end)
+
+CreateThread(function()
+	local currWeapon = 0
+	local fireWeapon = nil
+	local timeout = 0
+	local fireCount = 0
+	while true do
+		Wait(0)
+		local playerped = GetPlayerPed(PlayerId())
+		if IsPedShooting(playerped) then
+			fireWeapon = GetSelectedPedWeapon(playerped)
+			fireCount = fireCount + 1
+			timeout = 1000
+		elseif not IsPedShooting(playerped) and fireCount ~= 0 and timeout ~= 0 then
+			if timeout ~= 0 then
+				timeout = timeout - 1
+			end
+			if fireWeapon ~= GetSelectedPedWeapon(playerped) then
+				timeout = 0
+			end
+			if fireCount ~= 0 and timeout == 0 then
+				if not ClientWeapons.WeaponNames[tostring(fireWeapon)] then
+					TriggerServerEvent('Prefech:playerShotWeapon', lang['WeaponFired'].Undefined)
+					TriggerServerEvent('Prefech:discord_logs:Debug', 'Weapon not defined.', "Weapon not listed: "..tostring(fireWeapon))
+					return
+				end
+
+				isLoggedWeapon = true
+				for k,v in pairs(cfgFile['WeaponsNotLogged']) do
+					if GetSelectedPedWeapon(playerped) == GetHashKey(v) then
+						isLoggedWeapon = false
+					end
+				end
+				if isLoggedWeapon then
+					TriggerServerEvent('Prefech:playerShotWeapon', ClientWeapons.WeaponNames[tostring(fireWeapon)], fireCount)
+				end
+				fireCount = 0
+			end
+		end
+	end
+end)
+
+exports('discord', function(message, id, id2, color, channel)
+	args ={
+		['EmbedMessage'] = msg,
+		['color'] = color,
+		['channel'] = channel
+	}
+	if player_1 ~= 0 then
+		args['player_id'] = player_1
+	end
+	if player_2 ~= 0 then
+		args['player_2_id'] = player_2
+	end
+	TriggerServerEvent('Prefech:ClientDiscord', args)
+	local resource = GetInvokingResource()
+	TriggerServerEvent('Prefech:discord_logs:Debug', 'Server Old Export from '..resource)
+end)
+
+exports('createLog', function(args)
+	TriggerServerEvent('Prefech:ClientDiscord', args)
+	local resource = GetInvokingResource()
+	TriggerServerEvent('Prefech:discord_logs:Debug', 'Server New Export from '..resource)
+end)
+
+local clientStorage = {}
+RegisterNetEvent('Prefech:ClientLogStorage')
+AddEventHandler('Prefech:ClientLogStorage', function(args)
+    if #clientStorage <= 4 then
+		table.insert(clientStorage, args)
+	else
+		table.remove(clientStorage, 1)
+		table.insert(clientStorage, args)
+	end
+end)
+
+RegisterNetEvent('Prefech:getClientLogStorage')
+AddEventHandler('Prefech:getClientLogStorage', function()
+    TriggerServerEvent('Prefech:sendClientLogStorage', clientStorage)
+end)
+
+-- CreateThread(function()
+-- 	TriggerServerEvent('Prefech:getACConfig')
+-- 	while true do
+-- 		Wait(60 * 1000)
+-- 		TriggerServerEvent('Prefech:getACConfig')
+-- 	end
+-- end)
+
+if cfgFile['EnableAcFunctions'] then
+	local acConfig = {}
+	RegisterNetEvent('Prefech:SendACConfig')
+	AddEventHandler('Prefech:SendACConfig', function(_config)
+		acConfig = _config
+	end)
+
+	local lastVehicle        = nil
+	local lastVehicleModel   = nil
+	local warnLimit = 0
+
+	CreateThread(function()
+		while true do
+			Wait(250)
+			local playerPed = GetPlayerPed(-1)
+			local vehicle = GetVehiclePedIsUsing(playerPed)
+			local model = GetEntityModel(vehicle)
+			if (IsPedInAnyVehicle(playerPed, false)) then
+				for k, v in pairs(acConfig['BlacklistedVehicles']) do
+					if (IsVehicleModel(vehicle, v)) then
+						DeleteVehicle(vehicle)
+						if GetPlayerServerId(PlayerId()) ~= nil then
+							TriggerServerEvent('Prefech:ClientDiscord', {EmbedMessage = lang['AntiCheat'].ACBlacklistedVehLog:format(GetPlayerName(PlayerId()), v), player_id = GetPlayerServerId(PlayerId()), channel = 'AntiCheat'})
+						end
+						warnLimit = warnLimit + 1
+						if acConfig['KickSettings'].BlacklistedVehicles then
+							if warnLimit == acConfig['KickSettings'].BlacklistedVehicleLimit then
+								TriggerServerEvent('ACCheatAlert', {target = GetPlayerServerId(PlayerId()), reason = 'BV01: '..v, screenshot = true, kick = false})
+								Wait(100)
+								TriggerServerEvent('Prefech:DropPlayer', lang['AntiCheat'].ACBlacklistedVehKick)
+							end
+						end
+					end
+				end
+			end
+
+			if (IsPedSittingInAnyVehicle(playerPed)) then
+				if (vehicle == lastVehicle and model ~= lastVehicleModel and lastVehicleModel ~= nil and lastVehicleModel ~= 0) then
+					N_0xEA386986E786A54F(vehicle)
+					return
+				end
+			end
+
+			lastVehicle = vehicle
+			lastVehicleModel = model
+
+			local handle, object = FindFirstObject()
+			local finished = false
+			while not finished do
+				Wait(1)
+				for k,v in pairs(acConfig['BlacklistedObjects']) do
+					if (GetEntityModel(object) == GetHashKey(v)) then
+						DeleteObject(object)
+						if GetPlayerServerId(PlayerId()) ~= nil then
+							TriggerServerEvent('Prefech:ClientDiscord', {EmbedMessage = lang['AntiCheat'].BlacklistedObject:format(v), player_id = GetPlayerServerId(PlayerId()), channel = 'AntiCheat'})
+							TriggerServerEvent('ACCheatAlert', {target = GetPlayerServerId(PlayerId()), reason = 'BO01: '..k, screenshot = true, kick = false})
+						end
+					end
+				end
+				finished, object = FindNextObject(handle)
+			end
+			EndFindObject(handle)
+		end
+	end)
+
+	CreateThread(function()
+		Wait(500)
+		while false do
+			Wait(0)
+			for k,v in pairs(acConfig['BlacklistedKeys']) do
+				if IsControlJustReleased(0, tonumber(k)) and not IsNuiFocused() then
+					Wait(500)
+					if GetPlayerServerId(PlayerId()) ~= nil then
+						TriggerServerEvent('Prefech:ClientDiscord', {EmbedMessage = lang['AntiCheat'].BlacklistedKey:format(k, v), player_id = GetPlayerServerId(PlayerId()), screenshot = true, channel = 'AntiCheat'})
+					end
+				end
+			end
+		end
+	end)
+
+	CreateThread(function()
+		while true do
+			Wait(10000)
+			local resourceList = {}
+			for i=0,GetNumResources()-1 do
+				resourceList[i+1] = GetResourceByFindIndex(i)
+				Wait(500)
+			end
+			Wait(5000)
+			TriggerServerEvent("Prefech:resourceCheck", resourceList)
+		end
+	end)
+
+	CreateThread(function()
+		while true do
+			Wait(60 * 1000)
+			local prefixCheck = {"+", "_", "-", "-", "|", "\\","/",""}
+			for k,v in ipairs(GetRegisteredCommands()) do
+				for k,x in pairs(acConfig['BlacklistedCommands']) do
+					for k,z in pairs(prefixCheck) do
+						if string.lower(v.name) == string.lower(z..""..x) then
+							if GetPlayerServerId(PlayerId()) ~= nil then
+								TriggerServerEvent('Prefech:ClientDiscord', {EmbedMessage = lang['AntiCheat'].BlacklistedCommand:format(x), player_id = GetPlayerServerId(PlayerId()), channel = 'AntiCheat'})
+							end
+							TriggerServerEvent('ACCheatAlert', {target = GetPlayerServerId(PlayerId()), reason = 'BC01: '..z..''..x, screenshot = true, kick = true})
+							if acConfig['KickSettings'].BlacklistedCommands then
+								TriggerServerEvent('Prefech:DropPlayer', lang['AntiCheat'].BlacklistedCommandKick)
+							end
+						end
+					end
+				end
+			end
+		end
+	end)
+end
+
+
+local eventsLoadFile = LoadResourceFile(GetCurrentResourceName(), "config/eventLogs.json")
+local eventsFile = json.decode(eventsLoadFile)
+if type(eventsFile) == "table" then
+	for k,v in pairs(eventsFile) do
+		if not v.Server then
+			TriggerServerEvent('Prefech:discord_logs:Debug', 'Added Client Event Log: '..v.Event)
+			AddEventHandler(v.Event, function()
+				TriggerServerEvent('Prefech:ClientDiscord', {EmbedMessage = 'EventLogger: '..v.Message, channel = v.Channel})
+				TriggerServerEvent('Prefech:eventLoggerClient', {EmbedMessage = 'EventLogger: '..v.Message, channel = v.Channel})
+			end)
+		end
+	end
+end

@@ -1,0 +1,37 @@
+Version 165 32
+{
+	Shaders
+	{
+		ped_default.sps
+		{
+			DiffuseSampler ogfrog_grogu_diff
+			BumpSampler teef_009_u\ogfrog_grogu_normal.otx
+			SpecSampler teef_009_u\specular.otx
+			envEffFatThickness 25.00000000 25.00000000
+			SpecMapIntMask 1.00000000 0.00000000 0.00000000
+			SpecularIntensityMult 0.00000000
+			SpecularFalloffMult 10.00000000
+			SpecularFresnel 0.75000000
+			Bumpiness 1.00000000
+			DetailSettings 0.10000000 0.75000000 40.00000000
+		}
+	}
+	Skeleton null
+	LodGroup
+	{
+		Center 0.15324710 0.03132100 0.58502150
+		Radius 0.10329000
+		AABBMin 0.08435570 -0.00352030 0.51640060
+		AABBMax 0.22213850 0.06616230 0.65364250
+		High 9998.00000000
+		{
+			teef_009_u\teef_009_u_high.mesh 0
+		}
+		Med 9998.00000000
+		Low 9998.00000000
+		Vlow 9998.00000000
+	}
+	Joints null
+	Light null
+	Bound null
+}

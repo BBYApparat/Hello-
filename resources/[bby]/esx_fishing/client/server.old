@@ -1,0 +1,96 @@
+local Baits = {
+    ["Fish"] = "fishingbait",
+    ["Shrimps"] = "shrimps",
+    ["Turtle"] = "turtle",
+}
+
+RegisterNetEvent('esx_fishing:server:RemoveBait', function()
+    local src = source
+    local xPlayer = ESX.GetPlayerFromId(src)
+end)
+
+RegisterNetEvent('esx_fishing:server:ReceiveFish', function(zone, rodId, metadata)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local myRod = exports.ox_inventory:GetSlotWithItem(xPlayer.source, 'fishingrod', { fishing_bait = metadata.fishing_bait })
+
+    if myRod then
+        local zone = tonumber(zone)
+        local source = tonumber(source)
+        local itemTable = Config.DefaultItems
+        local maxChance = Config.DefaultMaxChance
+
+        if zone and Config.FishingZones[zone] and Config.FishingZones[zone].Items then
+            itemTable = Config.FishingZones[zone].Items
+        end
+
+        if zone and Config.FishingZones[zone] and Config.FishingZones[zone].MaxChance then
+            maxChance = Config.FishingZones[zone].MaxChance
+        end
+
+        itemTable = shuffle(itemTable)
+
+        for i = 1, Config.RetryCount, 1 do
+            local item = itemTable[math.random(1, #itemTable)]
+            local random = math.random(1, maxChance)
+            if item.baits[Baits[myRod.metadata.fishing_bait]] and random >= item.chance then
+                xPlayer.addInventoryItem(item.name, 1)
+                myRod.metadata.fishing_bait = nil
+                exports.ox_inventory:SetMetadata(xPlayer.source, myRod.slot, myRod.metadata)
+                return
+            end
+        end
+
+        xPlayer.showNotification("A silly water creature has eaten your bait!!!!!", "error", 5500)
+        myRod.metadata.fishing_bait = nil
+        exports.ox_inventory:SetMetadata(xPlayer.source, myRod.slot, myRod.metadata)
+    end
+end)
+
+ESX.RegisterUsableItem('fishingrod', function(source)
+    local xPlayer = ESX.GetPlayerFromId(source)
+end)
+
+AddEventHandler('ox_inventory:usedItem', function(playerId, name, slotId, metadata)
+    if name == "fishingrod" then
+        local xPlayer = ESX.GetPlayerFromId(playerId)
+        
+        if not metadata then 
+            xPlayer.showNotification("You need to attach bait on your rod", "error", 3500)
+            return
+        end
+        
+        if metadata and not metadata.fishing_bait then 
+            xPlayer.showNotification("You need to attach bait on your rod", "error", 3500)
+            return
+        end
+
+        TriggerClientEvent('esx_fishing:client:FishingRod', xPlayer.source, slotId, metadata)
+    end
+end)
+
+for baitLabel, baitItemName in pairs(Baits) do
+    ESX.RegisterUsableItem(baitItemName, function(source)
+        local xPlayer = ESX.GetPlayerFromId(source)
+        local myRods = exports.ox_inventory:Search(xPlayer.source, "slots", "fishingrod")
+        local myRod = exports.ox_inventory:GetSlot(xPlayer.source, myRods[1].slot)
+        
+        if myRod.metadata and myRod.metadata.fishing_bait == baitLabel then xPlayer.showNotification("You already got " .. baitLabel .. " attached", "error", 3500) return end
+        
+        if myRod.metadata and myRod.metadata.fishing_bait ~= baitLabel and Baits[myRod.metadata.fishing_bait] then
+            exports.ox_inventory:AddItem(xPlayer.source, Baits[myRod.metadata.fishing_bait], 1)
+        end
+        TriggerClientEvent("esx_fishing:placeBaitAnim", xPlayer.source)
+        xPlayer.removeInventoryItem(baitItemName, 1)
+        myRod.metadata.fishing_bait = baitLabel
+        exports.ox_inventory:SetMetadata(xPlayer.source, myRod.slot, myRod.metadata)
+        xPlayer.showNotification("Bait " .. baitLabel .. " attached to " .. myRod.label, "info", 3500)
+    end)
+end
+
+function shuffle(tbl)
+    for i = #tbl, 2, -1 do
+        local j = math.random(i)
+        tbl[i], tbl[j] = tbl[j], tbl[i]
+    end
+    return tbl
+end

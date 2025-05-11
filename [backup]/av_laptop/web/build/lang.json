@@ -1,0 +1,22 @@
+{
+  "calculator": "Calculator",
+  "terminal": "Terminal",
+  "files_title": "My Files",
+  "change_avatar": "Change Avatar",
+  "update": "Update",
+  "change_wallpaper": "Change Wallpaper",
+  "set_password": "Set Password",
+  "wrong_password": "Wrong Password",
+  "no_hotspots": "No Hotspots Available",
+  "disconnect": "Disconnect",
+  "connect": "Connect",
+  "this_pc": "This PC",
+  "my_files": "My Files",
+  "my_devices": "My Devices",
+  "unknown_device": "Unknown",
+  "document": "Documents",
+  "image": "Images",
+  "video": "Videos",
+  "copied": "File(s) copied correctly",
+  "copy_error": "File(s) couldn't be copied..."
+}

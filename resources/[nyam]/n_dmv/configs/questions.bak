@@ -1,0 +1,350 @@
+-- Config.Questions = {
+--     ['en'] = { -- English Translation
+--         [1] = {
+--             {
+--                 label = "What is the color of the prohibition sign?",
+--                 options = {
+--                     {
+--                         label = "Red",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Blue",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Yellow",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "What does the triangular road sign indicate?",
+--                 options = {
+--                     {
+--                         label = "Three-way intersection",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Yield",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "One way",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "What does a continuous line at the edge of the road mean?",
+--                 options = {
+--                     {
+--                         label = "You can overtake",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "No overtaking",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Overtake only on the right",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "What is the speed limit in an urban area?",
+--                 options = {
+--                     {
+--                         label = "50 km/h",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "70 km/h",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "90 km/h",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "What does the danger sign with a camera mean?",
+--                 options = {
+--                     {
+--                         label = "Parking zone",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "No parking zone",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Speed camera",
+--                         correct = true
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "What is the minimum safe distance to maintain from the vehicle in front?",
+--                 options = {
+--                     {
+--                         label = "1 meter",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "2 seconds of distance",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "0.5 meters",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "What should a driver do when approaching a level crossing with closed barriers?",
+--                 options = {
+--                     {
+--                         label = "Accelerate to cross before the barriers close completely",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Cross only if there are no incoming trains",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Honk the horn and proceed",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "What does the stop sign represent?",
+--                 options = {
+--                     {
+--                         label = "Yield",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Stop",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "One way",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "What does the sign with a green arrow pointing upwards indicate?",
+--                 options = {
+--                     {
+--                         label = "Only for bicycles",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Only for pedestrians",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Reserved for public vehicles",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "What does the sign with a Saint Andrew's cross (red X on a white background) represent?",
+--                 options = {
+--                     {
+--                         label = "Limited access area",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Parking area",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Pedestrian zone",
+--                         correct = false
+--                     }
+--                 }
+--             }
+--         }
+--     },
+--     ['gr'] = { -- Greek Translation
+--         [1] = {
+--             {
+--                 label = "Ποιο είναι το χρώμα της πινακίδας απαγόρευσης;",
+--                 options = {
+--                     {
+--                         label = "Κόκκινο",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Μπλε",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Κίτρινο",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "Τι υποδεικνύει η τριγωνική πινακίδα;",
+--                 options = {
+--                     {
+--                         label = "Τριπλή διασταύρωση",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Υποχρέωση παραχώρησης προτεραιότητας",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Μονόδρομος",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "Τι σημαίνει η συνεχόμενη γραμμή στην άκρη του δρόμου;",
+--                 options = {
+--                     {
+--                         label = "Επιτρέπεται η προσπέραση",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Απαγορεύεται η προσπέραση",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Προσπέραση μόνο από τα δεξιά",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "Ποιο είναι το όριο ταχύτητας σε αστική περιοχή;",
+--                 options = {
+--                     {
+--                         label = "50 χλμ/ώρα",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "70 χλμ/ώρα",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "90 χλμ/ώρα",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "Τι σημαίνει η προειδοποιητική πινακίδα με φωτογραφική μηχανή;",
+--                 options = {
+--                     {
+--                         label = "Ζώνη στάθμευσης",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Ζώνη απαγόρευσης στάθμευσης",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Ηλεκτρονικός έλεγχος ταχύτητας",
+--                         correct = true
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "Ποια είναι η ελάχιστη ασφαλής απόσταση που πρέπει να τηρείτε από το προπορευόμενο όχημα;",
+--                 options = {
+--                     {
+--                         label = "1 μέτρο",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "2 δευτερόλεπτα απόστασης",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "0,5 μέτρα",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "Τι πρέπει να κάνει ο οδηγός όταν πλησιάζει σε ισόπεδη διάβαση με κατεβασμένες μπάρες;",
+--                 options = {
+--                     {
+--                         label = "Επιτάχυνση για να περάσει πριν κλείσουν εντελώς οι μπάρες",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Περάστε μόνο εάν δεν έρχονται τρένα",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Κορνάρει και προχωράει",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "Τι σημαίνει η πινακίδα stop;",
+--                 options = {
+--                     {
+--                         label = "Υποχρέωση παραχώρησης προτεραιότητας",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Υποχρεωτική στάση",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Μονόδρομος",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "Τι υποδεικνύει η πινακίδα με πράσινο βέλος προς τα πάνω;",
+--                 options = {
+--                     {
+--                         label = "Μόνο για ποδήλατα",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Μόνο για πεζούς",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Κλειστή διαδρομή για δημόσια οχήματα",
+--                         correct = false
+--                     }
+--                 }
+--             },
+--             {
+--                 label = "Τι σημαίνει η πινακίδα με το Σταυρό του Αγίου Ανδρέα (κόκκινο Χ σε λευκό φόντο);",
+--                 options = {
+--                     {
+--                         label = "Περιοχή περιορισμένης πρόσβασης",
+--                         correct = true
+--                     },
+--                     {
+--                         label = "Περιοχή στάθμευσης",
+--                         correct = false
+--                     },
+--                     {
+--                         label = "Πεζόδρομος",
+--                         correct = false
+--                     }
+--                 }
+--             }
+--         }
+--     }
+-- }

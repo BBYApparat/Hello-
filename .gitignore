@@ -4,3 +4,8 @@ server.cfg
 webhooks.cfg
 server.cfg.bkp
 imgui.ini
+[backup]
+bkp.zip
+/resources/\[maps\]/
+/resources/\[eup\]/
+/resources/\[cars\]/

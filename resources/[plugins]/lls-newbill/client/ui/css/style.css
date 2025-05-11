@@ -1,0 +1,588 @@
+html {
+	display: none;
+}
+
+html, body {
+	margin: 0;
+    padding: 0;
+    
+	font-size: 16px;
+	font-weight: 400;
+    font-family: 'Roboto Slab';
+    
+    overflow-y: hidden;
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.mainCard {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    padding: 16px;
+
+    height: 80%;
+    min-width: 750px;
+    
+    background-color: rgba(18, 18, 18, 1);
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.3);
+
+    border-radius: 10px;
+
+    font-size: 1.3em;
+    color: rgba(255,255,255,0.8);
+
+    overflow: hidden;
+}
+
+.mainCardCloseButton {
+    position: absolute;
+
+    top: 0;
+    right: 7px;
+    
+    cursor: pointer;
+
+    transition: color 0.2s;
+
+    font-size: 1.1em;
+    color: rgba(255,255,255,0.8);
+}
+
+.mainCardCloseButton:hover {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.mainCardShopLogo {
+    text-align: center;
+    
+    font-weight: bold;
+    font-size: 1.6em;
+    
+    color: rgba(255,255,255,0.8);
+}
+
+.mainCardShopLogo img {
+    height: 120px;
+	width: auto;
+    
+	margin: auto;
+    display: block;
+}
+
+.mainCardItemsHeadlines {
+    text-align: center;
+
+    display: flex;
+	flex-direction: row;
+    flex-wrap: nowrap;
+
+    font-size: 0.9em;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    
+    margin-top: 15px;
+
+    padding-bottom: 5px;
+
+    border-bottom: 1px solid rgba(255,255,255,0.7);
+}
+
+.mainCardItemsHeadlines > div {
+    flex: 1;
+}
+
+.mainCardItemsContainer {
+    overflow-y: auto;
+
+    list-style-type: none; margin: 0; padding: 0;
+}
+
+.itemDisable div {
+    opacity: 0.5;
+}
+
+.itemElement {
+    display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+
+    font-weight: bold;
+    font-size: 1.1em;
+    color: rgba(255,255,255,0.8);
+
+    background-color: rgba(18, 18, 18, 0.9);
+
+    padding-bottom: 8px;
+    padding-top: 8px;
+
+    border-top: 1px solid rgba(255,255,255,0.7);
+    border-bottom: 1px solid rgba(255,255,255,0.7);
+}
+
+.itemElement > div {
+    flex: 1;
+    margin: auto;
+}
+
+.itemLogo {
+    position: relative;
+
+    display: flex;
+	flex-direction: row;
+    flex-wrap: nowrap;
+    
+    color: rgba(255,255,255,0.8);
+}
+
+.itemLogo > div {
+    margin: auto;
+}
+
+.itemLogoImg {
+    flex: 1;
+    margin-right: 0;
+}
+
+.itemLogoText {
+    flex: 2;
+    margin-left: 4px !important;
+}
+
+.itemLogoImg > img {
+    height: 100%;
+    width: 100%;
+    max-height: 80px;
+	max-width: 80px;
+    
+    display: block;
+    margin: auto;
+}
+
+.itemCustomerQuantity {
+    text-align: center;
+}
+
+.itemCustomerPrice {
+    text-align: center;
+    color: green;
+}
+
+.itemSellerQuantity {
+    display: flex;
+	flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.itemSellerQuantity > div {
+    flex: 1;
+    text-align: center;
+}
+
+.itemSellerQuantity > div > input {
+    width: 100%;
+
+    background-color: rgba(0,0,0,0);
+    
+    border: 0;
+    
+    font-size: 1em;
+	font-weight: bold;
+	font-family: 'Baloo Bhaina 2', cursive;
+	line-height: 10px;
+	color: rgba(255,255,255,0.8);
+	text-align: center;
+}
+
+.itemSellerQuantity > div > input:focus {
+	outline: none;
+}
+
+.itemSellerQuantity > div > input::-webkit-inner-spin-button,
+.itemSellerQuantity > div > input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+}
+
+.itemSellerQuantity > .itemSellerQButton {
+    margin: auto;
+}
+
+.itemSellerQuantity > .itemSellerQButton > div {
+    display: block;
+    
+    width: 30px;
+	height: 30px;
+
+    cursor: pointer;
+
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 100%;
+
+    text-align: center;
+    font-size: 0.7em;
+    color: rgba(255,255,255,0.8);
+
+    margin: auto;
+
+    transition: background-color 0.2s;
+}
+
+.itemSellerQuantity > .itemSellerQButton > div:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.itemSellerQuantity > .itemSellerQButton > div > i {
+	margin-top: 6.5px;
+}
+
+.itemSellerQuantity > .itemSellerQButtonL > div {
+    margin-right: 0;
+}
+
+.itemSellerQuantity > .itemSellerQButtonR > div {
+    margin-left: 0;
+}
+
+.itemSellerPrice {
+    text-align: center;
+    color: green;
+}
+
+.itemBossPrice {
+    display: flex;
+	flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.itemBossPrice > div {
+    flex: 1;
+
+    margin: auto;
+    color: green;
+}
+
+.itemBossPrice > div > input {
+    width: 100%;
+
+    background-color: rgba(0,0,0,0);
+    
+    border: 0;
+    
+    font-size: 1em;
+	font-weight: bold;
+	font-family: 'Baloo Bhaina 2', cursive;
+	line-height: 10px;
+	color: green;
+	text-align: left;
+}
+
+.itemBossPrice > div > input:focus {
+	outline: none;
+}
+
+.itemBossPrice > div > input::-webkit-inner-spin-button,
+.itemBossPrice > div > input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+}
+
+.itemBossPersent {
+    display: flex;
+	flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.itemBossPersent > div {
+    flex: 1;
+
+    margin: auto;
+    padding-right: 7px;
+}
+
+.itemBossPersent > div > input {
+    width: 100%;
+
+    background-color: rgba(0,0,0,0);
+    
+    border: 0;
+    
+    font-size: 1em;
+	font-weight: bold;
+	font-family: 'Baloo Bhaina 2', cursive;
+	line-height: 10px;
+	color: rgba(255,255,255,0.8);
+	text-align: right;
+}
+
+.itemBossPersent > div > input:focus {
+	outline: none;
+}
+
+.itemBossPersent > div > input::-webkit-inner-spin-button,
+.itemBossPersent > div > input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+}
+
+.itemLogoText > input {
+    width: 100%;
+
+    background-color: rgba(0,0,0,0);
+    
+    border: 0;
+    
+    font-size: 1em;
+	font-weight: bold;
+	font-family: 'Baloo Bhaina 2', cursive;
+	line-height: 10px;
+	color: rgba(255,255,255,0.8);
+	text-align: left;
+}
+
+.itemLogoText > input:focus {
+	outline: none;
+}
+
+.itemLogoText > input::-webkit-inner-spin-button,
+.itemLogoText > input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+}
+
+.itemBossActions {
+    display: flex;
+	flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.itemBossActions > div {
+    flex: 1;
+    text-align: center;
+}
+
+.itemBossActions > div > i {
+    cursor: pointer;
+}
+
+.itemBossAdd {
+    text-align: center;
+    font-size: 1.6em;
+
+    margin-left: 32px !important;
+    margin-right: 32px !important;
+
+    background-color: rgba(0, 130, 0, 0.7);
+    border-radius: 5px;
+}
+
+.mainCardFooter {
+    display: flex;
+	flex-direction: row;
+    flex-wrap: nowrap;
+
+    padding-top: 8px;
+}
+
+.mainCardFooter > div {
+    flex: 1;
+}
+
+.footerSumPrice {
+    color: green;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.footerActions {
+    display: flex;
+	flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.footerActions > div {
+    flex: 1;
+}
+
+.actionButton > div {    
+    width: 120px;
+	height: 40px;
+    
+    border-radius: 2px;
+    
+	text-align: center;
+	font-size: 1.1em;
+    font-weight: bold;
+
+    line-height: 36px;
+
+	color: rgba(255,255,255,0.9);
+    
+	background-color: rgba(255,255,255,0.2);
+    cursor: pointer;
+    
+    margin: auto;
+    margin-right: 8px;
+
+    transition: background-color 0.2s;
+}
+
+.actionButton > div:hover {
+	background-color: rgba(255,255,255,0.1);
+}
+
+.actionIdChooser > select {
+    width: 120px;
+	height: 40px;
+	font-family: 'Baloo Bhaina 2', cursive;
+	font-weight: bold;
+	font-size: 0.9em;
+	color: rgba(255,255,255,0.9);
+	background-color: rgba(255,255,255,0.2);
+	border: 0;
+	border-radius: 2px;
+	min-width: 120px;
+    padding-left: 8px;
+    
+    transition: background-color 0.2s;
+}
+
+.actionIdChooser > select:focus {
+    border: 0;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.actionIdChooser > select:hover {
+    border: 0;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.actionIdChooser > select > option {
+	font-family: 'Baloo Bhaina 2', cursive;
+	font-weight: bold;
+	font-size: 0.9em;
+}
+
+.footerTips {
+    text-align: center;
+}
+
+.footerTips > div > input {
+    width: 30%;
+
+    background-color: rgba(0,0,0,0);
+    
+    border: 0;
+    
+    font-size: 1em;
+	font-weight: bold;
+	font-family: 'Baloo Bhaina 2', cursive;
+	color: green;
+	text-align: left;
+}
+
+.footerTips > div > input:focus {
+	outline: none;
+}
+
+.footerTips > div > input::-webkit-inner-spin-button,
+.footerTips > div > input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+}
+
+.itemSearch {
+    z-index: 10;
+    display: none;
+    position: absolute;
+
+    width: 100%;
+
+    background-color: rgba(18, 18, 18, 0.96);
+    
+    top: 70px;
+    
+    border-bottom: 2px solid rgba(255,255,255,0.7);
+    border-left: 2px solid rgba(255,255,255,0.7);
+    border-right: 2px solid rgba(255,255,255,0.7);
+
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.itemSearchElem {
+    display: flex;
+	flex-direction: row;
+    flex-wrap: nowrap;
+
+    padding: 4px 0;
+
+    transition: all 0.2s;
+}
+
+.itemSearchElem > div {
+    margin: auto;
+}
+
+.itemSearchElem:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.choosePlayer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    position: absolute;
+    
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    
+    padding: 8px;
+    padding-top: 16px;
+
+    width: 300px;
+    
+    background-color: rgba(100,100,100,0.2);
+
+    border-radius: 3px;
+
+    color: #ff5e5e;
+}
+
+.choosePlayer > div {
+    flex: 1;
+    text-align: center;
+}
+
+.choosePlayer > div > img {
+    border-radius: 100%;
+    transition: 0.2s;
+
+    max-width: 64px;
+    max-height: 64px;
+}
+
+.choosePlayer > div > img:hover {
+    opacity: 0.6;
+}
+
+.choosePlayer > .playersImgsNobody {
+    margin-bottom: 10px;
+}

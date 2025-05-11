@@ -1,0 +1,1158 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.2/css/all.min.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <title>Vehicle Shop</title>
+    <link rel="stylesheet" href="app.css" type="text/css">
+</head>
+<body style="display: block;">
+    <div class="vehicle-container">
+        <div class="vehicle-main-content">
+            <header>
+                <h1>PDM Catalogue</h1>
+            </header>
+            <div class="pages" id="pages">
+    <div id="page0" class="page">
+        <img src="images/pdm.jpg" alt="Premium Deluxe Motorsport" class="logo">
+    </div>
+<div id="page1" class="page active"><div class="column left-column"><div class="vehicle">
+    <img src="images/ardent.jpg" alt="Ardent">
+    <p class="label">Ardent</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('ardent')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('ardent')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/asbo.jpg" alt="Asbo">
+    <p class="label">Asbo</p>
+    <p class="price">Price: 100000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('asbo')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('asbo')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/asea.jpg" alt="Asea">
+    <p class="label">Asea</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('asea')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('asea')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/baller2.jpg" alt="Baller">
+    <p class="label">Baller</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('baller2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('baller2')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/baller3.jpg" alt="Baller LE">
+    <p class="label">Baller LE</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('baller3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('baller3')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/bifta.jpg" alt="Bifta">
+    <p class="label">Bifta</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('bifta')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('bifta')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/blade.jpg" alt="Blade">
+    <p class="label">Blade</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('blade')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('blade')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/blazer.jpg" alt="Blazer">
+    <p class="label">Blazer</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('blazer')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('blazer')">Buy</button>
+    </div>
+</div></div></div><div id="page2" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/blazer4.jpg" alt="Street Blazer">
+    <p class="label">Street Blazer</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('blazer4')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('blazer4')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/blista.jpg" alt="Blista">
+    <p class="label">Blista</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('blista')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('blista')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/blista2.jpg" alt="Blista Compact">
+    <p class="label">Blista Compact</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('blista2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('blista2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/brioso.jpg" alt="Brioso R/A">
+    <p class="label">Brioso R/A</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('brioso')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('brioso')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/brioso2.jpg" alt="Brioso 300">
+    <p class="label">Brioso 300</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('brioso2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('brioso2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/btype.jpg" alt="Roosevelt">
+    <p class="label">Roosevelt</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('btype')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('btype')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/btype2.jpg" alt="Fränken Stange">
+    <p class="label">Fränken Stange</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('btype2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('btype2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/btype3.jpg" alt="Roosevelt Valor">
+    <p class="label">Roosevelt Valor</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('btype3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('btype3')">Buy</button>
+    </div>
+</div></div></div><div id="page3" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/burrito.jpg" alt="Burrito">
+    <p class="label">Burrito</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('burrito')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('burrito')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/calico.jpg" alt="Calico GTF">
+    <p class="label">Calico GTF</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('calico')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('calico')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/caracara2.jpg" alt="Caracara 4x4">
+    <p class="label">Caracara 4x4</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('caracara2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('caracara2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/casco.jpg" alt="Casco">
+    <p class="label">Casco</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('casco')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('casco')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/cheburek.jpg" alt="Cheburek">
+    <p class="label">Cheburek</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('cheburek')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('cheburek')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/cheetah2.jpg" alt="Cheetah Classic">
+    <p class="label">Cheetah Classic</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('cheetah2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('cheetah2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/club.jpg" alt="Club">
+    <p class="label">Club</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('club')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('club')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/cog55.jpg" alt="Cognoscenti 55">
+    <p class="label">Cognoscenti 55</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('cog55')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('cog55')">Buy</button>
+    </div>
+</div></div></div><div id="page4" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/comet5.jpg" alt="Comet SR">
+    <p class="label">Comet SR</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('comet5')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('comet5')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/comet6.jpg" alt="Comet S2">
+    <p class="label">Comet S2</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('comet6')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('comet6')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/contender.jpg" alt="Contender">
+    <p class="label">Contender</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('contender')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('contender')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/coquette2.jpg" alt="Coquette Classic">
+    <p class="label">Coquette Classic</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('coquette2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('coquette2')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/coquette4.jpg" alt="Coquette D10">
+    <p class="label">Coquette D10</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('coquette4')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('coquette4')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/dominator3.jpg" alt="Dominator GTX">
+    <p class="label">Dominator GTX</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('dominator3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('dominator3')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/dominator7.jpg" alt="Dominator ASP">
+    <p class="label">Dominator ASP</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('dominator7')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('dominator7')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/dominator8.jpg" alt="Dominator GTT">
+    <p class="label">Dominator GTT</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('dominator8')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('dominator8')">Buy</button>
+    </div>
+</div></div></div><div id="page5" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/drafter.jpg" alt="8F Drafter">
+    <p class="label">8F Drafter</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('drafter')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('drafter')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/dubsta2.jpg" alt="Dubsta">
+    <p class="label">Dubsta</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('dubsta2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('dubsta2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/dubsta3.jpg" alt="Dubsta 6x6">
+    <p class="label">Dubsta 6x6</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('dubsta3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('dubsta3')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/dynasty.jpg" alt="Dynasty">
+    <p class="label">Dynasty</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('dynasty')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('dynasty')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/elegy.jpg" alt="Elegy Retro Custom">
+    <p class="label">Elegy Retro Custom</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('elegy')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('elegy')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/ellie.jpg" alt="Ellie">
+    <p class="label">Ellie</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('ellie')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('ellie')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/everon.jpg" alt="Everon">
+    <p class="label">Everon</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('everon')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('everon')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/exemplar.jpg" alt="Exemplar">
+    <p class="label">Exemplar</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('exemplar')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('exemplar')">Buy</button>
+    </div>
+</div></div></div><div id="page6" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/f620.jpg" alt="F620">
+    <p class="label">F620</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('f620')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('f620')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/faction.jpg" alt="Faction">
+    <p class="label">Faction</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('faction')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('faction')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/felon2.jpg" alt="Felon GT">
+    <p class="label">Felon GT</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('felon2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('felon2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/feltzer2.jpg" alt="Feltzer">
+    <p class="label">Feltzer</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('feltzer2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('feltzer2')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/flashgt.jpg" alt="Flash GT">
+    <p class="label">Flash GT</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('flashgt')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('flashgt')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/futo2.jpg" alt="Futo GTX">
+    <p class="label">Futo GTX</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('futo2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('futo2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/gauntlet2.jpg" alt="Redwood Gauntlet">
+    <p class="label">Redwood Gauntlet</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('gauntlet2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('gauntlet2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/gauntlet3.jpg" alt="Gauntlet Classic">
+    <p class="label">Gauntlet Classic</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('gauntlet3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('gauntlet3')">Buy</button>
+    </div>
+</div></div></div><div id="page7" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/gauntlet4.jpg" alt="Gauntlet Hellfire">
+    <p class="label">Gauntlet Hellfire</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('gauntlet4')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('gauntlet4')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/gauntlet5.jpg" alt="Gauntlet Classic Custom">
+    <p class="label">Gauntlet Classic Custom</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('gauntlet5')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('gauntlet5')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/glendale2.jpg" alt="Glendale Custom">
+    <p class="label">Glendale Custom</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('glendale2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('glendale2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/gt500.jpg" alt="GT500">
+    <p class="label">GT500</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('gt500')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('gt500')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/hellion.jpg" alt="Hellion">
+    <p class="label">Hellion</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('hellion')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('hellion')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/hotknife.jpg" alt="Hotknife">
+    <p class="label">Hotknife</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('hotknife')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('hotknife')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/impaler.jpg" alt="Impaler">
+    <p class="label">Impaler</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('impaler')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('impaler')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/issi2.jpg" alt="Issi">
+    <p class="label">Issi</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('issi2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('issi2')">Buy</button>
+    </div>
+</div></div></div><div id="page8" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/issi3.jpg" alt="Issi Classic">
+    <p class="label">Issi Classic</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('issi3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('issi3')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/italigto.jpg" alt="Itali GTO">
+    <p class="label">Itali GTO</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('italigto')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('italigto')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/jb7002.jpg" alt="JB 700W">
+    <p class="label">JB 700W</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('jb7002')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('jb7002')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/jester3.jpg" alt="Jester Classic">
+    <p class="label">Jester Classic</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('jester3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('jester3')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/jester4.jpg" alt="Jester RR">
+    <p class="label">Jester RR</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('jester4')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('jester4')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/jugular.jpg" alt="Jugular">
+    <p class="label">Jugular</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('jugular')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('jugular')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/kalahari.jpg" alt="Kalahari">
+    <p class="label">Kalahari</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('kalahari')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('kalahari')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/kamacho.jpg" alt="Kamacho">
+    <p class="label">Kamacho</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('kamacho')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('kamacho')">Buy</button>
+    </div>
+</div></div></div><div id="page9" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/kanjo.jpg" alt="Blista Kanjo">
+    <p class="label">Blista Kanjo</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('kanjo')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('kanjo')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/komoda.jpg" alt="Komoda">
+    <p class="label">Komoda</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('komoda')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('komoda')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/kuruma.jpg" alt="Kuruma">
+    <p class="label">Kuruma</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('kuruma')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('kuruma')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/mamba.jpg" alt="Mamba">
+    <p class="label">Mamba</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('mamba')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('mamba')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/mesa.jpg" alt="Mesa">
+    <p class="label">Mesa</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('mesa')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('mesa')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/mesa3.jpg" alt="Mesa">
+    <p class="label">Mesa</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('mesa3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('mesa3')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/minivan2.jpg" alt="Minivan Custom">
+    <p class="label">Minivan Custom</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('minivan2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('minivan2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/moonbeam2.jpg" alt="Moonbeam Custom">
+    <p class="label">Moonbeam Custom</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('moonbeam2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('moonbeam2')">Buy</button>
+    </div>
+</div></div></div><div id="page10" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/nebula.jpg" alt="Nebula Turbo">
+    <p class="label">Nebula Turbo</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('nebula')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('nebula')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/nightshade.jpg" alt="Nightshade">
+    <p class="label">Nightshade</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('nightshade')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('nightshade')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/ninef2.jpg" alt="9F Cabrio">
+    <p class="label">9F Cabrio</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('ninef2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('ninef2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/novak.jpg" alt="Novak">
+    <p class="label">Novak</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('novak')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('novak')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/omnis.jpg" alt="Omnis">
+    <p class="label">Omnis</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('omnis')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('omnis')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/outlaw.jpg" alt="Outlaw">
+    <p class="label">Outlaw</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('outlaw')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('outlaw')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/panto.jpg" alt="Panto">
+    <p class="label">Panto</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('panto')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('panto')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/paradise.jpg" alt="Paradise">
+    <p class="label">Paradise</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('paradise')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('paradise')">Buy</button>
+    </div>
+</div></div></div><div id="page11" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/patriot.jpg" alt="Patriot">
+    <p class="label">Patriot</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('patriot')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('patriot')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/peyote2.jpg" alt="Peyote Gasser">
+    <p class="label">Peyote Gasser</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('peyote2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('peyote2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/picador.jpg" alt="Picador">
+    <p class="label">Picador</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('picador')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('picador')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/prairie.jpg" alt="Prairie">
+    <p class="label">Prairie</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('prairie')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('prairie')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/premier.jpg" alt="Premier">
+    <p class="label">Premier</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('premier')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('premier')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/previon.jpg" alt="Previon">
+    <p class="label">Previon</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('previon')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('previon')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/primo2.jpg" alt="Primo Custom">
+    <p class="label">Primo Custom</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('primo2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('primo2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/radi.jpg" alt="Radius">
+    <p class="label">Radius</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('radi')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('radi')">Buy</button>
+    </div>
+</div></div></div><div id="page12" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/raptor.jpg" alt="Raptor">
+    <p class="label">Raptor</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('raptor')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('raptor')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/ratloader2.jpg" alt="Rat-Truck">
+    <p class="label">Rat-Truck</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('ratloader2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('ratloader2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/rebel2.jpg" alt="Rebel">
+    <p class="label">Rebel</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('rebel2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('rebel2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/retinue2.jpg" alt="Retinue Mk II">
+    <p class="label">Retinue Mk II</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('retinue2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('retinue2')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/rhapsody.jpg" alt="Rhapsody">
+    <p class="label">Rhapsody</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('rhapsody')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('rhapsody')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/rt3000.jpg" alt="RT3000">
+    <p class="label">RT3000</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('rt3000')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('rt3000')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/ruiner.jpg" alt="Ruiner">
+    <p class="label">Ruiner</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('ruiner')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('ruiner')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/rumpo3.jpg" alt="Rumpo Custom">
+    <p class="label">Rumpo Custom</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('rumpo3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('rumpo3')">Buy</button>
+    </div>
+</div></div></div><div id="page13" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/sabregt2.jpg" alt="Sabre Turbo Custom">
+    <p class="label">Sabre Turbo Custom</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('sabregt2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('sabregt2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/sandking.jpg" alt="Sandking XL">
+    <p class="label">Sandking XL</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('sandking')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('sandking')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/savestra.jpg" alt="Savestra">
+    <p class="label">Savestra</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('savestra')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('savestra')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/schafter2.jpg" alt="Schafter">
+    <p class="label">Schafter</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('schafter2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('schafter2')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/schlagen.jpg" alt="Schlagen GT">
+    <p class="label">Schlagen GT</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('schlagen')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('schlagen')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/seminole2.jpg" alt="Seminole Frontier">
+    <p class="label">Seminole Frontier</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('seminole2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('seminole2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/sentinel3.jpg" alt="Sentinel Classic">
+    <p class="label">Sentinel Classic</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('sentinel3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('sentinel3')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/slamvan3.jpg" alt="Slamvan Custom">
+    <p class="label">Slamvan Custom</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('slamvan3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('slamvan3')">Buy</button>
+    </div>
+</div></div></div><div id="page14" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/speedo2.jpg" alt="Clown Van">
+    <p class="label">Clown Van</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('speedo2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('speedo2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/stafford.jpg" alt="Stafford">
+    <p class="label">Stafford</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('stafford')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('stafford')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/stretch.jpg" alt="Stretch">
+    <p class="label">Stretch</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('stretch')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('stretch')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/sugoi.jpg" alt="Sugoi">
+    <p class="label">Sugoi</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('sugoi')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('sugoi')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/sultan2.jpg" alt="Sultan Classic">
+    <p class="label">Sultan Classic</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('sultan2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('sultan2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/sultan3.jpg" alt="Sultan RS Classic">
+    <p class="label">Sultan RS Classic</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('sultan3')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('sultan3')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/sultanrs.jpg" alt="Sultan RS">
+    <p class="label">Sultan RS</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('sultanrs')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('sultanrs')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/superd.jpg" alt="Super Diamond">
+    <p class="label">Super Diamond</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('superd')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('superd')">Buy</button>
+    </div>
+</div></div></div><div id="page15" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/tailgater2.jpg" alt="Tailgater S">
+    <p class="label">Tailgater S</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('tailgater2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('tailgater2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/tornado5.jpg" alt="Tornado Custom">
+    <p class="label">Tornado Custom</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('tornado5')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('tornado5')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/toros.jpg" alt="Toros">
+    <p class="label">Toros</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('toros')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('toros')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/verus.jpg" alt="Verus">
+    <p class="label">Verus</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('verus')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('verus')">Buy</button>
+    </div>
+</div></div><div class="column right-column"><div class="vehicle">
+    <img src="images/voodoo.jpg" alt="Voodoo Custom">
+    <p class="label">Voodoo Custom</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('voodoo')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('voodoo')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/warrener.jpg" alt="Warrener">
+    <p class="label">Warrener</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('warrener')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('warrener')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/warrener2.jpg" alt="Warrener HKR">
+    <p class="label">Warrener HKR</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('warrener2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('warrener2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/weevil.jpg" alt="Weevil">
+    <p class="label">Weevil</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('weevil')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('weevil')">Buy</button>
+    </div>
+</div></div></div><div id="page16" class="page"><div class="column left-column"><div class="vehicle">
+    <img src="images/windsor.jpg" alt="Windsor">
+    <p class="label">Windsor</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('windsor')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('windsor')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/yosemite2.jpg" alt="Drift Yosemite">
+    <p class="label">Drift Yosemite</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('yosemite2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('yosemite2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/zion2.jpg" alt="Zion Cabrio">
+    <p class="label">Zion Cabrio</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('zion2')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('zion2')">Buy</button>
+    </div>
+</div><div class="vehicle">
+    <img src="images/zr350.jpg" alt="ZR350">
+    <p class="label">ZR350</p>
+    <p class="price">Price: 80000</p>
+    <p class="stock">Stock: 0</p>
+    <div class="button-container">
+        <button class="test-drive" onclick="testDriveVehicle('zr350')">Test Drive</button>
+        <button class="buy" onclick="buyVehicle('zr350')">Buy</button>
+    </div>
+</div></div><div class="column right-column"></div></div></div>
+            <footer>
+                <button onclick="showPage('page0')">Home</button>
+                <button onclick="showPage('page1')">Next Page</button>
+                <button onclick="showPage('page2')">Previous Page</button>
+            </footer>
+        </div>
+        <aside class="sidebar">
+            <button onclick="loadVehicles('s')">S Class</button>
+            <button onclick="loadVehicles('a')">A Class</button>
+            <button onclick="loadVehicles('b')">B Class</button>
+            <button onclick="loadVehicles('c')">C Class</button>
+            <button onclick="loadVehicles('d')">D Class</button>
+            <button onclick="loadVehicles('drift')">Drift Cars</button>
+        </aside>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script> -->
+    <script src="script.js" type="text/javascript"></script>&gt;
+
+</body></html>

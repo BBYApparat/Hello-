@@ -1,0 +1,79 @@
+{
+    "KickSettings":{
+        "BlacklistedVehicleLimit": 2,
+        "BlacklistedVehicles": true,
+        "BlacklistedCommands": true,
+        "ConfigNotSynced": true
+    },
+
+    "BlacklistedVehicles": [
+        "Blimp",
+        "Blimp2",
+        "Dump",
+        "oppressor",
+        "oppressor2",
+        "deluxo",
+        "ruiner3",
+        "insurgent3",
+        "dune3",
+        "insurgent2",
+        "insurgent",
+        "menacer",
+        "boxville",
+        "boxville5",
+        "technical3",
+        "tampa3",
+        "technical",
+        "technical2",
+        "rcbandito",
+        "caracara",
+        "limo2",
+        "vigilante",
+        "voltic2",
+        "scramjet",
+        "burrito",
+        "ruiner2",
+    ],
+
+    "BlacklistedObjects": [
+        "stt_prop_ramp_adj_flip_m",
+        "stt_prop_ramp_adj_flip_mb",
+        "stt_prop_ramp_adj_flip_s",
+        "stt_prop_ramp_adj_flip_sb",
+        "stt_prop_ramp_adj_hloop",
+        "stt_prop_ramp_adj_loop",
+        "stt_prop_ramp_jump_l",
+        "stt_prop_ramp_jump_m",
+        "stt_prop_ramp_jump_s",
+        "stt_prop_ramp_jump_xl",
+        "stt_prop_ramp_jump_xs",
+        "stt_prop_ramp_jump_xxl",
+        "stt_prop_ramp_multi_loop_rb",
+        "stt_prop_ramp_spiral_l",
+        "stt_prop_ramp_spiral_l_l",
+        "stt_prop_ramp_spiral_l_m",
+        "stt_prop_ramp_spiral_l_s",
+        "stt_prop_ramp_spiral_l_xxl",
+        "stt_prop_ramp_spiral_m",
+        "stt_prop_ramp_spiral_s",
+        "stt_prop_ramp_spiral_xxl",
+    ],
+
+    "BlacklistedCommands": [
+        "haha",
+        "lol",
+        "xddd",
+        "chocolate",
+        "panickey",
+        "jolmany",
+        "killmenu",
+        "panik",
+        "lynx",
+        "brutan",
+        "saucy"
+    ],
+
+    "BlacklistedKeys": {
+        
+    }
+}

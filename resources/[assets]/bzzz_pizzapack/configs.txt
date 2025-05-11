@@ -1,0 +1,5 @@
+for bzzz_usableitems: https://github.com/Mrs-BzZz/food_coords/blob/main/bzzz_usableitems/bzzz_pizzapack.lua
+
+for ox_inventory: https://github.com/Mrs-BzZz/food_coords/blob/main/ox_inventory/bzzz_pizzapack.lua
+
+for qb-smallresources: https://github.com/Mrs-BzZz/food_coords/blob/main/qb-smallresources/bzzz_pizzapack.lua
