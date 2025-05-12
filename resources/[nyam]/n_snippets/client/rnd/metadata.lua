@@ -3,4 +3,3 @@ CreateThread(function()
         exports.ox_inventory:displayMetadata(Config.OxMeta)
     end
 end)
-

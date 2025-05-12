@@ -53,67 +53,69 @@ CreateThread(function()
 
     if not lib then return end
 
-	if shared.framework == 'esx' then
-		local success, items = pcall(MySQL.query.await, 'SELECT * FROM items')
+	shared.info('Database item import has been disabled')
 
-		if success and items and next(items) then
-			local dump = {}
-			local count = 0
+-- 	if shared.framework == 'esx' then
+-- 		local success, items = pcall(MySQL.query.await, 'SELECT * FROM items')
 
-			for i = 1, #items do
-				local item = items[i]
+-- 		if success and items and next(items) then
+-- 			local dump = {}
+-- 			local count = 0
 
-				if not ItemList[item.name] then
-					item.close = item.closeonuse == nil and true or item.closeonuse
-					item.stack = item.stackable == nil and true or item.stackable
-					item.description = item.description
-					item.weight = item.weight or 0
-					dump[i] = item
-					count += 1
-				end
-			end
+-- 			for i = 1, #items do
+-- 				local item = items[i]
 
-			if table.type(dump) ~= "empty" then
-				local file = {string.strtrim(LoadResourceFile(shared.resource, 'data/items.lua'))}
-				file[1] = file[1]:gsub('}$', '')
+-- 				if not ItemList[item.name] then
+-- 					item.close = item.closeonuse == nil and true or item.closeonuse
+-- 					item.stack = item.stackable == nil and true or item.stackable
+-- 					item.description = item.description
+-- 					item.weight = item.weight or 0
+-- 					dump[i] = item
+-- 					count += 1
+-- 				end
+-- 			end
 
-				---@todo separate into functions for reusability, properly handle nil values
-				local itemFormat = [[
+-- 			if table.type(dump) ~= "empty" then
+-- 				local file = {string.strtrim(LoadResourceFile(shared.resource, 'data/items.lua'))}
+-- 				file[1] = file[1]:gsub('}$', '')
 
-	[%q] = {
-		label = %q,
-		weight = %s,
-		stack = %s,
-		close = %s,
-		description = %q
-	},
-]]
-				local fileSize = #file
+-- 				---@todo separate into functions for reusability, properly handle nil values
+-- 				local itemFormat = [[
 
-				for _, item in pairs(dump) do
-					if not ItemList[item.name] then
-						fileSize += 1
+-- 	[%q] = {
+-- 		label = %q,
+-- 		weight = %s,
+-- 		stack = %s,
+-- 		close = %s,
+-- 		description = %q
+-- 	},
+-- ]]
+-- 				local fileSize = #file
 
-						local itemStr = itemFormat:format(item.name, item.label, item.weight, item.stack, item.close, item.description and json.encode(item.description) or 'nil')
-						-- temporary solution for nil values
-						itemStr = itemStr:gsub('[%s]-[%w]+ = "?nil"?,?', '')
-						file[fileSize] = itemStr
-						ItemList[item.name] = item
-					end
-				end
+-- 				for _, item in pairs(dump) do
+-- 					if not ItemList[item.name] then
+-- 						fileSize += 1
 
-				file[fileSize+1] = '}'
+-- 						local itemStr = itemFormat:format(item.name, item.label, item.weight, item.stack, item.close, item.description and json.encode(item.description) or 'nil')
+-- 						-- temporary solution for nil values
+-- 						itemStr = itemStr:gsub('[%s]-[%w]+ = "?nil"?,?', '')
+-- 						file[fileSize] = itemStr
+-- 						ItemList[item.name] = item
+-- 					end
+-- 				end
 
-				SaveResourceFile(shared.resource, 'data/items.lua', table.concat(file), -1)
-				shared.info(count, 'items have been copied from the database.')
-				shared.info('You should restart the resource to load the new items.')
-			end
+-- 				file[fileSize+1] = '}'
 
-			shared.info('Database contains', #items, 'items.')
-		end
+-- 				SaveResourceFile(shared.resource, 'data/items.lua', table.concat(file), -1)
+-- 				shared.info(count, 'items have been copied from the database.')
+-- 				shared.info('You should restart the resource to load the new items.')
+-- 			end
 
-		Wait(500)
-	end
+-- 			shared.info('Database contains', #items, 'items.')
+-- 		end
+
+	-- 	Wait(500)
+	-- end
 
 	local count = 0
 

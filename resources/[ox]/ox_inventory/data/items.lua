@@ -9927,11 +9927,11 @@ return {
 		consume = 1,
 	},
 
-	["bankconfidential"] = {
-		label = "Bank Confidential Docs",
+	["pizzabox"] = {
+		label = "Pizza Box",
 		weight = 1,
 		stack = true,
 		close = true,
-		description = "\"Contains bank transactions and credit card informations\""
+		description = "Contains pizza"
 	},
 }
