@@ -9915,6 +9915,17 @@ return {
 		description = "Raw Coffee for making delicious coffee"
 	},
 
+	['pokemon_card'] = {
+		label = 'Pokemon card',
+		weight = 10,
+		consume = 0,
+	},
+
+	['pokemon_packet'] = {
+		label = 'Pokemon Card Pack',
+		weight = 50,
+		consume = 1,
+	},
 
 	["bankconfidential"] = {
 		label = "Bank Confidential Docs",

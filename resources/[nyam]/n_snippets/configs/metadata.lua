@@ -13,5 +13,13 @@ Config.OxMeta = {
     badge = "Badge",
 
     -- Items
-    gas = "Gas"
+    gas = "Gas",
+    
+    --Pokemon
+    serial = 'Serial #',
+    rarity = 'Rarity',
+    type = 'Type',
+    hp = 'HP',
+    attack = 'ATK',
+    defense = 'DEF'
 }

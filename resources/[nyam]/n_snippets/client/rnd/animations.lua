@@ -16,3 +16,13 @@ RegisterNetEvent("n_snippets:animations:startSmoking", function()
         exports.rpemotes:EmoteCommandStart(selectedAnim)
     end
 end)
+
+RegisterNetEvent('n_snippets:animations:inspectCard')
+AddEventHandler('n_snippets:animations:inspectCard', function()
+    local playerPed = PlayerPedId()
+    
+    -- Play a brief looking animation
+    TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
+    Citizen.Wait(2000)
+    ClearPedTasks(playerPed)
+end)
