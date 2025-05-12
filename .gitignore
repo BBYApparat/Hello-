@@ -1,6 +1,6 @@
 cache/*
 db/*
-/server.cfg
+server.cfg
 /webhooks.cfg
 /server.cfg.bkp
 /imgui.ini

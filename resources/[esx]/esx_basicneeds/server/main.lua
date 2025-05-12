@@ -13,6 +13,10 @@ CreateThread(function()
 				TriggerClientEvent("esx_status:add", source, "thirst", v.status)
 				TriggerClientEvent('esx_basicneeds:onUse', source, v.type, v.prop, v.anim)
 				xPlayer.showNotification(TranslateCap('used_drink', ESX.GetItemLabel(k)))
+			elseif v.type == "stress" then
+				TriggerClientEvent("esx_status:add", source, "stress", v.status)
+				TriggerClientEvent('esx_basicneeds:onUse', source, v.type, v.prop, v.anim)
+				xPlayer.showNotification(TranslateCap('used_stress', ESX.GetItemLabel(k)))
 			else
 				print(string.format('^1[ERROR]^0 %s has no correct type defined.', k))
 			end
@@ -31,7 +35,6 @@ AddEventHandler('txAdmin:events:healedPlayer', function(eventData)
 	if GetInvokingResource() ~= "monitor" or type(eventData) ~= "table" or type(eventData.id) ~= "number" then
 		return
 	end
-
 	TriggerClientEvent('esx_basicneeds:healPlayer', eventData.id)
 end)
 
