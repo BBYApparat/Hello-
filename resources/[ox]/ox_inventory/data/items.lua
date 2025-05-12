@@ -1849,6 +1849,7 @@ return {
         stack = true,
         close = true,
 		description = 'A bottle filled with clean, drinkable water.',
+		type = "stress",
 		client = {
             status = { stress = 200000 },
             anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
@@ -1857,7 +1858,6 @@ return {
             cancel = true,
             notification = 'You smoked a ciggarete'
         }
-
     },
 
     ["cigsredwood"] = {
