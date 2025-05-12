@@ -137,15 +137,24 @@ function JailPlayer(src, identifier, reason, time)
     -- 'reason' will return false if Config.MDT.General.JailReason is false
 
     if Config.UsingESX then -- ESX Method
-        local xPlayer = ESX.GetPlayerFromIdentifier(identifier) -- For player id, use xPlayer.source
+        local xPlayer = ESX.GetPlayerFromIdentifier(identifier)
+        
+        if xPlayer then -- Player is online
+            -- Convert minutes to seconds (the jail system uses seconds)
+            local seconds = time * 60
+            
+            -- Correct event name and parameter structure
+            TriggerEvent('advanced_jail:sendToJail', xPlayer.source, seconds, reason or "No reason provided")
+            
+            -- Send notification to the source player (the one who is jailing)
+            TriggerClientEvent('esx:showNotification', src, "Player sent to jail for " .. time .. " minutes")
+        else
+            -- Player is offline - notify the source
+            TriggerClientEvent('esx:showNotification', src, "Player is offline and cannot be jailed")
+        end
 
-        -- Use your jailing script here 
     elseif Config.UsingQBCore then -- QBCore Method
-        local xPlayer = QBCore.Functions.GetPlayerByCitizenId(identifier) -- For player id, use xPlayer.PlayerData.source
-
-        -- Use your jailing script here 
-    else
-        -- Setup your own system that reflects your framework
+        -- Similar implementation for QBCore
     end
 end
 

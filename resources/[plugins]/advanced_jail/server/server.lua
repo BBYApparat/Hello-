@@ -82,6 +82,76 @@ AddEventHandler('advanced_jail:Send2Prisoners', function(messago)
     end
 end)
 
+-- Add this to your server.lua if it's not already there
+RegisterServerEvent('advanced_jail:sendToJail')
+AddEventHandler('advanced_jail:sendToJail', function(id, time, reason)
+    local xPlayer = ESX.GetPlayerFromId(id)
+    local ident = xPlayer.identifier
+    
+    -- Find available cell and place player in jail
+    local cellies = {}
+    local lowest = {val = 0, amtie = 30}
+    
+    for i = 1, #inJail, 1 do
+        if inJail[i].Players ~= nil then
+            local total = 0
+            for p = 1, #inJail[i].Players, 1 do
+                total = total + 1
+            end
+            table.insert(cellies, {value = i, amt = total})
+        else
+            table.insert(cellies, {value = i, amt = 0})
+        end
+    end
+    
+    for i = 1, #cellies, 1 do
+        if cellies[i].amt < lowest.amtie then
+            lowest.val = cellies[i].value
+            lowest.amtie = cellies[i].amt
+        end
+    end
+    
+    -- Add player to jail records
+    table.insert(inJail[lowest.val].Players, {Player = ident, Timie = time, ID = id, Sol = 0, Dead = false, Breako = 0})
+    
+    -- Update database
+    MySQL.Async.fetchAll('SELECT jail_data FROM users WHERE identifier = @identifier', {
+        ['@identifier'] = ident
+    }, function(result)
+        local newData = {}
+        if result[1] and result[1].jail_data then
+            newData = json.decode(result[1].jail_data)
+        else
+            newData = {
+                cell = lowest.val,
+                jailtime = time,
+                soli = 0,
+                chest = {},
+                breaks = 0,
+                clothes = {},
+                job = 0,
+                jobo = xPlayer.job.name, 
+                grade = xPlayer.job.grade
+            }
+        end
+        
+        newData.cell = lowest.val
+        newData.jailtime = time
+        
+        local data = json.encode(newData)
+        MySQL.Sync.execute('UPDATE users SET jail_data = @jail_data WHERE identifier = @identifier', {
+            ['@identifier'] = ident,
+            ['@jail_data'] = data
+        })
+    end)
+    
+    -- Save player's job and put them in prison job
+    -- xPlayer.setJob('unemployed', 0)
+    
+    -- Trigger client-side jail events
+    TriggerClientEvent('advanced_jail:JailStart', id, time)
+end)
+
 RegisterServerEvent('advanced_jail:PoliceNotify')
 AddEventHandler('advanced_jail:PoliceNotify', function()
     local xPlayer = ESX.GetPlayerFromId(source)
