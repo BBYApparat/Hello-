@@ -1842,23 +1842,21 @@ return {
         close = true,
     },
 
-    ["cigarette"] = {
-        label = "Cigarette",
-        description = "Tobacco product for smoking.",
-        weight = 32,
-        stack = true,
-        close = true,
-		description = 'A bottle filled with clean, drinkable water.',
-		-- type = "stress",
+	["cigarette"] = {
+		label = "Cigarette",
+		description = "Tobacco product for smoking.",
+		weight = 32,
+		stack = true,
+		close = true,
 		client = {
-            status = { stress = 200000 },
-            -- anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
-            prop = { model = `prop_ld_flow_bottle`, pos = vec3(0.03, 0.03, 0.02), rot = vec3(0.0, 0.0, -1.5) },
-            usetime = 2500,
-            cancel = true,
-            notification = 'You smoked a ciggarete'
-        }
-    },
+			status = { stress = 200000 },
+			anim = { dict = "amb@world_human_smoking@female@enter", clip = "enter" },
+			prop = { model = `prop_cs_ciggy_01`, pos = vec3(0.0, 0.0, 0.0), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 3500,
+			cancel = true,
+			notification = 'You smoked a cigarette'
+		}
+	},
 
     ["cigsredwood"] = {
         label = "Cigsredwood",
