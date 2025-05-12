@@ -11,7 +11,7 @@ AddEventHandler('ox_inventory:usedItem', function(playerId, name, slotId, metada
             exports.ox_inventory:SetMetadata(playerId, myLighter.slot, myLighter.metadata)
             exports.ox_inventory:SetDurability(playerId, myLighter.slot, myLighter.metadata.gas)
             exports.ox_inventory:RemoveItem(playerId, name, 1, nil, slotId)
-            TriggerClientEvent("n_snippets:animations:startSmoking", playerId)
+            -- TriggerClientEvent("n_snippets:animations:startSmoking", playerId)
         else
             Core.Notify(playerId, "You need fire to light your cig lawl", "error", 3500)
         end

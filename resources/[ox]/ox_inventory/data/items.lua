@@ -1852,7 +1852,7 @@ return {
 		-- type = "stress",
 		client = {
             status = { stress = 200000 },
-            anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+            -- anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
             prop = { model = `prop_ld_flow_bottle`, pos = vec3(0.03, 0.03, 0.02), rot = vec3(0.0, 0.0, -1.5) },
             usetime = 2500,
             cancel = true,
