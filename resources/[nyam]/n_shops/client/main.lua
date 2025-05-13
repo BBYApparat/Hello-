@@ -102,20 +102,32 @@ local function createPeds()
                                     return
                                 end
                             end
-
-                            -- Check job if required
                             if v.requiredJob then
-                                local playerJob = lib.callback.await('ox_target:getPlayerJob', false)
-                                if not playerJob or playerJob.name ~= v.requiredJob then
-                                    lib.notify({
-                                        title = 'Error',
-                                        description = 'You do not have the required job',
-                                        type = 'error'
-                                    })
+                                -- Get the player's job from ESX
+                                local playerJob = ESX.GetPlayerData().job
+                                
+                                -- Check if the job is in the allowed jobs
+                                local hasRequiredJob = false
+                                
+                                -- If requiredJob is a table with key-value pairs (like {['police'] = 0})
+                                if type(v.requiredJob) == 'table' then
+                                    for jobName, _ in pairs(v.requiredJob) do
+                                        if playerJob.name == jobName then
+                                            hasRequiredJob = true
+                                            break
+                                        end
+                                    end
+                                -- If requiredJob is a single string
+                                elseif playerJob.name == v.requiredJob then
+                                    hasRequiredJob = true
+                                end
+                                
+                                -- If player doesn't have required job, show notification and return
+                                if not hasRequiredJob then
+                                    ESX.ShowNotification('You do not have the required job')
                                     return
                                 end
                             end
-
                             -- Check gang if required
                             if v.requiredGang then
                                 local playerGang = lib.callback.await('ox_target:getPlayerGang', false)

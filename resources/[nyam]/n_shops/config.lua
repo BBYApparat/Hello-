@@ -630,6 +630,43 @@ Config.Products = {
             type = "item",
         }
     },
+    ["police_armory"] = {
+        [1] = {
+            name = "weapon_pistol",
+            price = 7,
+            amount = 50,
+            info = {},
+            type = "weapon",
+        },
+        [2] = {
+            name = "ammo-9",
+            price = 10,
+            amount = 50,
+            info = {},
+            type = "item",
+        },
+        [3] = {
+            name = "weapon_nightstick",
+            price = 10,
+            amount = 50,
+            info = {},
+            type = "weapon",
+        },
+        [4] = {
+            name = "weapon_stungun",
+            price = 10,
+            amount = 50,
+            info = {},
+            type = "weapon",
+        },
+        [5] = {
+            name = "handcuffs",
+            price = 10,
+            amount = 50,
+            info = {},
+            type = "item",
+        },
+    },
     ["weedshop"] = {
         [1] = {
             name = "joint",
@@ -1786,7 +1823,6 @@ Config.Locations = {
         ['delivery'] = vector4(-1271.21, -1418.59, 4.37, 31.55)
     },
 
-
     ['blackmarket'] = {
         ['label'] = 'Black Market',
         ['coords'] = vector4(1080.47, 209.67, 87.54, 242.24),
@@ -1797,6 +1833,20 @@ Config.Locations = {
         ['targetLabel'] = 'Open Shop',
         ['products'] = "blackmarket_shop",
         ['delivery'] = vector4(1080.47, 209.67, 87.54, 242.24)
-    }
+    },
+
+    ['Police Armory'] = {
+        ['label'] = 'Police Armory',
+        ['coords'] =vector4(-590.769, -727.247, 41.441, 51.211),
+        ['ped'] = 's_m_y_cop_01',
+        ['scenario'] = 'PROP_HUMAN_STAND_IMPATIENT',
+        ['radius'] = 1.5,
+        ['targetIcon'] = 'fas fa-pistol',
+        ['targetLabel'] = 'Open Shop',
+        ['products'] = "police_armory",
+        ['delivery'] = vector4(-590.769, -727.247, 41.441, 51.211),
+        ['requiredJob'] = {['police'] = 0}
+    },
+    
 
 }
