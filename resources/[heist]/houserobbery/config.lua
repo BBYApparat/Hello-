@@ -18,7 +18,7 @@ Config.MaxChance = 100
 
 Config.Items = { -- chance should be less than MaxChance and higher means hard to get
     ["Fridge"] = {
-        {chance = 2, id = 'black_usb', qtyMin = 1, qtyMax = 1},
+        {chance = 2, id = 'black_usb', qtyMin = 3, qtyMax = 5},
         {chance = 2, id = 'blue_usb', qtyMin = 1, qtyMax = 1},
         {chance = 10, id = 'scrap', qtyMin = 1, qtyMax = 1},
         {chance = 5, id = 'ecola', qtyMin = 1, qtyMax = 2},
@@ -70,7 +70,7 @@ Config.Items = { -- chance should be less than MaxChance and higher means hard t
     },
     ["Cabinet"] = {
         {chance = 19, id = 'goldchain', qtyMin = 1, qtyMax = 1},
-        {chance = 2, id = 'black_usb', qtyMin = 1, qtyMax = 1},
+        {chance = 2, id = 'black_usb', qtyMin = 3, qtyMax = 5},
         {chance = 2, id = 'blue_usb', qtyMin = 1, qtyMax = 1},
         {chance = 10, id = 'casinochips', qtyMin = 5, qtyMax = 20},
     },

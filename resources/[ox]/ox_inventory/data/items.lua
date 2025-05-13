@@ -278,6 +278,13 @@ return {
         close = true,
         description = ''
     },
+	['blue_usb'] = {
+        label = 'Blue USB',
+        weight = 1,
+        stack = true,
+        close = true,
+        description = ''
+    },
     ['pendrive'] = {
         label = 'Pendrive',
         weight = 1,
