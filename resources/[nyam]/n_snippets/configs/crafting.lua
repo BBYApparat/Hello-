@@ -1,4 +1,38 @@
 Config.Crafting = {
+		["criminal"] = {
+		label = "Smelt Ores",
+		icon = "fa-solid fa-screwdriver-wrench",
+		object = `prop_tablesaw_01`,
+		coords = vec4(1110.63, -2008.61, 31.04, 53.84),
+		distance = 2.0,-
+		items = {
+			{
+				name = 'weapon_pistol',
+				ingredients = {
+					copper_nugget = 4
+				},
+				duration = 5000,
+				count = 1,
+			},
+		}
+	},
+	["criminal2"] = {
+		label = "Smelt Ores",
+		icon = "fa-solid fa-screwdriver-wrench",
+		object = `prop_tablesaw_01`,
+		coords = vec4(1110.63, -2008.61, 31.04, 53.84),
+		distance = 2.0,
+		items = {
+			{
+				name = 'ammo-9',
+				ingredients = {
+					copper_nugget = 4
+				},
+				duration = 5000,
+				count = 1,
+			},
+		}
+	},
 	["mining_smelter_craft_1"] = {
 		blip = { label = "Ore Smelter", sprite = 436, size = 0.8, color = 21, coords = vec3(1108.27, -2006.58, 30.94) },
 		label = "Smelt Ores",
