@@ -387,25 +387,39 @@ local function spawnPeds()
         SetBlockingOfNonTemporaryEvents(ped, true)
         current.pedHandle = ped
 
-        -- Using the non-target approach with zone creation
-        local options = current.zoneOptions
-        if options then
-            local zone = BoxZone:Create(current.coords.xyz, options.length, options.width, {
-                name = "zone_garbage_" .. i,
-                heading = current.coords.w,
-                debugPoly = false
-            })
-            zone:onPlayerInOut(function(inside)
-                if LocalPlayer.state.isLoggedIn then
-                    if inside then
-                        lib.showTextUI(Lang("info.talk"), 'left')
-                        Listen4Control()
-                    else
-                        ControlListen = false
-                        lib.hideTextUI()
+        if Config.UseTarget then
+            -- Add ox_target options for the ped
+            exports.ox_target:addLocalEntity(ped, {
+                {
+                    name = 'garbage_job_ped',
+                    icon = 'fas fa-trash',
+                    label = 'Talk to Garbage Worker',
+                    onSelect = function()
+                        TriggerEvent("n_garbagejob:client:MainMenu")
                     end
-                end
-            end)
+                }
+            })
+        else
+            -- Using the non-target approach with zone creation
+            local options = current.zoneOptions
+            if options then
+                local zone = BoxZone:Create(current.coords.xyz, options.length, options.width, {
+                    name = "zone_garbage_" .. i,
+                    heading = current.coords.w,
+                    debugPoly = false
+                })
+                zone:onPlayerInOut(function(inside)
+                    if LocalPlayer.state.isLoggedIn then
+                        if inside then
+                            lib.showTextUI(Lang("info.talk"), 'left')
+                            Listen4Control()
+                        else
+                            ControlListen = false
+                            lib.hideTextUI()
+                        end
+                    end
+                end)
+            end
         end
     end
     pedsSpawned = true
@@ -441,7 +455,7 @@ RegisterNetEvent('n_garbagejob:client:RequestRoute', function()
                             SetVehicleEngineOn(veh, false, true)
                             SetVehicleNumberPlateText(veh, "SLRP-" .. tostring(math.random(10, 99)))
                             SetEntityHeading(veh, v.w)
-                            exports['bby_fuel']:SetFuel(veh, 100.0)
+                            --exports['bby_fuel']:SetFuel(veh, 100.0)
                             SetVehicleFixed(veh)
                             SetEntityAsMissionEntity(veh, true, true)
                             SetVehicleDoorsLocked(veh, 1)
@@ -451,7 +465,7 @@ RegisterNetEvent('n_garbagejob:client:RequestRoute', function()
                             amountOfBags = totalBags
                             SetGarbageRoute()
                             -- TriggerEvent("vehiclekeys:client:SetOwner", ESX.Math.Trim(GetVehicleNumberPlateText(veh)))
-                            exports.wasabi_carlock:GiveKey(ESX.Math.Trim(GetVehicleNumberPlateText(veh)))
+                            -- exports.wasabi_carlock:GiveKey(ESX.Math.Trim(GetVehicleNumberPlateText(veh)))
                             Core.Notify(Lang("info.deposit_paid", { value = Config.TruckPrice }), "info", 3500)
                             Core.Notify(Lang("info.started"), "info", 3500)
                             TriggerServerEvent("n_garbagejob:server:payDeposit")

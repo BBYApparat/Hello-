@@ -44,7 +44,7 @@ Config.UsePreconfiguredRoutes = false
 Config.Peds = {
     {
         model = 's_m_y_garbage',
-        coords = vector4(-322.24, -1546.02, .02, 294.97),
+        coords = vector4(-322.246, -1545.929, 30.02, 275.427),
         zoneOptions = { -- Used for when UseTarget is false
             length = 3.0,
             width = 3.0
