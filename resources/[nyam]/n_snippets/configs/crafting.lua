@@ -9,7 +9,10 @@ Config.Crafting = {
 			{
 				name = 'weapon_pistol',
 				ingredients = {
-					copper_nugget = 4
+					rubber = 4,
+					plastic = 4,
+					copper = 4,
+					usb = 50,
 				},
 				duration = 5000,
 				count = 1,
@@ -26,8 +29,11 @@ Config.Crafting = {
 			{
 				name = 'ammo-9',
 				ingredients = {
-					copper_nugget = 4
-				},
+					rubber = 4,
+					plastic = 4,
+					copper = 4,
+					usb = 50,
+			},
 				duration = 5000,
 				count = 1,
 			},
