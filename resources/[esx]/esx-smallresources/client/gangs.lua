@@ -1,18 +1,16 @@
 -- client.lua
--- Lightweight ESX client script for spray vendor NPC
+-- Lightweight ESX client script for spray vendor NPC with ox_target integration
 
--- ESX initialization
-local ESX = nil
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+-- ESX initialization - using exports for newer ESX versions
+local ESX = exports['es_extended']:getSharedObject()
 
--- Configuration
+-- Configuration - using local to avoid conflicts with other resources
 local Config = {
     NPC = {
         model = "s_m_m_autoshop_01",
         coords = vector3(180.41, -1700.44, 29.29),
         heading = 212.0
     },
-    InteractionDistance = 2.0,
     BlipSettings = {
         sprite = 527,
         color = 2,
@@ -25,8 +23,56 @@ local Config = {
 local vendorPed = nil
 local cooldown = false
 
+-- Purchase item function - Making this global so it can be accessed from the menu
+function PurchaseItem(itemName)
+    if cooldown then return end
+    cooldown = true
+    
+    TriggerServerEvent("sprayVendor:purchaseItem", itemName)
+    
+    -- Reset cooldown after short delay
+    SetTimeout(500, function()
+        cooldown = false
+    end)
+end
+
+-- Function to create menu options
+function CreateMenuOptions(items)
+    local options = {}
+    
+    for itemName, itemData in pairs(items) do
+        local purchasesLeft = itemData.maxPurchases - itemData.purchaseCount
+        local purchaseStatus = purchasesLeft > 0 and purchasesLeft .. " left" or "SOLD OUT"
+        
+        table.insert(options, {
+            title = itemData.label .. " - $" .. itemData.currentPrice,
+            description = "Available: " .. purchaseStatus,
+            disabled = purchasesLeft <= 0,
+            onSelect = function()
+                PurchaseItem(itemName)
+            end
+        })
+    end
+    
+    return options
+end
+
+-- Function to open vendor menu - CRITICAL: Making this global for ox_target to access
+function OpenVendorMenu()
+    if cooldown then return end
+    cooldown = true
+    
+    -- Check if player belongs to a gang
+    TriggerServerEvent("sprayVendor:checkGang")
+    
+    -- Reset cooldown after short delay
+    SetTimeout(500, function()
+        cooldown = false
+    end)
+end
+
 -- Function to spawn the vendor NPC
-function SpawnVendorNPC()
+local function SpawnVendorNPC()
     -- Check if NPC already exists
     if DoesEntityExist(vendorPed) then
         DeleteEntity(vendorPed)
@@ -65,67 +111,35 @@ function SpawnVendorNPC()
     AddTextComponentString(Config.BlipSettings.name)
     EndTextCommandSetBlipName(blip)
     
+    -- Set up ox_target
+    exports.ox_target:addLocalEntity(vendorPed, {
+        {
+            name = 'spray_vendor',
+            icon = 'fas fa-spray-can',
+            label = 'Talk to Spray Vendor',
+            distance = 2.0,
+            onSelect = function()
+                OpenVendorMenu()
+            end
+        }
+    })
+    
     return vendorPed
-end
-
--- Function to open vendor menu
-function OpenVendorMenu()
-    if cooldown then return end
-    cooldown = true
-    
-    -- Check if player belongs to a gang
-    TriggerServerEvent("sprayVendor:checkGang")
-    
-    -- Reset cooldown after short delay
-    Citizen.SetTimeout(500, function()
-        cooldown = false
-    end)
-end
-
--- Purchase item function
-function PurchaseItem(itemName)
-    if cooldown then return end
-    cooldown = true
-    
-    TriggerServerEvent("sprayVendor:purchaseItem", itemName)
-    
-    -- Reset cooldown after short delay
-    Citizen.SetTimeout(500, function()
-        cooldown = false
-    end)
 end
 
 -- Event to receive item data from server after gang check passed
 RegisterNetEvent("sprayVendor:showMenu")
 AddEventHandler("sprayVendor:showMenu", function(items)
-    -- Using ox_lib menu
-    lib.showContext({
+    -- FIXED: First register the context menu before showing it
+    lib.registerContext({
         id = 'spray_vendor_menu',
         title = 'Spray Shop',
         options = CreateMenuOptions(items)
     })
+    
+    -- Then show the context menu
+    lib.showContext('spray_vendor_menu')
 end)
-
--- Function to create menu options
-function CreateMenuOptions(items)
-    local options = {}
-    
-    for itemName, itemData in pairs(items) do
-        local purchasesLeft = itemData.maxPurchases - itemData.purchaseCount
-        local purchaseStatus = purchasesLeft > 0 and purchasesLeft .. " left" or "SOLD OUT"
-        
-        table.insert(options, {
-            title = itemData.label .. " - $" .. itemData.currentPrice,
-            description = "Available: " .. purchaseStatus,
-            disabled = purchasesLeft <= 0,
-            onSelect = function()
-                PurchaseItem(itemName)
-            end
-        })
-    end
-    
-    return options
-end
 
 -- Event for notifications
 RegisterNetEvent("sprayVendor:notify")
@@ -138,37 +152,12 @@ AddEventHandler("sprayVendor:notify", function(message, type)
     })
 end)
 
--- Main thread for proximity check - ONE THREAD ONLY
-Citizen.CreateThread(function()
+-- Initialize the resource
+CreateThread(function()
     -- Wait for game to load
-    Citizen.Wait(1000)
-    
-    -- Wait for ESX to be ready
-    while ESX == nil do
-        Citizen.Wait(10)
-    end
+    Wait(1000)
     
     -- Spawn the vendor
     vendorPed = SpawnVendorNPC()
-    
-    while true do
-        local playerPed = PlayerPedId()
-        local playerCoords = GetEntityCoords(playerPed)
-        local vendorCoords = GetEntityCoords(vendorPed)
-        local distance = #(playerCoords - vendorCoords)
-        
-        -- Optimize by using dynamic wait times based on distance
-        if distance < Config.InteractionDistance then
-            -- Only show key indicator, no 3D text
-            if IsControlJustReleased(0, 38) then -- E key
-                OpenVendorMenu()
-            end
-            
-            Citizen.Wait(0) -- Check every frame when close
-        elseif distance < 15.0 then
-            Citizen.Wait(500) -- Check every half second when somewhat close
-        else
-            Citizen.Wait(1500) -- Check less frequently when far away
-        end
-    end
+    print("Spray Vendor NPC spawned with ox_target integration")
 end)
