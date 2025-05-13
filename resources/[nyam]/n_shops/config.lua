@@ -1192,7 +1192,7 @@ Config.Locations = {
     
     ['247supermarket'] = {
         ['label'] = '24/7 Supermarket',
-        ['coords'] = vector4(24.47, -1346.62, 29.5, 271.66),
+        ['coords'] = vector4(30.209, -1343.497, 29.497, 180.07),
         ['ped'] = 'csb_hugh',
         ['scenario'] = 'PROP_HUMAN_STAND_IMPATIENT',
         ['radius'] = 1.5,
@@ -1203,14 +1203,14 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(26.45, -1315.51, 29.62, 0.07),
+        ['delivery'] = vector4(30.209, -1343.497, 29.497, 180.07),
         ['useStock'] = true,
         -- ['requiredJob'] = {'police', 'police', 'police', 'police'},
     },
 
     ['247supermarket2'] = {
         ['label'] = '24/7 Supermarket',
-        ['coords'] = vector4(-3039.54, 584.38, 7.91, 17.27),
+        ['coords'] = vector4(-3044.33, 588.719, 7.909, 289.294),
         ['ped'] = 'csb_hugh',
         ['scenario'] = 'PROP_HUMAN_STAND_IMPATIENT',
         ['radius'] = 1.5,
@@ -1221,12 +1221,12 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(-3047.95, 590.71, 7.62, 19.53)
+        ['delivery'] = vector4(-3044.33, 588.719, 7.909, 289.294)
     },
 
     ['247supermarket3'] = {
         ['label'] = '24/7 Supermarket',
-        ['coords'] = vector4(-3242.97, 1000.01, 12.83, 357.57),
+        ['coords'] = vector4(-3245.562, 1006.19, 12.831, 270.043),
         ['ped'] = 'csb_hugh',
         ['scenario'] = 'PROP_HUMAN_STAND_IMPATIENT',
         ['radius'] = 1.5,
@@ -1237,12 +1237,12 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(-3245.76, 1005.25, 12.83, 269.45)
+        ['delivery'] = vector4(-3245.562, 1006.19, 12.831, 270.043)
     },
 
     ['247supermarket4'] = {
         ['label'] = '24/7 Supermarket',
-        ['coords'] = vector4(1728.07, 6415.63, 35.04, 242.95),
+        ['coords'] = vector4(1734.641, 6416.004, 35.037, 151.934),
         ['ped'] = 'csb_hugh',
         ['scenario'] = 'PROP_HUMAN_STAND_IMPATIENT',
         ['radius'] = 1.5,
@@ -1253,12 +1253,12 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(1741.76, 6419.61, 35.04, 6.83)
+        ['delivery'] = vector4(1734.641, 6416.004, 35.037, 151.934)
     },
 
     ['247supermarket5'] = {
         ['label'] = '24/7 Supermarket',
-        ['coords'] = vector4(1959.82, 3740.48, 32.34, 301.57),
+        ['coords'] = vector4(1963.417, 3746.339, 32.344, 198.659),
         ['ped'] = 'csb_hugh',
         ['scenario'] = 'PROP_HUMAN_STAND_IMPATIENT',
         ['radius'] = 1.5,
@@ -1269,12 +1269,12 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(1963.81, 3750.09, 32.26, 302.46)
+        ['delivery'] = vector4(1963.417, 3746.339, 32.344, 198.659)
     },
 
     ['247supermarket6'] = {
         ['label'] = '24/7 Supermarket',
-        ['coords'] = vector4(549.13, 2670.85, 42.16, 99.39),
+        ['coords'] = vector4(543.579, 2666.895, 42.157, 5.639),
         ['ped'] = 'csb_hugh',
         ['scenario'] = 'PROP_HUMAN_STAND_IMPATIENT',
         ['radius'] = 1.5,
@@ -1285,12 +1285,12 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(541.54, 2663.53, 42.17, 120.51)
+        ['delivery'] = vector4(543.579, 2666.895, 42.157, 5.639)
     },
 
     ['247supermarket7'] = {
         ['label'] = '24/7 Supermarket',
-        ['coords'] = vector4(2677.47, 3279.76, 55.24, 335.08),
+        ['coords'] = vector4(2677.708, 3286.363, 55.241, 241.662),
         ['ped'] = 'csb_hugh',
         ['scenario'] = 'PROP_HUMAN_STAND_IMPATIENT',
         ['radius'] = 1.5,
@@ -1301,12 +1301,12 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(2662.19, 3264.95, 55.24, 168.55)
+        ['delivery'] = vector4(2677.708, 3286.363, 55.241, 241.662)
     },
 
     ['247supermarket8'] = {
         ['label'] = '24/7 Supermarket',
-        ['coords'] = vector4(2556.66, 380.84, 108.62, 356.67),
+        ['coords'] = vector4(2553.673, 386.749, 108.623, 262.053),
         ['ped'] = 'csb_hugh',
         ['scenario'] = 'PROP_HUMAN_STAND_IMPATIENT',
         ['radius'] = 1.5,
@@ -1317,12 +1317,12 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(2553.24, 399.73, 108.56, 344.86)
+        ['delivery'] = vector4(2553.673, 386.749, 108.623, 262.053)
     },
 
     ['247supermarket9'] = {
         ['label'] = '24/7 Supermarket',
-        ['coords'] = vector4(372.66, 326.98, 103.57, 253.73),
+        ['coords'] = vector4(378.895, 328.672, 103.567, 165.587),
         ['ped'] = 'csb_hugh',
         ['scenario'] = 'PROP_HUMAN_STAND_IMPATIENT',
         ['radius'] = 1.5,
@@ -1333,7 +1333,7 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(379.97, 357.3, 102.56, 26.42)
+        ['delivery'] = vector4(378.895, 328.672, 103.567, 165.587)
     },
 
     -- LTD Gasoline Locations
