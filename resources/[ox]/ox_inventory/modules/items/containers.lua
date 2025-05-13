@@ -48,6 +48,7 @@ local function setContainerProperties(itemName, properties)
 		size = { properties.slots, properties.maxWeight },
 		blacklist = blacklist,
 		whitelist = whitelist,
+		items = properties.items or nil, -- ADD THIS LINE HERE
 	}
 end
 
@@ -77,6 +78,11 @@ setContainerProperties('uwu_cafe_box', {
 setContainerProperties('medicinebox', {
     slots = 5,
     maxWeight = 1000,
+	items = {
+		{ name = 'bandage',     count = 5 },
+		{ name = 'firstaid',    count = 2 },
+		{ name = 'painkillers', count = 3 },
+	}
 })
 
 setContainerProperties('xanax_box', {
