@@ -85,6 +85,17 @@ setContainerProperties('medicinebox', {
 	}
 })
 
+setContainerProperties('weaponbox', {
+    slots = 5,
+    maxWeight = 1000,
+	items = {
+		{ name = 'weapon_pistol50',     count = 1 },
+		{ name = 'ammo-9',    count = 50 },
+		{ name = 'at_suppressor_light', count = 1 },
+		{ name = 'at_suppressor_heavy', count = 1 },
+	}
+})
+
 setContainerProperties('xanax_box', {
     slots = 5,
     maxWeight = 1000,
