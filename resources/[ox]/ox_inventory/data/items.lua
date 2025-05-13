@@ -9941,5 +9941,12 @@ return {
 		close = true,
 		description = "Contains pizza"
 	},
-	
+
+	["weaponbox"] = {
+		label = "Weapon Box",
+		weight = 1,
+		stack = true,
+		close = true,
+		description = "Illegal"
+	},	
 }

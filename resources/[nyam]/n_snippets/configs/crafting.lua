@@ -1,30 +1,10 @@
 Config.Crafting = {
-		["criminal"] = {
-		label = "Smelt Ores",
+
+	["criminal_craft2"] = {
+		label = "Craft",
 		icon = "fa-solid fa-screwdriver-wrench",
-		object = `prop_tablesaw_01`,
-		coords = vec4(1110.63, -2008.61, 31.04, 53.84),
-		distance = 2.0,-
-		items = {
-			{
-				name = 'weapon_pistol',
-				ingredients = {
-					rubber = 4,
-					plastic = 4,
-					copper = 4,
-					black_usb = 50,
-					blue_usb = 25,
-				},
-				duration = 5000,
-				count = 1,
-			},
-		}
-	},
-	["criminal2"] = {
-		label = "Smelt Ores",
-		icon = "fa-solid fa-screwdriver-wrench",
-		object = `prop_tablesaw_01`,
-		coords = vec4(1110.63, -2008.61, 31.04, 53.84),
+		object = `prop_tool_bench02`,
+		coords = vector4(459.761, -3186.167, 6.07, 4.514),
 		distance = 2.0,
 		items = {
 			{
