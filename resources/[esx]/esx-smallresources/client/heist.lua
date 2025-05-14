@@ -1,8 +1,7 @@
 ESX = exports['es_extended']:getSharedObject()
 
+-- Config variables directly in client script
 Config = {}
-
-Config.EimaiGay = true
 
 Config.StartNPC = {
     model = "g_m_y_mexgoon_01", -- NPC model
@@ -21,7 +20,7 @@ Config.RequiredItems = {
 }
 
 -- Heist location
-Config.HeistLocation = vector3(4.208, -1105.617, 29.797)
+Config.HeistLocation = vector3(1290.84, -1710.52, 54.47)
 
 -- Tools needed at heist location
 Config.RequiredTools = {
@@ -171,32 +170,27 @@ Citizen.CreateThread(function()
     EndTextCommandSetBlipName(npcBlip)
     
     -- Create ox_target for NPC
-        if DoesEntityExist(npc) then
-            pcall(function()
-                exports.ox_target:addLocalEntity(npc, {
-                    {
-                        name = 'start_heist',
-                        icon = 'fas fa-gem',
-                        label = 'Talk to Start Heist',
-                        onSelect = function()
-                            if Config.EimaiGay then                       
-                                -- Check with server if player can start heist
-                                ESX.TriggerServerCallback('simple_heist:canStartHeist', function(canStart, message)
-                                    if canStart then
-                                        StartHeist()
-                                    else
-                                        ESX.ShowNotification(message)
-                                    end
-                                end)
+    if DoesEntityExist(npc) then
+        pcall(function()
+            exports.ox_target:addLocalEntity(npc, {
+                {
+                    name = 'start_heist',
+                    icon = 'fas fa-gem',
+                    label = 'Talk to Start Heist',
+                    onSelect = function()
+                        -- Check with server if player can start heist
+                        ESX.TriggerServerCallback('simple_heist:canStartHeist', function(canStart, message)
+                            if canStart then
+                                StartHeist()
                             else
-                                ESX.ShowNotification("Are you crazy what are you doing here? Oh no the MOB will kill me")
+                                ESX.ShowNotification(message)
                             end
-                        end
-                    }
-                })
-            end)
-        end
-
+                        end)
+                    end
+                }
+            })
+        end)
+    end
 end)
 
 -- Start the heist
