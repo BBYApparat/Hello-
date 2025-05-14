@@ -163,3 +163,37 @@ Config.items = {
     {name = "bread", count = 5}
 }
 
+Config.StartNPC = {
+    model = "g_m_y_mexgoon_01", -- NPC model
+    coords = vector3(1275.64, -1710.52, 53.77), -- Location
+    heading = 320.0,
+    scenario = "WORLD_HUMAN_SMOKING"
+}
+
+-- Required items to start heist
+Config.RequiredItems = {
+    "phone",
+    "radio",
+    "binoculars",
+    "keycard",
+    "bulletproof_vest"
+}
+
+-- Heist location
+Config.HeistLocation = vector3(1290.84, -1710.52, 54.47)
+
+-- Tools needed at heist location
+Config.RequiredTools = {
+    "drill",
+    "lockpick"
+}
+
+-- Cooldown in minutes
+Config.Cooldown = 60
+
+-- Rewards
+Config.Rewards = {
+    money = {min = 5000, max = 10000},
+    items = {"gold_bar", "jewelry", "cash_stack"}
+}
+
