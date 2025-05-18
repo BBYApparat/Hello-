@@ -18,7 +18,6 @@ Config.KeybindBeforeLogin = true
 -- Jobs that have access to the mdt
 Config.JobAccess = {
     'police',
-    'mechanic',
     'ambulance',
     'doj'
 }
@@ -54,8 +53,8 @@ Config.Markers = {
 -- To use this, go to https://imgbb.com/ and create an account. After doing so, click on "About" on the top left.
 -- After that, create and copy an API key. You will paste this key below (Make sure to set 'usingImgbb' to true)
 Config.ImgAPI = {
-    usingImgbb = false,
-    APIkey = 'API_KEY_HERE',
+    usingImgbb = true,
+    APIkey = '7d57f0629f6c60ef6f4a818974c6397c',
 }
 
 Config.TakePhoto = function(cb)
