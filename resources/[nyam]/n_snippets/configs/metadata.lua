@@ -11,6 +11,7 @@ Config.OxMeta = {
     sex = "Sex",
     nationality = "Nationality",
     badge = "Badge",
+    job = "Job",
 
     -- Items
     gas = "Gas",
