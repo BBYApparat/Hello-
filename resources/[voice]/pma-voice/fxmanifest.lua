@@ -11,7 +11,6 @@ dependencies {
 lua54 'yes'
 
 shared_script 'shared.lua'
-shared_script '@es_extended/imports.lua'
 
 client_scripts {
 	'client/utils/*',
@@ -56,7 +55,7 @@ convar_category 'PMA-Voice' {
 	{ "Voice phone volume", "$voice_defaultPhoneVolume", "CV_INT", "60" },
 	{ "Enable radios", "$voice_enableRadios", "CV_INT", "1" },
 	{ "Enable phones", "$voice_enablePhones", "CV_INT", "1" },
-	{ "Enable sublix", "$voice_enableSubmix", "CV_INT", "1" },
+	{ "Enable submix", "$voice_enableSubmix", "CV_INT", "1" },
         { "Enable radio animation", "$voice_enableRadioAnim", "CV_INT", "0" },
 	{ "Radio key", "$voice_defaultRadio", "CV_STRING", "LALT" },
 	{ "UI refresh rate", "$voice_uiRefreshRate", "CV_INT", "200" },
@@ -68,5 +67,3 @@ convar_category 'PMA-Voice' {
 	{ "Hide server endpoints in logs", "$voice_hideEndpoints", "CV_INT", "1" },
     }
 }
-
-client_script 'client/megaphone.lua'
