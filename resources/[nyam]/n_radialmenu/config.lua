@@ -605,53 +605,6 @@ Config.JobInteractions = {
     },
     ["police"] = {
         {
-            id = 'pursuit_mode',
-            title = 'Pursuit Mode',
-            icon = 'car',
-            items = {
-                {
-                    id = 'ClassS',
-                    title = 'Class S',
-                    icon = 'tachometer-alt',
-                    type = 'client',
-                    event = 'bby_class:turntoSClass',
-                    shouldClose = true
-                },
-                {
-                    id = 'ClassA',
-                    title = 'Class A',
-                    icon = 'tachometer-alt',
-                    type = 'client',
-                    event = 'bby_class:turntoAClass',
-                    shouldClose = true
-                },
-                {
-                    id = 'ClassB',
-                    title = 'Class B',
-                    icon = 'tachometer-alt',
-                    type = 'client',
-                    event = 'bby_class:turntoBClass',
-                    shouldClose = true
-                },
-                {
-                    id = 'ClassC',
-                    title = 'Class C',
-                    icon = 'tachometer-alt',
-                    type = 'client',
-                    event = 'bby_class:turntoCClass',
-                    shouldClose = true
-                },
-                {
-                    id = 'DisablePursuit',
-                    title = 'Disable Pursuit',
-                    icon = 'power-off',
-                    type = 'client',
-                    event = 'bby_class:disablePursuit',
-                    shouldClose = true
-                }
-            }
-        },
-        {
             id = 'mdt',
             title = 'MDT',
             icon = 'tablet',
