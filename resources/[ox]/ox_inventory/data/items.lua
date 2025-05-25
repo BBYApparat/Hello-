@@ -9948,5 +9948,123 @@ return {
 		stack = true,
 		close = true,
 		description = "Illegal"
-	},	
+	},
+	
+	['camera_pd'] = {
+	label = 'PD Camera',
+	weight = 3000,
+	stack = false,
+	close = true,
+	consume = 0,
+	server = {
+		export = 'sf_camerasecurity.cam_camera_pd'
+	},
+	client = {
+		image = 'camera_pd.png',
+	}	
+},
+
+['camera_ems'] = {
+	label = 'EMS Camera',
+	weight = 3000,
+	stack = false,
+	close = true,
+	consume = 0,
+	server = {
+		export = 'sf_camerasecurity.cam_camera_ems'
+	},
+	client = {
+		image = 'camera_ems.png',
+	}	
+},
+
+['camera_citizen'] = {
+	label = 'Camera',
+	weight = 3000,
+	stack = false,
+	close = true,
+	consume = 0,
+	server = {
+		export = 'sf_camerasecurity.cam_camera_citizen'
+	},
+	client = {
+		image = 'camera_citizen.png',
+	}	
+},
+
+['camera_viewer'] = {
+	label = 'Camera Viewer',
+	weight = 1000,
+	stack = false,
+	close = true,
+	consume = 0,
+	server = {
+		export = 'sf_camerasecurity.cam_camera_viewer'
+	},
+	client = {
+		image = 'camera_viewer.png',
+	}	
+},
+
+['camera_paper'] = {
+	label = 'Camera Signal Paper',
+	weight = 200,
+	stack = false,
+	close = true,
+	consume = 0,
+	server = {
+		export = 'sf_camerasecurity.cam_camera_paper'
+	},
+	client = {
+		image = 'camera_paper.png',
+	}	
+},
+
+['camera_tablet'] = {
+	label = 'CamView Tablet',
+	weight = 2000,
+	stack = false,
+	close = true,
+	consume = 0,
+	server = {
+		export = 'sf_camerasecurity.cam_camera_tablet'
+	},
+	client = {
+		image = 'camera_tablet.png',
+	}	
+},
+
+['camera_personal'] = {
+	label = 'Personal Camera',
+	weight = 3000,
+	stack = false,
+	close = true,
+	consume = 0,
+	server = {
+		export = 'sf_camerasecurity.cam_camera_personal'
+	},
+	client = {
+		image = 'camera_personal.png',
+	}	
+},
+
+['camera_personaltablet'] = {
+	label = 'Personal CamView',
+	weight = 2000,
+	stack = false,
+	close = true,
+	consume = 0,
+	server = {
+		export = 'sf_camerasecurity.cam_camera_personaltablet'
+	},
+	client = {
+		image = 'camera_personaltablet.png',
+	}	
+},
+
+['screwdriverset'] = {
+	label = 'Toolkit',
+	weight = 1000,
+	stack = false
+},
 }
