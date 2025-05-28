@@ -1,6 +1,7 @@
 banPlayer = function(ban_type, script, ban_reason)
     print("Ban attempt "..ban_type..' from '..script..' as '..ban_reason)
 end
+
 GiveHuntingRewards = function(playerId, animalWeight)
     local src = playerId
     local xPlayer = ESX.GetPlayerFromId(src)
