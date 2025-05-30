@@ -1,0 +1,19 @@
+-- Optional: Only run this if you set Config.PersistentCooldowns = true
+-- This will make cooldowns persist across server restarts
+
+CREATE TABLE IF NOT EXISTS `cow_cooldowns` (
+    `cow_id` INT NOT NULL PRIMARY KEY,
+    `cooldown_time` INT NOT NULL DEFAULT 0
+);
+
+-- Insert initial data for 9 cows
+INSERT IGNORE INTO `cow_cooldowns` (`cow_id`, `cooldown_time`) VALUES
+(1, 0),
+(2, 0),
+(3, 0),
+(4, 0),
+(5, 0),
+(6, 0),
+(7, 0),
+(8, 0),
+(9, 0);
