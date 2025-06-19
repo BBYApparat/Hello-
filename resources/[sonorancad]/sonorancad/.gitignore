@@ -1,0 +1,8 @@
+config.json
+update.zip
+unzip/
+.vscode
+.git
+stream/*
+!stream/.gitkeep
+npm-shrinkwrap.json
