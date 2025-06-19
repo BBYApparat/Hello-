@@ -18,7 +18,7 @@ local function spawnCows()
         
         -- Make cow stationary and realistic
         SetEntityInvincible(cow, true)
-        SetPedCanRagdoll(cow, false)
+        SetPedCanRagdoll(cow, true)
         SetBlockingOfNonTemporaryEvents(cow, true)
         SetEntityCanBeDamaged(cow, false)
         SetPedRelationshipGroupHash(cow, GetHashKey("AMBIENT_GANG_LOST"))
@@ -35,7 +35,7 @@ local function spawnCows()
         exports.ox_target:addLocalEntity(cow, {
             {
                 name = 'milk_cow_' .. i,
-                label = '🥛 Milk Cow',
+                label = 'Milk Cow',
                 icon = 'fas fa-hand-paper',
                 distance = 2.0,
                 canInteract = function()
@@ -111,42 +111,23 @@ function playMilkingAnimation()
     TaskPlayAnim(playerPed, "amb@medic@standing@kneel@base", "base", 8.0, -8.0, -1, 1, 0, false, false, false)
 end
 
--- Milking minigame using ps-minigames
 function startMilkingMinigame(cowId)
     lib.notify({
         title = 'Cow Milking',
-        description = '🥛 Milking started! Complete the skill checks!',
+        description = '🥛 Milking started! Complete the arrow challenge!',
         type = 'info'
     })
-    
-    -- Use ps-minigames skillcheck
-    local success = exports['ps-minigames']:Skillcheck({
-        {
-            area = {20, 30}, -- Smaller area = harder
-            speed = {700, 1200} -- Speed range in ms
-        },
-        {
-            area = {25, 35},
-            speed = {600, 1000}
-        },
-        {
-            area = {20, 25},
-            speed = {800, 1400}
-        },
-        {
-            area = {30, 40},
-            speed = {500, 900}
-        },
-        {
-            area = {15, 25},
-            speed = {900, 1500}
-        }
+
+    -- Start the arrowClicker minigame
+    local success = exports["j0-minigame"]:StartMinigame("arrowClicker", {
+        difficulty = "medium",  -- Adjust as needed (easy, medium, hard)
+        time = 6000               -- Seconds (if your NUI supports this option)
     })
-    
+
     -- Stop animation
     local playerPed = PlayerPedId()
     ClearPedTasks(playerPed)
-    
+
     -- Handle result
     finishMilking(cowId, success)
     isMilking = false
@@ -157,7 +138,7 @@ function finishMilking(cowId, success)
     if success then
         lib.notify({
             title = 'Cow Milking',
-            description = '🥛 Successfully milked the cow!',
+            description = 'Successfully milked the cow!',
             type = 'success'
         })
         
@@ -176,7 +157,7 @@ function finishMilking(cowId, success)
     else
         lib.notify({
             title = 'Cow Milking',
-            description = '😞 Milking failed! The cow got scared.',
+            description = 'Milking failed! The cow got scared.',
             type = 'error'
         })
         

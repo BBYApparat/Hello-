@@ -25,8 +25,7 @@ dependencies {
     'es_extended',
     'ox_lib',
     'ox_target',
-    'ox_inventory',
-    'ps-minigames'
+    'ox_inventory'
 }
 
 -- Add item to ox_inventory
