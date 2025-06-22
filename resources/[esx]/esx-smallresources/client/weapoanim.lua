@@ -1,6 +1,6 @@
--- Define Config.AnimWeapons directly in client file
-Config = {}
-Config.AnimWeapons = {
+-- Initialize Config and AnimWeapons if not already defined
+Config = Config or {}
+Config.AnimWeapons = Config.AnimWeapons or {
     -- Melee
     WEAPON_KNIFE = false,           -- If it is set to true it will use the jerrycan style.
     WEAPON_NIGHTSTICK = false,
@@ -106,10 +106,13 @@ Config.AnimWeapons = {
 
 local JerrycanAnimLoaded = false
 
-AddEventHandler('ox_inventory:currentWeapon', function(weapon)
+-- Function to handle weapon animation
+local function handleWeaponAnimation(weaponName)
     local ped = PlayerPedId()
-
-    if weapon and weapon.name and Config.AnimWeapons[weapon.name] then
+    
+    -- Check if Config and AnimWeapons exist and if weapon should use animation
+    if Config and Config.AnimWeapons and weaponName and Config.AnimWeapons[weaponName] then
+        -- Load jerrycan animation if not already loaded
         if not JerrycanAnimLoaded then
             RequestClipSet("move_ped_wpn_jerrycan_generic")
             while not HasClipSetLoaded("move_ped_wpn_jerrycan_generic") do
@@ -118,10 +121,65 @@ AddEventHandler('ox_inventory:currentWeapon', function(weapon)
             JerrycanAnimLoaded = true
         end
 
+        -- Apply the animation
         if HasClipSetLoaded("move_ped_wpn_jerrycan_generic") then
             SetPedWeaponMovementClipset(ped, "move_ped_wpn_jerrycan_generic", 0.50)
         end
     else
+        -- Reset animation if weapon doesn't need it
         ResetPedWeaponMovementClipset(ped, 0.0)
+    end
+end
+
+-- Event handler for ox_inventory weapon changes
+AddEventHandler('ox_inventory:currentWeapon', function(weapon)
+    if weapon and weapon.name then
+        handleWeaponAnimation(weapon.name)
+    else
+        -- No weapon equipped, reset animation
+        local ped = PlayerPedId()
+        ResetPedWeaponMovementClipset(ped, 0.0)
+    end
+end)
+
+-- Alternative event handler for standard ESX weapon changes (fallback)
+AddEventHandler('esx:setWeapon', function(weapon, ammo)
+    if weapon and weapon.name then
+        handleWeaponAnimation(weapon.name)
+    else
+        local ped = PlayerPedId()
+        ResetPedWeaponMovementClipset(ped, 0.0)
+    end
+end)
+
+-- Thread to monitor weapon changes (additional safety net)
+CreateThread(function()
+    local lastWeapon = nil
+    
+    while true do
+        local ped = PlayerPedId()
+        local currentWeapon = GetSelectedPedWeapon(ped)
+        
+        if currentWeapon ~= lastWeapon then
+            local weaponName = nil
+            
+            -- Convert weapon hash to name
+            for name, hash in pairs(GetHashKey) do
+                if GetHashKey(name) == currentWeapon then
+                    weaponName = name
+                    break
+                end
+            end
+            
+            if weaponName then
+                handleWeaponAnimation(weaponName)
+            else
+                ResetPedWeaponMovementClipset(ped, 0.0)
+            end
+            
+            lastWeapon = currentWeapon
+        end
+        
+        Wait(1000) -- Check every second
     end
 end)

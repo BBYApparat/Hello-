@@ -58,7 +58,7 @@ Config.Multichar = true
 Config.Identity = true -- Select a character identity data before they have loaded in (this happens by default with multichar)
 Config.DistanceGive = 4.0 -- Max distance when giving items, weapons etc.
 
-Config.AdminLogging = false -- Logs the usage of certain commands by those with group.admin ace permissions (default is false)
+Config.AdminLogging = true -- Logs the usage of certain commands by those with group.admin ace permissions (default is false)
 
 Config.DisableHealthRegeneration = true -- Player will no longer regenerate health
 Config.DisableVehicleRewards = true -- Disables Player Receiving weapons from vehicles

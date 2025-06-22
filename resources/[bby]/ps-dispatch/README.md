@@ -109,7 +109,7 @@ local function TestAlert()
         color = vehicle.color,
         class = vehicle.class,
         doors = vehicle.doors,
-        jobs = { 'leo' }
+        jobs = { 'police' }
     }
 
     TriggerServerEvent('ps-dispatch:server:notify', dispatchData)

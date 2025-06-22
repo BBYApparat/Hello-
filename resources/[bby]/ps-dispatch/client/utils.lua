@@ -262,7 +262,7 @@ local weaponTable = {
     [-1568386805] = "CLASS 5: GRENADE LAUNCHER",
     [-1312131151] = "CLASS 5: RPG",
     [125959754]   = "CLASS 5: Compactlauncher"
-end
+} -- FIXED: Added missing closing brace here
 
 function GetWeaponName()
     local ped = PlayerPedId()

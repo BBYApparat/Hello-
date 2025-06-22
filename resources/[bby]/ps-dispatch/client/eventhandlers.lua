@@ -108,9 +108,9 @@ AddEventHandler('gameEventTriggered', function(name, args)
         if not victim or victim ~= cache.ped then return end
         if not isDead then return end
 
-        if PlayerData.job.type == 'leo' then
+        if PlayerData.job.type == 'officer' then
             exports['ps-dispatch']:OfficerDown()
-        elseif PlayerData.job.type == 'ems' then
+        elseif PlayerData.job.type == 'police' then
             exports['ps-dispatch']:EmsDown()
         else
             exports['ps-dispatch']:InjuriedPerson()
