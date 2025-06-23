@@ -21,10 +21,6 @@ function StartPayCheck()
                         -- Use randol_paycheck system instead of direct bank deposit
                         exports.randol_paycheck:AddToPaycheck(xPlayer.identifier, playerSalary)
                         
-                        -- Add notification for unemployment benefits
-                        TriggerClientEvent('esx:showAdvancedNotification', player, TranslateCap('bank'), TranslateCap('received_paycheck'), TranslateCap('received_help', playerSalary),
-                            'CHAR_BANK_MAZE', 9)
-                        
                         -- Keep logging if enabled
                         if Config.LogPaycheck then
                             ESX.DiscordLogFields("Paycheck", "Paycheck - Unemployment Benefits", "green", {
@@ -42,9 +38,6 @@ function StartPayCheck()
                                         exports.randol_paycheck:AddToPaycheck(xPlayer.identifier, playerSalary)
                                         account.removeMoney(salary)
                                         
-                                        -- Add notification for society job salary
-                                        TriggerClientEvent('esx:showAdvancedNotification', player, TranslateCap('bank'), TranslateCap('received_paycheck'),
-                                            TranslateCap('received_salary', playerSalary), 'CHAR_BANK_MAZE', 9)
                                         
                                         -- Keep logging if enabled
                                         if Config.LogPaycheck then
@@ -63,10 +56,6 @@ function StartPayCheck()
                                 -- Use randol_paycheck system instead of direct bank deposit
                                 exports.randol_paycheck:AddToPaycheck(xPlayer.identifier, playerSalary)
                                 
-                                -- Add notification for regular job salary
-                                TriggerClientEvent('esx:showAdvancedNotification', player, TranslateCap('bank'), TranslateCap('received_paycheck'), TranslateCap('received_salary', playerSalary),
-                                    'CHAR_BANK_MAZE', 9)
-                                
                                 -- Keep logging if enabled
                                 if Config.LogPaycheck then
                                     ESX.DiscordLogFields("Paycheck", "Paycheck - " .. jobLabel, "green", {
@@ -81,9 +70,6 @@ function StartPayCheck()
                         -- Use randol_paycheck system instead of direct bank deposit
                         exports.randol_paycheck:AddToPaycheck(xPlayer.identifier, playerSalary)
                         
-                        -- Add notification for generic job salary
-                        TriggerClientEvent('esx:showAdvancedNotification', player, TranslateCap('bank'), TranslateCap('received_paycheck'), TranslateCap('received_salary', playerSalary),
-                            'CHAR_BANK_MAZE', 9)
                         
                         -- Keep logging if enabled
                         if Config.LogPaycheck then
