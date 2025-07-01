@@ -1,4 +1,4 @@
--- Client-side warehouse management
+-- Complete Fixed ESX Warehouse Client
 local Warehouses = {}
 local Targets = {}
 local Blips = {}
@@ -15,12 +15,23 @@ CreateThread(function()
     RefreshWarehouses()
 end)
 
+-- Count table entries
+function CountTable(t)
+    local count = 0
+    for _ in pairs(t) do count = count + 1 end
+    return count
+end
+
 -- Refresh warehouses from server
 function RefreshWarehouses()
     ESX.TriggerServerCallback('esx_warehouse:getWarehouses', function(warehouses)
         Warehouses = warehouses
         CreateWarehouseTargets()
         CreateWarehouseBlips()
+        
+        if Config.Debug then
+            print("^2[ESX Warehouses]^7 Client data refreshed - " .. CountTable(warehouses) .. " warehouses loaded")
+        end
     end)
 end
 
@@ -159,6 +170,31 @@ function OpenWarehouseMenu(warehouseId)
                 })
                 
                 table.insert(menuOptions, {
+                    title = '⬆️ Upgrade Warehouse',
+                    description = 'Upgrade storage or slots',
+                    onSelect = function()
+                        OpenUpgradeMenu(warehouseId)
+                    end
+                })
+                
+                table.insert(menuOptions, {
+                    title = '🔄 Renew Warehouse',
+                    description = 'Extend rental period (+7 days)',
+                    onSelect = function()
+                        local alert = lib.alertDialog({
+                            header = 'Renew Warehouse',
+                            content = 'Renew warehouse for $' .. warehouse.price .. '?',
+                            centered = true,
+                            cancel = true
+                        })
+                        
+                        if alert == 'confirm' then
+                            TriggerServerEvent('esx_warehouse:renewWarehouse', warehouseId)
+                        end
+                    end
+                })
+                
+                table.insert(menuOptions, {
                     title = '💰 Sell Warehouse',
                     description = 'Sell warehouse for $' .. Config.WareHouseSellPrice,
                     onSelect = function()
@@ -171,6 +207,10 @@ function OpenWarehouseMenu(warehouseId)
                         
                         if alert == 'confirm' then
                             TriggerServerEvent('esx_warehouse:sellWarehouse', warehouseId)
+                            
+                            -- Refresh the menu after sale attempt
+                            Wait(1000)
+                            RefreshWarehouses()
                         end
                     end
                 })
@@ -188,6 +228,10 @@ function OpenWarehouseMenu(warehouseId)
                         
                         if alert == 'confirm' then
                             TriggerServerEvent('esx_warehouse:buyWarehouse', warehouseId)
+                            
+                            -- Refresh the menu after purchase attempt
+                            Wait(1000)
+                            RefreshWarehouses()
                         end
                     end
                 })
@@ -210,6 +254,92 @@ function OpenWarehouseMenu(warehouseId)
             lib.showContext('warehouse_menu')
         end, warehouseId)
     end, warehouseId)
+end
+
+-- Open upgrade menu
+function OpenUpgradeMenu(warehouseId)
+    local warehouse = Warehouses[warehouseId]
+    if not warehouse then return end
+    
+    local upgradeOptions = {}
+    
+    -- Storage size upgrades
+    if warehouse.stashsize < 6000000 then -- Max 6000kg
+        local sizeOptions = {}
+        
+        if warehouse.stashsize == 3000000 then
+            table.insert(sizeOptions, {label = '+500kg ($' .. Config.Upgradation.StashSize["500 Kg"] .. ')', value = 500})
+        elseif warehouse.stashsize == 3500000 then
+            table.insert(sizeOptions, {label = '+1000kg ($' .. Config.Upgradation.StashSize["1000 Kg"] .. ')', value = 1000})
+        elseif warehouse.stashsize == 4500000 then
+            table.insert(sizeOptions, {label = '+1500kg ($' .. Config.Upgradation.StashSize["1500 Kg"] .. ')', value = 1500})
+        end
+        
+        if #sizeOptions > 0 then
+            table.insert(upgradeOptions, {
+                title = '📦 Upgrade Storage Size',
+                description = 'Current: ' .. (warehouse.stashsize/1000) .. 'kg',
+                onSelect = function()
+                    local input = lib.inputDialog('Upgrade Storage', {
+                        {type = 'select', label = 'Size Upgrade', options = sizeOptions, required = true}
+                    })
+                    
+                    if input then
+                        TriggerServerEvent('esx_warehouse:upgradeSize', warehouseId, input[1])
+                    end
+                end
+            })
+        end
+    end
+    
+    -- Slot upgrades
+    if warehouse.slots < 170 then -- Max 170 slots
+        local slotOptions = {}
+        
+        if warehouse.slots == 50 then
+            table.insert(slotOptions, {label = '+20 slots ($' .. Config.Upgradation.Slots["+20"] .. ')', value = 20})
+        elseif warehouse.slots == 70 then
+            table.insert(slotOptions, {label = '+40 slots ($' .. Config.Upgradation.Slots["+40"] .. ')', value = 40})
+        elseif warehouse.slots == 110 then
+            table.insert(slotOptions, {label = '+60 slots ($' .. Config.Upgradation.Slots["+60"] .. ')', value = 60})
+        end
+        
+        if #slotOptions > 0 then
+            table.insert(upgradeOptions, {
+                title = '🔢 Upgrade Slots',
+                description = 'Current: ' .. warehouse.slots .. ' slots',
+                onSelect = function()
+                    local input = lib.inputDialog('Upgrade Slots', {
+                        {type = 'select', label = 'Slot Upgrade', options = slotOptions, required = true}
+                    })
+                    
+                    if input then
+                        TriggerServerEvent('esx_warehouse:upgradeSlots', warehouseId, input[1])
+                    end
+                end
+            })
+        end
+    end
+    
+    if #upgradeOptions == 0 then
+        ESX.ShowNotification('Warehouse is fully upgraded!', 'info')
+        return
+    end
+    
+    table.insert(upgradeOptions, {
+        title = '⬅️ Back to Main Menu',
+        onSelect = function()
+            OpenWarehouseMenu(warehouseId)
+        end
+    })
+    
+    lib.registerContext({
+        id = 'warehouse_upgrade_menu',
+        title = 'Upgrade Warehouse #' .. warehouseId,
+        options = upgradeOptions
+    })
+    
+    lib.showContext('warehouse_upgrade_menu')
 end
 
 -- Enter warehouse with password prompt
@@ -334,6 +464,12 @@ end)
 
 -- Events
 RegisterNetEvent('esx_warehouse:refreshWarehouses', function()
+    RefreshWarehouses()
+end)
+
+RegisterNetEvent('esx_warehouse:forceRefresh', function()
+    -- Force immediate refresh for this player
+    Wait(500) -- Small delay to ensure server data is updated
     RefreshWarehouses()
 end)
 

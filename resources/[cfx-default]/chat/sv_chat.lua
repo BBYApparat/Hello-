@@ -102,7 +102,6 @@ RegisterCommand('ooc', function(source, args, rawCommand)
         })
     end
     
-    -- Log to Discord
     sendToDiscord("OOC", playerName, source, message, nearbyPlayers)
     
 end, false)
@@ -126,7 +125,6 @@ RegisterCommand('gooc', function(source, args, rawCommand)
         args = {playerName, message}
     })
     
-    -- Log to Discord
     sendToDiscord("GOOC", playerName, source, message, nil)
     
 end, false)
@@ -139,7 +137,7 @@ AddEventHandler('_chat:messageEntered', function(author, color, message)
     TriggerEvent('chatMessage', source, author, message)
 
     if not WasEventCanceled() then
-        --TriggerClientEvent('chatMessage', -1, 'OOC | '..author,  false, message)
+        TriggerClientEvent('chatMessage', -1, 'OOC | '..author,  false, message)
     end
 end)
 

@@ -328,6 +328,19 @@ isInVehicleForGlovebox = function()
     end
 end
 
+isInVehicleForTrunk = function()
+    local ped = PlayerPedId()
+    local vehicle = GetVehiclePedIsIn(ped, false)
+    CurrentTrunk = GetVehicleNumberPlateText(vehicle)
+    print(CurrentTrunk)
+    print(" function is trunk")
+    curVeh = vehicle
+    CurrentTrunk = nil
+        if Config.BannedPlates[tostring(CurrentTrunk)] or string.match(tostring(CurrentTrunk), "RENT") or string.match(tostring(CurrentTrunk), "TEST") or GetVehicleClass(vehicle) == 13 then
+        CurrentTrunk = nil
+    end
+end
+
 -- Getting trunk information
 getVehicleInformation = function(curVeh)
     local vehicleClass = GetVehicleClass(curVeh)
@@ -342,6 +355,30 @@ getVehicleInformation = function(curVeh)
     return nil
 end
 
+checkforLeftOveritemsonTrunk = function()
+    local foundWalkingStick, foundVape, foundBong
+    for k,v in pairs(inv) do
+        if v and v.name == "walkingstick" then
+            foundWalkingStick = true
+        end
+        if v and v.name == "vape" then
+            foundVape = true
+        end
+        if v and v.name == "bong" then
+            foundBong = true
+        end
+    end
+    if not foundVape then
+        RemoveVape()
+    end
+    if not foundBong then
+        RemoveBong()
+    end
+    if not foundWalkingStick then
+        RemoveWalkingStick()
+    end
+end
+    
 -- It gets triggered on "esx:setInventory" and resets some stuff for non leftover items
 checkforLeftOveritems = function(inv)
     local foundWalkingStick, foundVape, foundBong

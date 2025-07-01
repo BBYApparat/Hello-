@@ -1,4 +1,4 @@
--- Server-side warehouse management
+-- Complete Fixed ESX Warehouse Server
 local Warehouses = {}
 local ActiveInstances = {}
 
@@ -10,21 +10,29 @@ CreateThread(function()
             CREATE TABLE IF NOT EXISTS `warehouses` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
                 `location` int(11) NOT NULL,
-                `outside_coords` text NOT NULL,
+                `outside_coords` longtext NOT NULL,
                 `interior_type` varchar(50) NOT NULL DEFAULT 'warehouse_small',
                 `owned` tinyint(1) NOT NULL DEFAULT 0,
                 `owner` varchar(50) DEFAULT NULL,
                 `stashsize` int(11) NOT NULL DEFAULT 3000000,
                 `slots` int(11) NOT NULL DEFAULT 50,
                 `price` int(11) NOT NULL DEFAULT 50000,
-                `date_purchased` timestamp NULL DEFAULT NULL,
+                `date_purchased` datetime DEFAULT NULL,
                 `passwordset` tinyint(1) NOT NULL DEFAULT 1,
                 `password` varchar(255) NOT NULL DEFAULT 'changeme',
                 `created_by` varchar(50) DEFAULT NULL,
-                `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+                `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `location` (`location`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ]])
+        
+        -- Fix existing problematic data
+        MySQL.execute([[
+            UPDATE warehouses 
+            SET date_purchased = NULL 
+            WHERE date_purchased IS NOT NULL 
+            AND (date_purchased > '2030-01-01' OR date_purchased < '2020-01-01')
         ]])
         
         LoadWarehouses()
@@ -38,9 +46,10 @@ function LoadWarehouses()
         if result then
             for _, warehouse in pairs(result) do
                 local outsideCoords = json.decode(warehouse.outside_coords)
-                Warehouses[warehouse.location] = {
+                local warehouseId = tonumber(warehouse.location)
+                Warehouses[warehouseId] = {
                     id = warehouse.id,
-                    location = warehouse.location,
+                    location = warehouseId,
                     outside = vector4(outsideCoords.x, outsideCoords.y, outsideCoords.z, outsideCoords.w),
                     interior_type = warehouse.interior_type,
                     owned = warehouse.owned == 1,
@@ -66,6 +75,7 @@ end)
 
 -- Get warehouse details
 ESX.RegisterServerCallback('esx_warehouse:getDetails', function(source, cb, warehouseId)
+    warehouseId = tonumber(warehouseId)
     local warehouse = Warehouses[warehouseId]
     if warehouse then
         cb(warehouse)
@@ -76,6 +86,7 @@ end)
 
 -- Check if warehouse is owned
 ESX.RegisterServerCallback('esx_warehouse:isOwned', function(source, cb, warehouseId)
+    warehouseId = tonumber(warehouseId)
     local warehouse = Warehouses[warehouseId]
     if warehouse then
         cb(warehouse.owned)
@@ -92,6 +103,7 @@ ESX.RegisterServerCallback('esx_warehouse:isOwner', function(source, cb, warehou
         return 
     end
     
+    warehouseId = tonumber(warehouseId)
     local warehouse = Warehouses[warehouseId]
     if warehouse and warehouse.owner == xPlayer.identifier then
         cb(true)
@@ -102,6 +114,7 @@ end)
 
 -- Check if password is set
 ESX.RegisterServerCallback('esx_warehouse:isPasswordSet', function(source, cb, warehouseId)
+    warehouseId = tonumber(warehouseId)
     local warehouse = Warehouses[warehouseId]
     if warehouse then
         cb(warehouse.passwordset)
@@ -172,6 +185,7 @@ RegisterNetEvent('esx_warehouse:admin:deleteWarehouse', function(warehouseId)
         return
     end
     
+    warehouseId = tonumber(warehouseId)
     if Warehouses[warehouseId] then
         MySQL.execute('DELETE FROM warehouses WHERE location = ?', {warehouseId}, function(affectedRows)
             if affectedRows > 0 then
@@ -199,6 +213,9 @@ RegisterNetEvent('esx_warehouse:admin:giveWarehouse', function(warehouseId, targ
         return
     end
     
+    warehouseId = tonumber(warehouseId)
+    targetId = tonumber(targetId)
+    
     local xTarget = ESX.GetPlayerFromId(targetId)
     if not xTarget then
         TriggerClientEvent('esx:showNotification', source, 'Player not found!', 'error')
@@ -211,7 +228,7 @@ RegisterNetEvent('esx_warehouse:admin:giveWarehouse', function(warehouseId, targ
         return
     end
     
-    local currentTime = os.time() * 1000
+    local currentTime = os.date('%Y-%m-%d %H:%M:%S')
     
     MySQL.execute('UPDATE warehouses SET owned = 1, owner = ?, date_purchased = ? WHERE location = ?',
         {xTarget.identifier, currentTime, warehouseId}, function(affectedRows)
@@ -223,6 +240,12 @@ RegisterNetEvent('esx_warehouse:admin:giveWarehouse', function(warehouseId, targ
                 TriggerClientEvent('esx:showNotification', source, 'Warehouse given to ' .. xTarget.getName(), 'success')
                 TriggerClientEvent('esx:showNotification', targetId, 'You have been given a warehouse!', 'success')
                 TriggerClientEvent('esx_warehouse:refreshWarehouses', -1)
+                
+                -- Force immediate refresh for both admin and target
+                SetTimeout(100, function()
+                    TriggerClientEvent('esx_warehouse:forceRefresh', source)
+                    TriggerClientEvent('esx_warehouse:forceRefresh', targetId)
+                end)
             else
                 TriggerClientEvent('esx:showNotification', source, 'Failed to give warehouse!', 'error')
             end
@@ -237,6 +260,7 @@ RegisterNetEvent('esx_warehouse:buyWarehouse', function(warehouseId)
     
     if not xPlayer then return end
     
+    warehouseId = tonumber(warehouseId)
     local warehouse = Warehouses[warehouseId]
     if not warehouse then
         TriggerClientEvent('esx:showNotification', source, 'Warehouse not found!', 'error')
@@ -255,7 +279,7 @@ RegisterNetEvent('esx_warehouse:buyWarehouse', function(warehouseId)
     
     xPlayer.removeMoney(warehouse.price)
     
-    local currentTime = os.time() * 1000
+    local currentTime = os.date('%Y-%m-%d %H:%M:%S')
     
     MySQL.execute('UPDATE warehouses SET owned = 1, owner = ?, date_purchased = ? WHERE location = ?',
         {xPlayer.identifier, currentTime, warehouseId}, function(affectedRows)
@@ -266,6 +290,11 @@ RegisterNetEvent('esx_warehouse:buyWarehouse', function(warehouseId)
                 
                 TriggerClientEvent('esx:showNotification', source, 'Warehouse purchased successfully!', 'success')
                 TriggerClientEvent('esx_warehouse:refreshWarehouses', -1)
+                
+                -- Force immediate refresh for the buyer
+                SetTimeout(100, function()
+                    TriggerClientEvent('esx_warehouse:forceRefresh', source)
+                end)
             else
                 TriggerClientEvent('esx:showNotification', source, 'Failed to purchase warehouse!', 'error')
                 xPlayer.addMoney(warehouse.price) -- Refund
@@ -281,6 +310,7 @@ RegisterNetEvent('esx_warehouse:sellWarehouse', function(warehouseId)
     
     if not xPlayer then return end
     
+    warehouseId = tonumber(warehouseId)
     local warehouse = Warehouses[warehouseId]
     if not warehouse or warehouse.owner ~= xPlayer.identifier then
         TriggerClientEvent('esx:showNotification', source, 'You do not own this warehouse!', 'error')
@@ -300,6 +330,11 @@ RegisterNetEvent('esx_warehouse:sellWarehouse', function(warehouseId)
                 
                 TriggerClientEvent('esx:showNotification', source, 'Warehouse sold successfully!', 'success')
                 TriggerClientEvent('esx_warehouse:refreshWarehouses', -1)
+                
+                -- Force immediate refresh for the seller
+                SetTimeout(100, function()
+                    TriggerClientEvent('esx_warehouse:forceRefresh', source)
+                end)
             else
                 TriggerClientEvent('esx:showNotification', source, 'Failed to sell warehouse!', 'error')
             end
@@ -314,6 +349,7 @@ RegisterNetEvent('esx_warehouse:updatePassword', function(warehouseId, newPasswo
     
     if not xPlayer then return end
     
+    warehouseId = tonumber(warehouseId)
     local warehouse = Warehouses[warehouseId]
     if not warehouse or (warehouse.owner ~= xPlayer.identifier and not IsPlayerAdmin(source)) then
         TriggerClientEvent('esx:showNotification', source, 'You do not have permission!', 'error')
@@ -341,6 +377,7 @@ RegisterNetEvent('esx_warehouse:enterWarehouse', function(warehouseId, password)
     
     if not xPlayer then return end
     
+    warehouseId = tonumber(warehouseId)
     local warehouse = Warehouses[warehouseId]
     if not warehouse then
         TriggerClientEvent('esx:showNotification', source, 'Warehouse not found!', 'error')
@@ -407,6 +444,7 @@ end)
 -- Open stash
 RegisterNetEvent('esx_warehouse:openStash', function(warehouseId)
     local source = source
+    warehouseId = tonumber(warehouseId)
     local warehouse = Warehouses[warehouseId]
     
     if not warehouse then
@@ -434,6 +472,7 @@ RegisterNetEvent('esx_warehouse:policeRaid', function(warehouseId)
         return
     end
     
+    warehouseId = tonumber(warehouseId)
     local warehouse = Warehouses[warehouseId]
     if not warehouse then
         TriggerClientEvent('esx:showNotification', source, 'Warehouse not found!', 'error')
@@ -453,6 +492,140 @@ RegisterNetEvent('esx_warehouse:policeRaid', function(warehouseId)
     if Config.Debug then
         print("^2[ESX Warehouses]^7 Police raid on warehouse " .. warehouseId .. " by " .. xPlayer.getName())
     end
+end)
+
+-- Warehouse renewal
+RegisterNetEvent('esx_warehouse:renewWarehouse', function(warehouseId)
+    local source = source
+    local xPlayer = ESX.GetPlayerFromId(source)
+    
+    if not xPlayer then return end
+    
+    warehouseId = tonumber(warehouseId)
+    local warehouse = Warehouses[warehouseId]
+    if not warehouse or warehouse.owner ~= xPlayer.identifier then
+        TriggerClientEvent('esx:showNotification', source, 'You do not own this warehouse!', 'error')
+        return
+    end
+    
+    if xPlayer.getMoney() < warehouse.price then
+        TriggerClientEvent('esx:showNotification', source, 'Insufficient funds!', 'error')
+        return
+    end
+    
+    xPlayer.removeMoney(warehouse.price)
+    
+    -- Proper date calculation for renewal
+    local renewalDate
+    if warehouse.date_purchased then
+        -- Add 7 days to current date_purchased
+        renewalDate = os.date('%Y-%m-%d %H:%M:%S', os.time() + (7 * 24 * 60 * 60))
+    else
+        -- If no date_purchased, start from now
+        renewalDate = os.date('%Y-%m-%d %H:%M:%S', os.time() + (7 * 24 * 60 * 60))
+    end
+    
+    MySQL.execute('UPDATE warehouses SET date_purchased = ? WHERE location = ?',
+        {renewalDate, warehouseId}, function(affectedRows)
+            if affectedRows > 0 then
+                warehouse.date_purchased = renewalDate
+                TriggerClientEvent('esx:showNotification', source, 'Warehouse renewed for 7 days!', 'success')
+            else
+                TriggerClientEvent('esx:showNotification', source, 'Failed to renew warehouse!', 'error')
+                xPlayer.addMoney(warehouse.price) -- Refund
+            end
+        end
+    )
+end)
+
+-- Upgrade warehouse size
+RegisterNetEvent('esx_warehouse:upgradeSize', function(warehouseId, sizeIncrease)
+    local source = source
+    local xPlayer = ESX.GetPlayerFromId(source)
+    
+    if not xPlayer then return end
+    
+    warehouseId = tonumber(warehouseId)
+    local warehouse = Warehouses[warehouseId]
+    if not warehouse or warehouse.owner ~= xPlayer.identifier then
+        TriggerClientEvent('esx:showNotification', source, 'You do not own this warehouse!', 'error')
+        return
+    end
+    
+    local upgradeCost = 0
+    if sizeIncrease == 500 then
+        upgradeCost = Config.Upgradation.StashSize["500 Kg"]
+    elseif sizeIncrease == 1000 then
+        upgradeCost = Config.Upgradation.StashSize["1000 Kg"]
+    elseif sizeIncrease == 1500 then
+        upgradeCost = Config.Upgradation.StashSize["1500 Kg"]
+    end
+    
+    if xPlayer.getMoney() < upgradeCost then
+        TriggerClientEvent('esx:showNotification', source, 'Insufficient funds! Need $' .. upgradeCost, 'error')
+        return
+    end
+    
+    xPlayer.removeMoney(upgradeCost)
+    
+    local newSize = warehouse.stashsize + (sizeIncrease * 1000)
+    
+    MySQL.execute('UPDATE warehouses SET stashsize = ? WHERE location = ?',
+        {newSize, warehouseId}, function(affectedRows)
+            if affectedRows > 0 then
+                warehouse.stashsize = newSize
+                TriggerClientEvent('esx:showNotification', source, 'Storage upgraded to ' .. (newSize/1000) .. 'kg!', 'success')
+            else
+                TriggerClientEvent('esx:showNotification', source, 'Failed to upgrade storage!', 'error')
+                xPlayer.addMoney(upgradeCost) -- Refund
+            end
+        end
+    )
+end)
+
+-- Upgrade warehouse slots
+RegisterNetEvent('esx_warehouse:upgradeSlots', function(warehouseId, slotIncrease)
+    local source = source
+    local xPlayer = ESX.GetPlayerFromId(source)
+    
+    if not xPlayer then return end
+    
+    warehouseId = tonumber(warehouseId)
+    local warehouse = Warehouses[warehouseId]
+    if not warehouse or warehouse.owner ~= xPlayer.identifier then
+        TriggerClientEvent('esx:showNotification', source, 'You do not own this warehouse!', 'error')
+        return
+    end
+    
+    local upgradeCost = 0
+    if slotIncrease == 20 then
+        upgradeCost = Config.Upgradation.Slots["+20"]
+    elseif slotIncrease == 40 then
+        upgradeCost = Config.Upgradation.Slots["+40"]
+    elseif slotIncrease == 60 then
+        upgradeCost = Config.Upgradation.Slots["+60"]
+    end
+    
+    if xPlayer.getMoney() < upgradeCost then
+        TriggerClientEvent('esx:showNotification', source, 'Insufficient funds! Need $' .. upgradeCost, 'error')
+        return
+    end
+    
+    xPlayer.removeMoney(upgradeCost)
+    
+    local newSlots = warehouse.slots + slotIncrease
+    
+    MySQL.execute('UPDATE warehouses SET slots = ? WHERE location = ?',
+        {newSlots, warehouseId}, function(affectedRows)
+            if affectedRows > 0 then
+                warehouse.slots = newSlots
+                TriggerClientEvent('esx:showNotification', source, 'Slots upgraded to ' .. newSlots .. '!', 'success')
+            else
+                TriggerClientEvent('esx:showNotification', source, 'Failed to upgrade slots!', 'error')
+                xPlayer.addMoney(upgradeCost) -- Refund
+            end
+        end
+    )
 end)
 
 -- Admin commands
