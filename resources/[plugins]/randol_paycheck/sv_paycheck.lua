@@ -12,7 +12,7 @@ local function AddToPaycheck(cid, amount)
     
     local src = GetSourceFromIdentifier(cid)
     if src then
-        DoNotification(src, ('$%s was added to your paycheck. New Total: $%s'):format(amount, result.amount), 'success')
+        DoNotification(src, ('You have recieved your payment$%s.'):format(amount), 'success')
     end
 end
 exports('AddToPaycheck', AddToPaycheck)
