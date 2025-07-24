@@ -95,19 +95,22 @@ local function setupDispatch()
     PlayerData = {
         charinfo = {
             firstname = playerInfo.firstName or "Unknown",
-            lastname = playerInfo.lastName or "Unknown"
+            lastname = playerInfo.lastName or "Unknown",
+            phone = playerInfo.phone or "Unknown"
         },
         metadata = {
             callsign = playerInfo.metadata and playerInfo.metadata.callsign or "Unknown"
         },
         identifier = playerInfo.identifier,
+        citizenid = playerInfo.identifier, -- ESX compatibility
         job = {
             type = playerInfo.job.name,
             name = playerInfo.job.name,
             label = playerInfo.job.label,
             grade = playerInfo.job.grade,
             grade_name = playerInfo.job.grade_name,
-            grade_label = playerInfo.job.grade_label
+            grade_label = playerInfo.job.grade_label,
+            duty = playerInfo.job.duty
         },
     }
 
@@ -145,8 +148,12 @@ local function isJobValid(data)
     local jobType = PlayerData.job.type
     local jobName = PlayerData.job.name
 
+    -- For ESX compatibility, treat jobType and jobName as the same thing
+    if not jobType then jobType = jobName end
+    if not jobName then jobName = jobType end
+
     if type(data) == "string" then
-        return lib.table.contains(Config.Jobs, data) or lib.table.contains(Config.Jobs, jobName)
+        return lib.table.contains(Config.Jobs, data) or lib.table.contains(Config.Jobs, jobName) or lib.table.contains(Config.Jobs, jobType)
     elseif type(data) == "table" then
         return lib.table.contains(data, jobType) or lib.table.contains(data, jobName)
     end
@@ -276,6 +283,14 @@ local OpenDispatchMenu = lib.addKeybind({
     onPressed = openMenu,
 })
 
+-- Y key for GPS waypoint
+local SetGPSWaypoint = lib.addKeybind({
+    name = 'SetGPSWaypoint',
+    description = 'Set GPS waypoint to latest dispatch call',
+    defaultKey = 'Y',
+    onPressed = setWaypoint,
+})
+
 -- Events
 RegisterNetEvent('ps-dispatch:client:notify', function(data, source)
     if data.alertTime == nil then data.alertTime = Config.AlertTime end
@@ -298,6 +313,7 @@ RegisterNetEvent('ps-dispatch:client:notify', function(data, source)
     addBlip(data, Config.Blips[data.codeName] or data.alert)
 
     RespondToDispatch:disable(false)
+    SetGPSWaypoint:disable(false)
     OpenDispatchMenu:disable(true)
 
     local startTime = GetGameTimer()
@@ -315,6 +331,7 @@ RegisterNetEvent('ps-dispatch:client:notify', function(data, source)
     timerCheck = false
     OpenDispatchMenu:disable(false)
     RespondToDispatch:disable(true)
+    SetGPSWaypoint:disable(true)
 end)
 
 RegisterNetEvent('ps-dispatch:client:openMenu', function(data)
@@ -449,4 +466,21 @@ RegisterNUICallback("refreshAlerts", function(data, cb)
     local data = lib.callback.await('ps-dispatch:callback:getCalls', false)
     SendNUIMessage({ action = 'setDispatchs', data = data, })
     cb("ok")
+end)
+
+-- Clear all dispatch calls event
+RegisterNetEvent('ps-dispatch:client:clearAll', function()
+    -- Clear all blips
+    for k, v in pairs(blips) do
+        RemoveBlip(v)
+    end
+    for k, v in pairs(radius2) do
+        RemoveBlip(v)
+    end
+    blips = {}
+    radius2 = {}
+    
+    -- Clear UI
+    SendNUIMessage({ action = 'clearAll' })
+    lib.notify({ description = 'All dispatch calls cleared', position = 'top', type = 'success' })
 end)

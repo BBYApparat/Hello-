@@ -33,7 +33,9 @@ RegisterServerEvent('ps-dispatch:server:attach', function(id, player)
     for i=1, #calls do
         if calls[i]['id'] == id then
             for j = 1, #calls[i]['units'] do
-                if calls[i]['units'][j]['citizenid'] == player.citizenid then
+                local playerIdentifier = player.citizenid or player.identifier
+                local unitIdentifier = calls[i]['units'][j]['citizenid'] or calls[i]['units'][j]['identifier']
+                if unitIdentifier == playerIdentifier then
                     return
                 end
             end
@@ -48,7 +50,9 @@ RegisterServerEvent('ps-dispatch:server:detach', function(id, player)
         if calls[i]['id'] == id then
             if calls[i]['units'] and (#calls[i]['units'] or 0) > 0 then
                 for j = #calls[i]['units'], 1, -1 do
-                    if calls[i]['units'][j]['citizenid'] == player.citizenid then
+                    local playerIdentifier = player.citizenid or player.identifier
+                    local unitIdentifier = calls[i]['units'][j]['citizenid'] or calls[i]['units'][j]['identifier']
+                    if unitIdentifier == playerIdentifier then
                         table.remove(calls[i]['units'], j)
                     end
                 end
@@ -65,6 +69,13 @@ end)
 
 lib.callback.register('ps-dispatch:callback:getCalls', function(source)
     return calls
+end)
+
+-- Clear all calls for clients
+RegisterServerEvent('ps-dispatch:server:clearCalls', function()
+    calls = {}
+    callCount = 0
+    TriggerClientEvent('ps-dispatch:client:clearAll', -1)
 end)
 
 -- Commands
@@ -103,5 +114,51 @@ lib.addCommand('311a', {
 }, function(source, args, raw)
     local fullMessage = raw:sub(5)
     TriggerClientEvent('ps-dispatch:client:sendEmergencyMsg', source, fullMessage, "311", true)
+end)
+
+-- ESX Compatibility - Add server callbacks
+if GetResourceState('es_extended') == 'started' then
+    ESX = exports['es_extended']:getSharedObject()
+    
+    -- ESX callback for checking if player has item
+    ESX.RegisterServerCallback('ps-dispatch:server:hasItem', function(source, cb, items, amount)
+        local xPlayer = ESX.GetPlayerFromId(source)
+        if not xPlayer then
+            cb(false)
+            return
+        end
+        
+        amount = amount or 1
+        
+        if type(items) == 'string' then
+            items = {items}
+        end
+        
+        for _, itemName in ipairs(items) do
+            local item = xPlayer.getInventoryItem(itemName)
+            if item and item.count >= amount then
+                cb(true)
+                return
+            end
+        end
+        
+        cb(false)
+    end)
+end
+
+-- Clear dispatch command
+lib.addCommand('cdp', {
+    help = 'Clear all dispatch calls (LEO only)',
+    restricted = {'group.admin', 'group.police', 'group.sheriff'}
+}, function(source, args, raw)
+    calls = {}
+    callCount = 0
+    TriggerClientEvent('ps-dispatch:client:clearAll', -1)
+    if GetResourceState('es_extended') == 'started' then
+        local xPlayer = ESX.GetPlayerFromId(source)
+        if xPlayer then
+            xPlayer.showNotification('All dispatch calls cleared.', 'success')
+        end
+    end
 end)
 

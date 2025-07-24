@@ -4,14 +4,28 @@ Config.ShortCalls = false -- Dispatch notifications are sent containing only the
 Config.Debug = false -- Enables debug and send alerts when leo break the law.
 
 Config.RespondKeybind = 'E'
-Config.OpenDispatchMenu = 'O'
+Config.OpenDispatchMenu = 'GRAVE' -- Backtick key (`)
 Config.AlertTime = 5     -- Specify the duration for the alert to appear on the screen. The default time is 5 seconds for all alerts. To set a different duration for specific alerts, change the value in `alertTime = nil` found in the alerts.lua file.
 
 Config.MaxCallList = 25 -- maximum dispatch calls in dispatch list
 Config.OnDutyOnly = true -- Set true if only on duty players can see the alert
 Config.Jobs = { -- Job Types or names that can access the dispatch menu. If you want to allow more jobs to see certain dispatch alerts. Go to alerts.lua and add the job name to the alert.
     "leo",
-    "ems"
+    "ems",
+    "police",
+    "sheriff",
+    "ambulance",
+    "fire"
+}
+
+-- ESX Jobs that have duty system (set to true if job uses duty, false if always on duty)
+Config.JobsWithDuty = {
+    ['police'] = true,
+    ['sheriff'] = true,
+    ['ambulance'] = true,
+    ['fire'] = true,
+    ['leo'] = true,
+    ['ems'] = true
 }
 
 Config.AlertCommandCooldown = 60 -- this would make the command work every 60 seconds to avoid spamming

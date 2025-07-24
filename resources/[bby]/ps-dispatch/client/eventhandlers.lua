@@ -39,12 +39,13 @@ local function BlacklistedWeapon(ped)
 end
 
 AddEventHandler('CEventGunShot', function(witnesses, ped)
-    if IsPedCurrentWeaponSilenced(cache.ped) then return end
+    local playerPed = PlayerPedId()
+    if IsPedCurrentWeaponSilenced(playerPed) then return end
     if inNoDispatchZone then return end
-    if BlacklistedWeapon(cache.ped) then return end
+    if BlacklistedWeapon(playerPed) then return end
 
     WaitTimer('Shooting', function()
-        if cache.ped ~= ped then return end
+        if playerPed ~= ped then return end
 
         if PlayerData.job.type == 'leo' then
             if not Config.Debug then
@@ -59,7 +60,7 @@ AddEventHandler('CEventGunShot', function(witnesses, ped)
 
         if witnesses and not isPedAWitness(witnesses, ped) then return end
 
-        if cache.vehicle then
+        if IsPedInAnyVehicle(playerPed, false) then
             exports['ps-dispatch']:VehicleShooting()
         else
             exports['ps-dispatch']:Shooting()
@@ -69,7 +70,7 @@ end)
 
 AddEventHandler('CEventShockingSeenMeleeAction', function(witnesses, ped)
     WaitTimer('Melee', function()
-        if cache.ped ~= ped then return end
+        if playerPed ~= ped then return end
         if witnesses and not isPedAWitness(witnesses, ped) then return end
         if not IsPedInMeleeCombat(ped) then return end
 
@@ -79,7 +80,7 @@ end)
 
 AddEventHandler('CEventPedJackingMyVehicle', function(_, ped)
     WaitTimer('Autotheft', function()
-        if cache.ped ~= ped then return end
+        if playerPed ~= ped then return end
         local vehicle = GetVehiclePedIsUsing(ped, true)
         exports['ps-dispatch']:CarJacking(vehicle)
     end)
@@ -87,7 +88,7 @@ end)
 
 AddEventHandler('CEventShockingCarAlarm', function(_, ped)
     WaitTimer('Autotheft', function()
-        if cache.ped ~= ped then return end
+        if playerPed ~= ped then return end
         local vehicle = GetVehiclePedIsUsing(ped, true)
         exports['ps-dispatch']:VehicleTheft(vehicle)
     end)
@@ -105,7 +106,7 @@ AddEventHandler('gameEventTriggered', function(name, args)
     local victim = args[1]
     local isDead = args[6] == 1
     WaitTimer('PlayerDowned', function()
-        if not victim or victim ~= cache.ped then return end
+        if not victim or victim ~= PlayerPedId() then return end
         if not isDead then return end
 
         if PlayerData.job.type == 'officer' then
@@ -142,7 +143,7 @@ for i = 1, #SpeedingEvents do
             if currentTime - SpeedTrigger < 10000 then
                 return
             end
-            if cache.ped ~= ped then return end
+            if playerPed ~= ped then return end
 
             if PlayerData.job.type == 'leo' then
                 if not Config.Debug then
@@ -150,12 +151,13 @@ for i = 1, #SpeedingEvents do
                 end
             end
 
-            local vehicleClass = GetVehicleClass(cache.vehicle)
+            local currentVehicle = GetVehiclePedIsIn(playerPed, false)
+            local vehicleClass = GetVehicleClass(currentVehicle)
             if exemptVehicleClass[vehicleClass] then return end
 
-            if GetEntitySpeed(cache.vehicle) * 3.6 < (80 + math.random(0, 20)) then return end
+            if GetEntitySpeed(currentVehicle) * 3.6 < (80 + math.random(0, 20)) then return end
 
-            if cache.ped ~= GetPedInVehicleSeat(cache.vehicle, -1) then return end
+            if playerPed ~= GetPedInVehicleSeat(currentVehicle, -1) then return end
 
             exports['ps-dispatch']:SpeedingVehicle()
             SpeedTrigger = GetGameTimer()

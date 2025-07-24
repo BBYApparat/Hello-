@@ -41,8 +41,14 @@ end
 exports('CustomAlert', CustomAlert)
 
 local function VehicleTheft()
-    local coords = GetEntityCoords(cache.ped)
-    local vehicle = GetVehicleData(cache.vehicle)
+    local coords = GetEntityCoords(PlayerPedId())
+    local ped = PlayerPedId()
+    local vehicle = nil
+    if IsPedInAnyVehicle(ped, false) then
+        vehicle = GetVehicleData(GetVehiclePedIsIn(ped, false))
+    else
+        vehicle = GetVehicleData(GetClosestVehicle())
+    end
 
     local dispatchData = {
         message = locale('vehicletheft'),
@@ -67,7 +73,7 @@ end
 exports('VehicleTheft', VehicleTheft)
 
 local function Shooting()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('shooting'),
@@ -88,7 +94,7 @@ end
 exports('Shooting', Shooting)
 
 local function Hunting()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('hunting'),
@@ -109,8 +115,14 @@ end
 exports('Hunting', Hunting)
 
 local function VehicleShooting()
-    local coords = GetEntityCoords(cache.ped)
-    local vehicle = GetVehicleData(cache.vehicle)
+    local coords = GetEntityCoords(PlayerPedId())
+    local ped = PlayerPedId()
+    local vehicle = nil
+    if IsPedInAnyVehicle(ped, false) then
+        vehicle = GetVehicleData(GetVehiclePedIsIn(ped, false))
+    else
+        vehicle = GetVehicleData(GetClosestVehicle())
+    end
 
     local dispatchData = {
         message = locale('vehicleshots'),
@@ -136,8 +148,14 @@ end
 exports('VehicleShooting', VehicleShooting)
 
 local function SpeedingVehicle()
-    local coords = GetEntityCoords(cache.ped)
-    local vehicle = GetVehicleData(cache.vehicle)
+    local coords = GetEntityCoords(PlayerPedId())
+    local ped = PlayerPedId()
+    local vehicle = nil
+    if IsPedInAnyVehicle(ped, false) then
+        vehicle = GetVehicleData(GetVehiclePedIsIn(ped, false))
+    else
+        vehicle = GetVehicleData(GetClosestVehicle())
+    end
 
     local dispatchData = {
         message = locale('speeding'),
@@ -162,7 +180,7 @@ end
 exports('SpeedingVehicle', SpeedingVehicle)
 
 local function Fight()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('melee'),
@@ -182,7 +200,7 @@ end
 exports('Fight', Fight)
 
 local function PrisonBreak()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('prisonbreak'),
@@ -202,7 +220,7 @@ end
 exports('PrisonBreak', PrisonBreak)
 
 local function StoreRobbery(camId)
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('storerobbery'),
@@ -223,7 +241,7 @@ end
 exports('StoreRobbery', StoreRobbery)
 
 local function FleecaBankRobbery(camId)
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('fleecabank'),
@@ -244,7 +262,7 @@ end
 exports('FleecaBankRobbery', FleecaBankRobbery)
 
 local function PaletoBankRobbery(camId)
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('paletobank'),
@@ -265,7 +283,7 @@ end
 exports('PaletoBankRobbery', PaletoBankRobbery)
 
 local function PacificBankRobbery(camId)
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('pacificbank'),
@@ -286,7 +304,7 @@ end
 exports('PacificBankRobbery', PacificBankRobbery)
 
 local function VangelicoRobbery(camId)
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('vangelico'),
@@ -307,7 +325,7 @@ end
 exports('VangelicoRobbery', VangelicoRobbery)
 
 local function HouseRobbery()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('houserobbery'),
@@ -327,7 +345,7 @@ end
 exports('HouseRobbery', HouseRobbery)
 
 local function YachtHeist()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('yachtheist'),
@@ -347,7 +365,7 @@ end
 exports('YachtHeist', YachtHeist)
 
 local function DrugSale()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('drugsell'),
@@ -367,7 +385,7 @@ end
 exports('DrugSale', DrugSale)
 
 local function SuspiciousActivity()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('susactivity'),
@@ -387,7 +405,7 @@ end
 exports('SuspiciousActivity', SuspiciousActivity)
 
 local function CarJacking(vehicle)
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
     local vehicle = GetVehicleData(vehicle)
 
     local dispatchData = {
@@ -413,7 +431,7 @@ end
 exports('CarJacking', CarJacking)
 
 local function InjuriedPerson()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('persondown'),
@@ -433,7 +451,7 @@ end
 exports('InjuriedPerson', InjuriedPerson)
 
 local function DeceasedPerson()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('civbled'),
@@ -453,7 +471,7 @@ end
 exports('DeceasedPerson', DeceasedPerson)
 
 local function OfficerDown()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('officerdown'),
@@ -477,7 +495,7 @@ exports('OfficerDown', OfficerDown)
 RegisterNetEvent("ps-dispatch:client:officerdown", function() OfficerDown() end)
 
 local function OfficerBackup()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('officerbackup'),
@@ -501,7 +519,7 @@ exports('OfficerBackup', OfficerBackup)
 RegisterNetEvent("ps-dispatch:client:officerbackup", function() OfficerBackup() end)
 
 local function OfficerInDistress()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('officerdistress'),
@@ -523,7 +541,7 @@ end
 exports('OfficerInDistress', OfficerInDistress)
 
 local function EmsDown()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('emsdown'),
@@ -547,7 +565,7 @@ exports('EmsDown', EmsDown)
 RegisterNetEvent("ps-dispatch:client:emsdown", function() EmsDown() end)
 
 local function Explosion()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('explosion'),
@@ -567,7 +585,7 @@ end
 exports('Explosion', Explosion)
 
 local function PhoneCall(message, anonymous, job, type)
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     if IsCallAllowed(message) then
         PhoneAnimation()
@@ -611,7 +629,7 @@ end)
 
 
 local function ArtGalleryRobbery()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('artgalleryrobbery'),
@@ -630,7 +648,7 @@ end
 exports('ArtGalleryRobbery', ArtGalleryRobbery)
 
 local function HumaneRobbery()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('humanelabsrobbery'),
@@ -650,7 +668,7 @@ end
 exports('HumaneRobbery', HumaneRobbery)
 
 local function TrainRobbery()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('trainrobbery'),
@@ -670,7 +688,7 @@ end
 exports('TrainRobbery', TrainRobbery)
 
 local function VanRobbery()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('vanrobbery'),
@@ -690,7 +708,7 @@ end
 exports('VanRobbery', VanRobbery)
 
 local function UndergroundRobbery()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('undergroundrobbery'),
@@ -709,7 +727,7 @@ end
 exports('UndergroundRobbery', UndergroundRobbery)
 
 local function DrugBoatRobbery()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('drugboatrobbery'),
@@ -729,7 +747,7 @@ end
 exports('DrugBoatRobbery', DrugBoatRobbery)
 
 local function UnionRobbery()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('unionrobbery'),
@@ -749,7 +767,7 @@ end
 exports('UnionRobbery', UnionRobbery)
 
 local function CarBoosting(vehicle)
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
     local vehicle = GetVehicleData(vehicle or cache.vehicle)
 
     local dispatchData = {
@@ -775,7 +793,7 @@ end
 exports('CarBoosting', CarBoosting)
 
 local function SignRobbery()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('signrobbery'),
@@ -795,7 +813,7 @@ end
 exports('SignRobbery', SignRobbery)
 
 local function BobcatSecurityHeist()
-    local coords = GetEntityCoords(cache.ped)
+    local coords = GetEntityCoords(PlayerPedId())
 
     local dispatchData = {
         message = locale('bobcatsecurity'),
