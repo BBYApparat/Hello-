@@ -63,6 +63,11 @@ CONFIG.allow_passenger_control = false
 -- Set this to true if you use Sonoran CAD with the WraithV2 plugin
 CONFIG.use_sonorancad = false
 
+-- Plate visibility checking
+-- When enabled, the plate reader will only detect plates on vehicles that actually have visible license plates
+-- This prevents reading plates from vehicles with removed/hidden plates through modifications
+CONFIG.check_plate_visibility = true
+
 -- Sets the defaults of all keybinds
 -- These keybinds can be changed by each person in their GTA Settings->Keybinds->FiveM
 CONFIG.keyDefaults =

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.fivem.net)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:forum.cfx.re)"
+    ],
+    "deny": []
+  }
+}

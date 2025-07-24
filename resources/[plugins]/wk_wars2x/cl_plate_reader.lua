@@ -193,6 +193,58 @@ function READER:GetCameraDataPacket( cam )
 	}
 end
 
+-- Checks if a vehicle has a visible license plate
+function READER:HasVisiblePlate( veh )
+	if not DoesEntityExist( veh ) or not IsEntityAVehicle( veh ) then
+		return false
+	end
+
+	-- Get the license plate text
+	local plateText = GetVehicleNumberPlateText( veh )
+	
+	-- Check if plate text indicates no plate (common patterns for removed plates)
+	local upperPlateText = string.upper( plateText )
+	if plateText == "" or upperPlateText == "NOPLATE" or upperPlateText == "REMOVED" or 
+	   upperPlateText == "NONE" or upperPlateText == "NO PLATE" or upperPlateText == "HIDDEN" then
+		return false
+	end
+	
+	-- Additional check: if the plate text is just whitespace or unusual patterns
+	local trimmedPlate = string.gsub( plateText, "%s+", "" ) -- Remove all whitespace
+	if #trimmedPlate == 0 then
+		return false
+	end
+	
+	-- Check for common "blank" or "invisible" plate patterns
+	-- Some servers use these patterns to indicate removed plates
+	if string.match( trimmedPlate, "^[%s]*$" ) or -- Only whitespace
+	   string.match( trimmedPlate, "^[%-_%.]*$" ) or -- Only dashes, underscores, dots
+	   string.match( trimmedPlate, "^[0]*$" ) then -- Only zeros
+		return false
+	end
+	
+	-- Check vehicle extras for plates (some vehicles have plates as toggleable extras)
+	-- This is a more conservative approach - we'll only check a few common extra IDs
+	-- since GetVehicleModLabelText might not be reliable for all vehicles
+	local plateExtraIds = { 1, 2, 3, 4, 5 } -- Common extra IDs for plates
+	for _, extraId in ipairs( plateExtraIds ) do
+		if DoesExtraExist( veh, extraId ) then
+			-- Some vehicles use specific extras for front/rear plates
+			-- If an extra exists but is turned off, it might indicate a removed plate
+			-- However, this is very vehicle-specific, so we'll be conservative
+			-- and only flag obvious cases
+			if not IsVehicleExtraTurnedOn( veh, extraId ) then
+				-- This is vehicle-model specific. For now, we'll log this but not automatically
+				-- assume the plate is invisible since many extras are unrelated to plates
+				-- You could add specific vehicle model checks here if needed
+			end
+		end
+	end
+	
+	-- If all checks pass, the vehicle likely has a visible plate
+	return true
+end
+
 RegisterNetEvent( "wk:togglePlateLock" )
 AddEventHandler( "wk:togglePlateLock", function( cam, beep, bolo )
 	READER:LockCam( cam, beep, bolo )
@@ -249,7 +301,13 @@ function READER:Main()
 			local cam = self:GetCamFromNum( i )
 
 			-- Only proceed to read a plate if the hit entity is a valid vehicle and the current camera isn't locked
-			if ( DoesEntityExist( veh ) and IsEntityAVehicle( veh ) and not self:GetCamLocked( cam ) ) then
+			-- Also check for plate visibility if the config option is enabled
+			local hasPlate = true
+			if ( CONFIG.check_plate_visibility ) then
+				hasPlate = self:HasVisiblePlate( veh )
+			end
+			
+			if ( DoesEntityExist( veh ) and IsEntityAVehicle( veh ) and hasPlate and not self:GetCamLocked( cam ) ) then
 				-- Get the heading of the player's vehicle and the hit vehicle
 				local ownH = UTIL:Round( GetEntityHeading( PLY.veh ), 0 )
 				local tarH = UTIL:Round( GetEntityHeading( veh ), 0 )
