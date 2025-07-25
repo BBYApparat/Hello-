@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Police Radar System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <div id="radar-container" class="hidden">
+        <div class="radar-header">
+            <div class="header-content">
+                <h2>Helicopter Radar System</h2>
+                <div class="radar-info">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">ACTIVE</span>
+                </div>
+            </div>
+            <button id="close-btn" onclick="closeRadar()" aria-label="Close Radar">×</button>
+        </div>
+        
+        <div class="radar-controls">
+            <div class="control-group">
+                <button class="control-btn active" data-filter="all">All Aircraft</button>
+                <button class="control-btn" data-filter="police">Police Only</button>
+                <button class="control-btn" data-filter="emergency">Emergency Services</button>
+            </div>
+            <div class="radar-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="total-aircraft">0</span>
+                    <span class="stat-label">Total</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="map-container">
+            <div id="map">
+                <div class="map-overlay"></div>
+                <img src="map.png" alt="Los Santos Map" class="map-image">
+                <div id="helicopters-layer"></div>
+                <div class="map-grid"></div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color police"></div>
+                <span>Police Department</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color ambulance"></div>
+                <span>Emergency Medical</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color civilian"></div>
+                <span>Civilian Aircraft</span>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
