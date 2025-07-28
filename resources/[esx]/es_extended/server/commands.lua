@@ -681,3 +681,132 @@ ESX.RegisterCommand("players", "admin", function()
         print(("^1[^2ID: ^5%s^0 | ^2Name : ^5%s^0 | ^2Group : ^5%s^0 | ^2Identifier : ^5%s^1]^0\n"):format(xPlayer.source, xPlayer.getName(), xPlayer.getGroup(), xPlayer.identifier))
     end
 end, true)
+
+ESX.RegisterCommand(
+    "admincar",
+    "admin",
+    function(xPlayer, args, showError)
+        local targetPlayer = args.playerId or xPlayer
+        
+        if not targetPlayer then
+            return showError("[^1ERROR^7] Target player not found")
+        end
+
+        local playerPed = GetPlayerPed(targetPlayer.source)
+        local playerCoords = GetEntityCoords(playerPed)
+        local playerHeading = GetEntityHeading(playerPed)
+        local playerVehicle = GetVehiclePedIsIn(playerPed)
+
+        if playerVehicle and playerVehicle ~= 0 then
+            local vehicleModel = GetEntityModel(playerVehicle)
+            local vehicleName = GetDisplayNameFromVehicleModel(vehicleModel)
+            
+            if Config.AdminLogging then
+                ESX.DiscordLogFields("UserActions", "Give Current Car /admincar Triggered!", "pink", {
+                    { name = "Admin", value = xPlayer and xPlayer.name or "Server Console", inline = true },
+                    { name = "Admin ID", value = xPlayer and xPlayer.source or "Unknown ID", inline = true },
+                    { name = "Target", value = targetPlayer.name, inline = true },
+                    { name = "Target ID", value = targetPlayer.source, inline = true },
+                    { name = "Vehicle Given", value = vehicleName, inline = true },
+                })
+            end
+            
+            SetEntityAsMissionEntity(playerVehicle, true, true)
+            SetVehicleHasBeenOwnedByPlayer(playerVehicle, true)
+            
+            xPlayer.showNotification(("Vehicle given to %s"):format(targetPlayer.name), true, false, 140)
+            if targetPlayer.source ~= xPlayer.source then
+                targetPlayer.showNotification("You have been given this vehicle by an admin", true, false, 140)
+            end
+            return
+        end
+
+        if not args.car or type(args.car) ~= "string" then
+            args.car = "adder"
+        end
+
+        if Config.AdminLogging then
+            ESX.DiscordLogFields("UserActions", "Spawn AdminCar /admincar Triggered!", "pink", {
+                { name = "Admin", value = xPlayer and xPlayer.name or "Server Console", inline = true },
+                { name = "Admin ID", value = xPlayer and xPlayer.source or "Unknown ID", inline = true },
+                { name = "Target", value = targetPlayer.name, inline = true },
+                { name = "Target ID", value = targetPlayer.source, inline = true },
+                { name = "Vehicle", value = args.car, inline = true },
+            })
+        end
+
+        ESX.OneSync.SpawnVehicle(args.car, playerCoords, playerHeading, upgrades, function(networkId)
+            if networkId then
+                local vehicle = NetworkGetEntityFromNetworkId(networkId)
+                for _ = 1, 20 do
+                    Wait(0)
+                    SetPedIntoVehicle(playerPed, vehicle, -1)
+
+                    if GetVehiclePedIsIn(playerPed, false) == vehicle then
+                        break
+                    end
+                end
+                if GetVehiclePedIsIn(playerPed, false) ~= vehicle then
+                    showError("[^1ERROR^7] The player could not be seated in the vehicle")
+                end
+            end
+        end)
+    end,
+    false,
+    {
+        help = "Give current car to player or spawn a new car",
+        validate = false,
+        arguments = {
+            { name = "car", validate = false, help = "Vehicle model name (ignored if player in car)", type = "string" },
+            { name = "playerId", validate = false, help = "Player ID (optional - defaults to self)", type = "player" },
+        },
+    }
+)
+
+ESX.RegisterCommand(
+    "fixgarage",
+    "admin",
+    function(xPlayer, args, showError)
+        if not args.plate or type(args.plate) ~= "string" then
+            return showError("[^1ERROR^7] Please provide a valid plate number")
+        end
+
+        local plate = string.upper(args.plate):gsub("%s+", "")
+        
+        MySQL.query('SELECT * FROM owned_vehicles WHERE plate = ?', { plate }, function(vehicles)
+            if vehicles and #vehicles > 0 then
+                local vehicle = vehicles[1]
+                
+                MySQL.update('UPDATE owned_vehicles SET stored = 1, parking = ? WHERE plate = ?', {
+                    'motelgarage', plate
+                }, function(affected)
+                    if affected > 0 then
+                        if Config.AdminLogging then
+                            ESX.DiscordLogFields("UserActions", "Fix Garage /fixgarage Triggered!", "green", {
+                                { name = "Admin", value = xPlayer and xPlayer.name or "Server Console", inline = true },
+                                { name = "Admin ID", value = xPlayer and xPlayer.source or "Unknown ID", inline = true },
+                                { name = "Plate", value = plate, inline = true },
+                                { name = "Owner", value = vehicle.owner, inline = true },
+                                { name = "Status", value = "Vehicle retrieved to all garages", inline = true },
+                            })
+                        end
+                        
+                        xPlayer.showNotification(("Vehicle with plate %s has been retrieved to all available garages"):format(plate), true, false, 140)
+                    else
+                        showError("[^1ERROR^7] Could not update vehicle status in database")
+                    end
+                end)
+            else
+                showError(("[^1ERROR^7] No vehicle found with plate: %s"):format(plate))
+            end
+        end)
+    end,
+    false,
+    {
+        help = "Retrieve a vehicle to all available garages by plate number",
+        validate = true,
+        arguments = {
+            { name = "plate", help = "Vehicle plate number", type = "string" },
+        },
+    }
+)
