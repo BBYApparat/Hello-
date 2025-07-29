@@ -2,7 +2,7 @@ Config = {}
 
 Config.DebugMode = false -- if true will enable debug mode  
 
-Config.RemoveInjuresWhenRevive = false -- if true when player revive will remove all injures else doctor will need to heal player
+Config.RemoveInjuresWhenRevive = true -- if true when player revive will remove all injures else doctor will need to heal player
 
 Config.UseTarget = true -- if true will use target else will use closest player
 
@@ -10,9 +10,9 @@ Config.OnlyWithAim = false -- if true player will need to aim to damage player e
 
 Config.Jobs = { "ambulance", "police" } -- job name that can heal players
 
-Config.ItemSelfTreatment = "bandageg" -- item name for self treatment
+Config.ItemSelfTreatment = "bandage" -- item name for self treatment
 
-Config.UsingQbLastStand = true -- if true will use laststand anim else will use default laststand
+Config.UsingQbLastStand = false -- if true will use laststand anim else will use default laststand
 
 Config.StopBleedingTime = 1 -- minutes
 
