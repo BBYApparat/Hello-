@@ -75,6 +75,7 @@ npm run build   # Builds to ../html/
 - `ps-dispatch` - Police/EMS dispatch system (Svelte + TypeScript) - Compatible with QBCore, includes preset alert exports
 - `al_mdt` - Alternative MDT system (Vue.js 3 + Bootstrap 5)
 - `ars_policejob` - Enhanced police job system with ESX integration
+- `s4-realisticdisease` - Advanced injury system with body part tracking, bleeding mechanics, and medical treatment UI
 - `bby_heists`, `bby_motels`, `bby_rental` - Custom job and activity systems
 - Various server-specific resources for farming, territories, and roleplay activities
 
@@ -115,17 +116,20 @@ npm run build   # Builds to ../html/
 
 ### Resource Manifest Structure
 Standard FiveM fxmanifest.lua structure:
-- `fx_version 'cerulean'` and `lua54 'yes'` for modern Lua
-- Dependency declarations (oxmysql, ox_lib common)
-- Client/server script organization
-- UI page definitions for NUI resources
+- `fx_version 'cerulean'` (or 'bodacious' for older resources) and `lua54 'yes'` for modern Lua
+- Dependency declarations (oxmysql, ox_lib common, mysql-async for legacy resources)
+- Client/server script organization with shared config.lua
+- UI page definitions for NUI resources with file declarations
+- `escrow_ignore` entries for open-source files in protected resources
 
 ### UI Development Patterns
 - **React + TypeScript**: Modern React with Vite, Zustand state management, Mantine UI (bub-mdt)
 - **Svelte + TypeScript**: Svelte with Tailwind CSS (ps-dispatch)
 - **Vue.js 3**: Component-based architecture with Vuex, Bootstrap 5, SCSS (al_mdt)
+- **Static HTML/CSS/JS**: jQuery-based NUI interfaces with custom styling (s4-realisticdisease)
 - Build outputs typically go to `html/` or `web/build/` directories
 - Package managers: npm (standard), pnpm (bub-mdt)
+- Static resources serve files directly from `web/` directory
 
 ### Framework Integration
 - ESX Legacy as primary framework
@@ -148,10 +152,12 @@ Standard FiveM fxmanifest.lua structure:
 - Follow established build patterns per framework
 
 ### Database Integration
-- All database operations via oxmysql
+- All database operations via oxmysql (or mysql-async for legacy resources)
 - Consistent table naming with resource prefixes
 - Proper foreign key relationships with ESX core tables
-- Migration scripts in sql/ directories where applicable
+- Migration scripts in sql/ or setup/ directories where applicable
+- Item definitions often include both SQL inserts and Lua configuration files
+- Database setup files commonly named: `esx-items.sql`, `ox-items.lua`, `qb-items.lua`
 
 ## Common Integration Points
 
@@ -231,4 +237,32 @@ npm run build     # Build for production
 
 ### Job Permissions
 - Police jobs: `police`, `sheriff`, `trooper` (bub-mdt)
+- Medical jobs: `ambulance`, `police` (s4-realisticdisease)
 - LEO job types configured in qbcore/shared/jobs.lua for QBCore resources
+
+## Medical/EMS Systems
+
+### Injury & Treatment Systems
+- **s4-realisticdisease** - Comprehensive injury tracking system:
+  - Body part damage tracking (Head, Chest, Arms, Legs, Feet)
+  - Realistic bleeding mechanics with timed health degradation
+  - Weapon-specific damage types (bullets, melee, fall damage, vehicle collisions)
+  - Medical treatment interface with interactive body diagram
+  - Integration with multiple ambulance job scripts (ESX, QBCore, Wasabi, AK47, Brutal)
+  - Configurable medical items and treatment requirements per body part
+  - Dual framework support (ESX/QBCore) with automatic detection
+  - Experimental features for fall damage and traffic accidents
+
+### Medical Item Requirements
+The s4-realisticdisease system uses specific medical items for treatment:
+- `forceps`, `gauze`, `iodine`, `pill`, `surgical_gloves`
+- `surgical_staple`, `surgical_tray`, `syringe`, `tape`
+- `bandageg` - Self-treatment item for bleeding
+- Each body part requires the same set of medical supplies for treatment
+
+### Development Setup for Medical UI
+The s4-realisticdisease resource includes a web-based UI:
+- Location: `[bby]/s4-realisticdisease/web/`
+- Static HTML/CSS/JS implementation (no build process required)
+- Styling uses custom CSS with SVG graphics and animations
+- jQuery-based interactions with FiveM NUI callbacks
