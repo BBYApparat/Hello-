@@ -810,3 +810,127 @@ ESX.RegisterCommand(
         },
     }
 )
+
+-- Vehicle Persistence Commands
+ESX.RegisterCommand(
+    "locatevehicle",
+    "user",
+    function(xPlayer, args, showError)
+        if not args.plate or type(args.plate) ~= "string" then
+            return showError("Please provide a valid plate number")
+        end
+
+        local plate = string.upper(args.plate):gsub("%s+", "")
+        
+        -- Check if player owns the vehicle
+        if not ESX.DoesPlayerOwnVehicle(xPlayer.identifier, plate) then
+            return showError("You don't own a vehicle with that plate")
+        end
+        
+        local location = ESX.GetVehicleLocation(plate)
+        
+        if location then
+            local coords = location.coords
+            local status = location.isSpawned and "~g~SPAWNED~w~" or "~r~STORED~w~"
+            
+            xPlayer.showNotification(('Vehicle %s: %s~n~Location: %.1f, %.1f, %.1f'):format(plate, status, coords.x, coords.y, coords.z))
+            
+            -- Create waypoint for the player
+            TriggerClientEvent('esx:setWaypoint', xPlayer.source, coords.x, coords.y)
+        else
+            showError("Vehicle location not found")
+        end
+    end,
+    false,
+    {
+        help = "Locate your vehicle and set a waypoint",
+        validate = true,
+        arguments = {
+            { name = "plate", help = "Vehicle plate number", type = "string" },
+        },
+    }
+)
+
+ESX.RegisterCommand(
+    "spawnvehicle",
+    "user", 
+    function(xPlayer, args, showError)
+        if not args.plate or type(args.plate) ~= "string" then
+            return showError("Please provide a valid plate number")
+        end
+
+        local plate = string.upper(args.plate):gsub("%s+", "")
+        
+        -- Check if player owns the vehicle
+        if not ESX.DoesPlayerOwnVehicle(xPlayer.identifier, plate) then
+            return showError("You don't own a vehicle with that plate")
+        end
+        
+        local location = ESX.GetVehicleLocation(plate)
+        
+        if not location then
+            return showError("Vehicle not found")
+        end
+        
+        if location.isSpawned then
+            return showError("Vehicle is already spawned")
+        end
+        
+        -- Check if player is close to the last known position
+        local playerCoords = xPlayer.getCoords(true)
+        local distance = #(playerCoords - location.coords)
+        
+        if distance > 50.0 then
+            return showError(('You must be within 50m of the vehicle\'s last location (%.1fm away)'):format(distance))
+        end
+        
+        -- Spawn the vehicle
+        local success, message = ESX.SpawnPersistedVehicle(plate, playerCoords)
+        
+        if success then
+            xPlayer.showNotification("Vehicle spawned successfully")
+        else
+            showError(message or "Failed to spawn vehicle")
+        end
+    end,
+    false,
+    {
+        help = "Spawn your vehicle if you're near its last location",
+        validate = true,
+        arguments = {
+            { name = "plate", help = "Vehicle plate number", type = "string" },
+        },
+    }
+)
+
+-- PERFORMANCE: Optimized command using memory cache (NO DATABASE!)
+ESX.RegisterCommand(
+    "myvehicles",
+    "user",
+    function(xPlayer, args, showError)
+        local vehicles = ESX.GetPlayerVehicles(xPlayer.identifier)
+        
+        if not vehicles or #vehicles == 0 then
+            return xPlayer.showNotification("You don't own any tracked vehicles")
+        end
+        
+        xPlayer.showNotification("~b~Your Vehicles:~w~")
+        
+        for i, plate in ipairs(vehicles) do
+            if i > 10 then break end -- Limit to 10 vehicles to avoid spam
+            
+            local location = ESX.GetVehicleLocation(plate)
+            if location then
+                local status = location.isSpawned and "~g~SPAWNED~w~" or "~r~STORED~w~"
+                local coords = ('%.0f, %.0f'):format(location.coords.x, location.coords.y)
+                
+                xPlayer.showNotification(('~y~%s~w~: %s at %s'):format(plate, status, coords))
+                Wait(100) -- Small delay between notifications
+            end
+        end
+    end,
+    false,
+    {
+        help = "List your tracked vehicles and their status"
+    }
+)

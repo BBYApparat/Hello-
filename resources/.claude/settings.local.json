@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(find:*)",
-      "Bash(lua:*)"
+      "Bash(lua:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

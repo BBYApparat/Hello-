@@ -2,6 +2,8 @@ ESX = {}
 ESX.Players = {}
 ESX.Jobs = {}
 ESX.JobsPlayerCount = {}
+ESX.Gangs = {}
+ESX.GangsPlayerCount = {}
 ESX.Items = {}
 Core = {}
 Core.UsableItemsCallbacks = {}
@@ -67,6 +69,7 @@ MySQL.ready(function()
     end
 
     ESX.RefreshJobs()
+    ESX.RefreshGangs()
 
     print(("[^2INFO^7] ESX ^5Legacy %s^0 initialized!"):format(GetResourceMetadata(GetCurrentResourceName(), "version", 0)))
 

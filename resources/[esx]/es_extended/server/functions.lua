@@ -461,6 +461,40 @@ function ESX.RefreshJobs()
     end
 end
 
+function ESX.RefreshGangs()
+    local Gangs = {}
+    local gangs = MySQL.query.await("SELECT * FROM gangs")
+
+    for _, v in ipairs(gangs) do
+        Gangs[v.name] = v
+        Gangs[v.name].grades = {}
+    end
+
+    local gangGrades = MySQL.query.await("SELECT * FROM gang_grades")
+
+    for _, v in ipairs(gangGrades) do
+        if Gangs[v.gang_name] then
+            Gangs[v.gang_name].grades[tostring(v.grade)] = v
+        else
+            print(('[^3WARNING^7] Ignoring gang grades for ^5"%s"^0 due to missing gang'):format(v.gang_name))
+        end
+    end
+
+    for _, v in pairs(Gangs) do
+        if ESX.Table.SizeOf(v.grades) == 0 then
+            Gangs[v.name] = nil
+            print(('[^3WARNING^7] Ignoring gang ^5"%s"^0 due to no gang grades found'):format(v.name))
+        end
+    end
+
+    if not Gangs then
+        -- Fallback data, if no gangs exist
+        ESX.Gangs["unemployed"] = { label = "Unemployed", grades = { ["0"] = { grade = 0, label = "Unemployed", salary = 0, skin_male = {}, skin_female = {} } } }
+    else
+        ESX.Gangs = Gangs
+    end
+end
+
 function ESX.RegisterUsableItem(item, cb)
     Core.UsableItemsCallbacks[item] = cb
 end
@@ -540,6 +574,10 @@ end
 
 function ESX.DoesJobExist(job, grade)
     return (ESX.Jobs[job] and ESX.Jobs[job].grades[tostring(grade)] ~= nil) or false
+end
+
+function ESX.DoesGangExist(gang, grade)
+    return (ESX.Gangs[gang] and ESX.Gangs[gang].grades[tostring(grade)] ~= nil) or false
 end
 
 function Core.IsPlayerAdmin(playerId)

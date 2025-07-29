@@ -23,7 +23,9 @@ local _assert = assert
 ---@param name string
 ---@param coords table | vector4
 ---@param metadata table
-function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, weight, job, loadout, name, coords, metadata)
+---@param stateId number
+---@param gang table
+function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, weight, job, loadout, name, coords, metadata, stateId, gang)
     local targetOverrides = Config.PlayerFunctionOverride and Core.PlayerFunctionOverrides[Config.PlayerFunctionOverride] or {}
 
     local self = {}
@@ -36,6 +38,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
     self.fingerprintid = metadata.fingerprintId
     self.inventory = inventory
     self.job = job
+    self.gang = gang
     self.loadout = loadout
     self.name = name
     self.playerId = playerId
@@ -45,6 +48,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
     self.maxWeight = Config.MaxWeight
     self.metadata = metadata
     self.admin = Core.IsPlayerAdmin(playerId)
+    self.stateId = stateId
     if Config.Multichar then
         self.license = "license" .. identifier:sub(identifier:find(":"), identifier:len())
     else
@@ -141,6 +145,10 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
         return self.identifier
     end
 
+    function self.getStateId()
+        return self.stateId
+    end
+
     ---@param newGroup string
     ---@return void
     function self.setGroup(newGroup)
@@ -224,6 +232,10 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
     ---@return table
     function self.getJob()
         return self.job
+    end
+
+    function self.getGang()
+        return self.gang
     end
 
     ---@param minimal boolean
@@ -502,6 +514,35 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
         _TriggerEvent("esx:setJob", self.source, self.job, lastJob)
         self.triggerEvent("esx:setJob", self.job, lastJob)
         Player(self.source).state:set("job", self.job, true)
+    end
+
+    function self.setGang(newGang, grade)
+        grade = tostring(grade)
+        local lastGang = self.gang
+
+        if not ESX.DoesGangExist(newGang, grade) then
+            return print(("[es_extended] [^3WARNING^7] Ignoring invalid ^5.setGang()^7 usage for ID: ^5%s^7, Gang: ^5%s^7"):format(self.source, newGang))
+        end
+
+        local gangObject, gradeObject = ESX.Gangs[newGang], ESX.Gangs[newGang].grades[grade]
+
+        self.gang = {
+            id = gangObject.id,
+            name = gangObject.name,
+            label = gangObject.label,
+
+            grade = tonumber(grade),
+            grade_name = gradeObject.name,
+            grade_label = gradeObject.label,
+            grade_salary = gradeObject.salary,
+
+            skin_male = gradeObject.skin_male and json.decode(gradeObject.skin_male) or {},
+            skin_female = gradeObject.skin_female and json.decode(gradeObject.skin_female) or {},
+        }
+
+        _TriggerEvent("esx:setGang", self.source, self.gang, lastGang)
+        self.triggerEvent("esx:setGang", self.gang, lastGang)
+        Player(self.source).state:set("gang", self.gang, true)
     end
 
     ---@param weaponName string

@@ -2,8 +2,8 @@ SetMapName("San Andreas")
 SetGameType("ESX Legacy")
 
 local oneSyncState = GetConvar("onesync", "off")
-local newPlayer = "INSERT INTO `users` SET `accounts` = ?, `identifier` = ?, `group` = ?"
-local loadPlayer = "SELECT `accounts`, `job`, `job_grade`, `group`, `position`, `inventory`, `skin`, `loadout`, `metadata`"
+local newPlayer = "INSERT INTO `users` SET `accounts` = ?, `identifier` = ?, `group` = ?, `state_id` = ?, `gang` = ?, `gang_grade` = ?"
+local loadPlayer = "SELECT `accounts`, `job`, `job_grade`, `gang`, `gang_grade`, `group`, `position`, `inventory`, `skin`, `loadout`, `metadata`, `state_id`"
 
 if Config.Multichar then
     newPlayer = newPlayer .. ", `firstname` = ?, `lastname` = ?, `dateofbirth` = ?, `sex` = ?, `height` = ?"
@@ -19,9 +19,24 @@ end
 
 loadPlayer = loadPlayer .. " FROM `users` WHERE identifier = ?"
 
+-- Function to get the next available state ID
+local function getNextStateId()
+    local result = MySQL.scalar.await('SELECT next_id FROM state_id_counter WHERE id = 1')
+    local nextId = result or 1
+    
+    -- Update the counter for the next assignment
+    MySQL.execute.await('UPDATE state_id_counter SET next_id = next_id + 1 WHERE id = 1')
+    
+    return nextId
+end
+
 if Config.Multichar then
     AddEventHandler("esx:onPlayerJoined", function(src, char, data)
         while not next(ESX.Jobs) do
+            Wait(50)
+        end
+        
+        while not next(ESX.Gangs) do
             Wait(50)
         end
 
@@ -39,6 +54,10 @@ else
     AddEventHandler("esx:onPlayerJoined", function()
         local _source = source
         while not next(ESX.Jobs) do
+            Wait(50)
+        end
+        
+        while not next(ESX.Gangs) do
             Wait(50)
         end
 
@@ -84,7 +103,11 @@ function createESXPlayer(identifier, playerId, data)
         defaultGroup = "admin"
     end
 
-    local parameters = Config.Multichar and { json.encode(accounts), identifier, defaultGroup, data.firstname, data.lastname, data.dateofbirth, data.sex, data.height } or { json.encode(accounts), identifier, defaultGroup }
+    -- Generate new state ID
+    local stateId = getNextStateId()
+    print(('[ESX] Assigned State ID %d to player %s'):format(stateId, identifier))
+
+    local parameters = Config.Multichar and { json.encode(accounts), identifier, defaultGroup, stateId, "unemployed", 0, data.firstname, data.lastname, data.dateofbirth, data.sex, data.height } or { json.encode(accounts), identifier, defaultGroup, stateId, "unemployed", 0 }
 
     if Config.StartingInventoryItems then
         table.insert(parameters, json.encode(Config.StartingInventoryItems))
@@ -135,9 +158,14 @@ function loadESXPlayer(identifier, playerId, isNew)
         dateofbirth = "01/01/2000",
         height = 120,
         dead = false,
+        stateId = nil,
+        gang = nil,
     }
 
     local result = MySQL.prepare.await(loadPlayer, { identifier })
+
+    -- State ID
+    userData.stateId = result.state_id
 
     -- Accounts
     local accounts = result.accounts
@@ -178,6 +206,30 @@ function loadESXPlayer(identifier, playerId, isNew)
 
         skin_male = gradeObject.skin_male and json.decode(gradeObject.skin_male) or {},
         skin_female = gradeObject.skin_female and json.decode(gradeObject.skin_female) or {},
+    }
+
+    -- Gang
+    local gang, gangGrade = result.gang, tostring(result.gang_grade)
+
+    if not ESX.DoesGangExist(gang, gangGrade) then
+        print(("[^3WARNING^7] Ignoring invalid gang for ^5%s^7 [gang: ^5%s^7, grade: ^5%s^7]"):format(identifier, gang, gangGrade))
+        gang, gangGrade = "unemployed", "0"
+    end
+
+    local gangObject, gangGradeObject = ESX.Gangs[gang], ESX.Gangs[gang].grades[gangGrade]
+
+    userData.gang = {
+        id = gangObject.id,
+        name = gangObject.name,
+        label = gangObject.label,
+
+        grade = tonumber(gangGrade),
+        grade_name = gangGradeObject.name,
+        grade_label = gangGradeObject.label,
+        grade_salary = gangGradeObject.salary,
+
+        skin_male = gangGradeObject.skin_male and json.decode(gangGradeObject.skin_male) or {},
+        skin_female = gangGradeObject.skin_female and json.decode(gangGradeObject.skin_female) or {},
     }
 
     -- Inventory
@@ -248,7 +300,7 @@ function loadESXPlayer(identifier, playerId, isNew)
     userData.metadata = (result.metadata and result.metadata ~= "") and json.decode(result.metadata) or {}
 
     -- xPlayer Creation
-    local xPlayer = CreateExtendedPlayer(playerId, identifier, userData.group, userData.accounts, userData.inventory, userData.weight, userData.job, userData.loadout, GetPlayerName(playerId), userData.coords, userData.metadata)
+    local xPlayer = CreateExtendedPlayer(playerId, identifier, userData.group, userData.accounts, userData.inventory, userData.weight, userData.job, userData.loadout, GetPlayerName(playerId), userData.coords, userData.metadata, userData.stateId, userData.gang)
     ESX.Players[playerId] = xPlayer
     Core.playersByIdentifier[identifier] = xPlayer
 
@@ -695,3 +747,27 @@ for key in pairs(DoNotUse) do
         print(("[^1ERROR^7] WE STOPPED A RESOURCE THAT WILL BREAK ^1ESX^7, PLEASE REMOVE ^5%s^7"):format(key))
     end
 end
+
+-- State ID Command
+ESX.RegisterCommand('stateid', "user", function(xPlayer, args, showError)
+    local stateId = xPlayer.getStateId()
+    if stateId then
+        xPlayer.showNotification(('Your State ID: %d'):format(stateId))
+    else
+        xPlayer.showNotification('No State ID assigned')
+    end
+end, false, {help = TranslateCap("check_stateid")})
+
+-- State ID Exports
+exports('getPlayerStateId', function(identifier)
+    local result = MySQL.scalar.await('SELECT state_id FROM users WHERE identifier = ?', {identifier})
+    return result
+end)
+
+exports('getPlayerStateIdBySource', function(source)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if xPlayer then
+        return xPlayer.getStateId()
+    end
+    return nil
+end)

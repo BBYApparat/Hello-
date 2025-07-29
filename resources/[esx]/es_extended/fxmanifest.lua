@@ -31,7 +31,8 @@ server_scripts {
 	'common/functions.lua',
 	'server/modules/actions.lua',
 	'server/modules/npwd.lua',
-	'server/modules/createJob.lua'
+	'server/modules/createJob.lua',
+	'server/modules/vehicle_persistence.lua'
 }
 
 client_scripts {
@@ -50,6 +51,7 @@ client_scripts {
 	'client/modules/npwd.lua',
 	'client/modules/scaleform.lua',
 	'client/modules/streaming.lua',
+	'client/modules/vehicle_persistence.lua',
 }
 
 ui_page {
