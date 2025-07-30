@@ -3,7 +3,7 @@ game 'gta5'
 lua54 'yes'
 
 author 'BBY Server'
-description 'BBY Jobs System - Duty management with dynamic blips'
+description 'BBY Jobs System - Duty management with dynamic blip'
 version '1.0.0'
 
 shared_scripts {
