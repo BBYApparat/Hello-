@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Death Screen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="death-screen" class="death-screen hidden">
+        <div class="death-content">
+            <div class="death-icon">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L13.09 8.26L19 7L17.74 13.26L22 12L16.74 16.74L22 18L15.74 17.26L17 23L10.74 18.74L12 25L5.26 19.74L7 23L6.26 16.74L2 18L7.26 13.26L2 12L8.26 10.74L7 4L13.26 8.26L12 2Z" fill="currentColor"/>
+                </svg>
+            </div>
+            <h1 class="death-title">You are incapacitated</h1>
+            <p class="death-subtitle">You are unconscious and must wait for rescue or revival.</p>
+            
+            <div class="timer-container">
+                <div class="timer-circle">
+                    <div class="timer-number" id="timer">5:00</div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <div class="control-item">
+                    <span class="key">E</span>
+                    <span class="action">Call for help</span>
+                </div>
+                <div class="control-item" id="respawn-control">
+                    <span class="key">G</span>
+                    <span class="action">Respawn</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
