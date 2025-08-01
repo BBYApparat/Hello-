@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(grep:*)",
+      "Bash(powershell:*)",
+      "Bash(dir \"C:\\Users\\alexi\\GitHub\\Hello-\\resources\\[plugins]\\cylex_animmenu\\rpemotes-reborn-master\\client\"\")",
+      "Bash(ls:*)",
+      "Bash(bash:*)",
+      "Bash(cp:*)",
+      "Bash(rm:*)"
+    ],
+    "deny": []
+  }
+}
