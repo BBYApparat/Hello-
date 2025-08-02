@@ -27,7 +27,7 @@ end)
 CreateThread(function()
     while true do
         Wait(0)
-        if IsControlJustPressed(0, GetHashKey(Config.MenuKey)) then
+        if IsControlJustPressed(0, 167) then -- F6 key
             if isStaff and not isMenuOpen then
                 OpenStaffMenu()
             end
@@ -42,6 +42,22 @@ RegisterCommand('staffmenu', function()
         OpenStaffMenu()
     end
 end)
+
+-- Emergency noclip disable command
+RegisterCommand('disablenoclip', function()
+    if isStaff then
+        local ped = PlayerPedId()
+        SetEntityInvincible(ped, false)
+        SetEntityVisible(ped, true, false)
+        SetEntityCollision(ped, true, true)
+        FreezeEntityPosition(ped, false)
+        SetPlayerInvincible(PlayerId(), false)
+        SetPedCanRagdoll(ped, true)
+        SetEntityProofs(ped, false, false, false, false, false, false, false, false)
+        noclipEnabled = false
+        ESX.ShowNotification('~g~NoClip emergency disabled!')
+    end
+end, false)
 
 -- vMenu-style NoClip functionality
 local noclipSpeed = 1.0

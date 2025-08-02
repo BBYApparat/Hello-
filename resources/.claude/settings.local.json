@@ -3,7 +3,12 @@
     "allow": [
       "Bash(find:*)",
       "Bash(lua:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm run:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx vite:*)",
+      "Bash(cat:*)"
     ],
     "deny": []
   }

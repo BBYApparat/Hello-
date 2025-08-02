@@ -45,8 +45,9 @@ function CreateMainMenu()
         value = 'toggle_blips'
     })
     
+    local groupLabel = Config.StaffGroups[playerGroup] and Config.StaffGroups[playerGroup].label or 'Staff'
     ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'staff_main_menu', {
-        title = '🛡️ Staff Menu - ' .. Config.StaffGroups[playerGroup].label,
+        title = '🛡️ Staff Menu - ' .. groupLabel,
         align = 'top-left',
         elements = elements
     }, function(data, menu)
@@ -412,6 +413,13 @@ function OpenUtilities()
         value = 'noclip'
     })
     
+    if noclipEnabled then
+        table.insert(elements, {
+            label = '🚫 Force Disable NoClip',
+            value = 'disable_noclip'
+        })
+    end
+    
     table.insert(elements, {
         label = '💊 Heal Self',
         value = 'heal_self'
@@ -435,7 +443,21 @@ function OpenUtilities()
         local action = data.current.value
         
         if action == 'noclip' then
-            ToggleNoClip()
+            exports['staff_menu']:ToggleNoClip()
+            menu.close()
+            OpenUtilities()
+        elseif action == 'disable_noclip' then
+            -- Force disable noclip
+            local ped = PlayerPedId()
+            SetEntityInvincible(ped, false)
+            SetEntityVisible(ped, true, false)
+            SetEntityCollision(ped, true, true)
+            FreezeEntityPosition(ped, false)
+            SetPlayerInvincible(PlayerId(), false)
+            SetPedCanRagdoll(ped, true)
+            SetEntityProofs(ped, false, false, false, false, false, false, false, false)
+            noclipEnabled = false
+            ESX.ShowNotification('~g~NoClip force disabled!')
             menu.close()
             OpenUtilities()
         elseif action == 'heal_self' then

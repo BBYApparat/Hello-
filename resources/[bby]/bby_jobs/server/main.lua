@@ -6,7 +6,7 @@ CreateThread(function()
     Wait(1000) -- Wait for MySQL to be ready
     
     -- PERFORMANCE: Create tables directly without file loading
-    MySQL.execute.await([[
+    exports.oxmysql:execute([[
         CREATE TABLE IF NOT EXISTS `job_duty` (
             `identifier` VARCHAR(60) NOT NULL,
             `job` VARCHAR(50) NOT NULL,
@@ -27,7 +27,7 @@ end)
 
 -- Load all duty status from database
 function loadAllDutyStatus()
-    local results = MySQL.query.await('SELECT * FROM job_duty WHERE on_duty = 1')
+    local results = exports.oxmysql:query_sync('SELECT * FROM job_duty WHERE on_duty = 1') or {}
     
     for _, row in ipairs(results) do
         if not dutyPlayers[row.identifier] then
@@ -81,12 +81,12 @@ function setPlayerDutyStatus(identifier, job, onDuty)
     
     -- Update database
     if onDuty then
-        MySQL.execute.await('INSERT INTO job_duty (identifier, job, on_duty) VALUES (?, ?, 1) ON DUPLICATE KEY UPDATE on_duty = 1, last_updated = CURRENT_TIMESTAMP', {
+        exports.oxmysql:execute('INSERT INTO job_duty (identifier, job, on_duty) VALUES (?, ?, 1) ON DUPLICATE KEY UPDATE on_duty = 1, last_updated = CURRENT_TIMESTAMP', {
             identifier, job
         })
         jobCounts[job] = (jobCounts[job] or 0) + 1
     else
-        MySQL.execute.await('UPDATE job_duty SET on_duty = 0, last_updated = CURRENT_TIMESTAMP WHERE identifier = ? AND job = ?', {
+        exports.oxmysql:execute('UPDATE job_duty SET on_duty = 0, last_updated = CURRENT_TIMESTAMP WHERE identifier = ? AND job = ?', {
             identifier, job
         })
         jobCounts[job] = math.max((jobCounts[job] or 1) - 1, 0)
@@ -124,7 +124,7 @@ AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
     local identifier = xPlayer.identifier
     
     -- Load player's duty status from database
-    local results = MySQL.query.await('SELECT job, on_duty FROM job_duty WHERE identifier = ?', {identifier})
+    local results = exports.oxmysql:query_sync('SELECT job, on_duty FROM job_duty WHERE identifier = ?', {identifier}) or {}
     
     if not dutyPlayers[identifier] then
         dutyPlayers[identifier] = {}

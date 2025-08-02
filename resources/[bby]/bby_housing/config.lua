@@ -182,9 +182,13 @@ Config.HouseTypes = {
         label = 'Poor House',
         interior = {
             coords = vector4(266.0, -1007.0, -101.0, 0.0), -- Motel room interior
-            exit = vector3(265.0, -1002.5, -101.0),
-            stash = vector3(265.9, -999.4, -101.0),
+            exit = vector3(266.207, -1007.098, -100.977), -- Updated exit coordinates
+            stash = vector3(265.77, -999.349, -99.009), -- Updated stash coordinates  
             garage_entry = vector3(264.0, -1000.5, -101.0),
+            wardrobe = vector3(262.683, -999.846, -99.009), -- Wardrobe/clothing
+            decoration_shop = vector3(262.683, -999.846, -99.009), -- Decoration management
+            bed = vector3(262.683, -999.846, -99.009), -- Bed/rest area
+            kitchen = vector3(262.683, -999.846, -99.009), -- Kitchen/food area
             price_multiplier = 1.0
         },
         garage = {

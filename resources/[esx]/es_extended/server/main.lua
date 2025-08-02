@@ -25,7 +25,7 @@ local function getNextStateId()
     local nextId = result or 1
     
     -- Update the counter for the next assignment
-    MySQL.execute.await('UPDATE state_id_counter SET next_id = next_id + 1 WHERE id = 1')
+    MySQL.execute('UPDATE state_id_counter SET next_id = next_id + 1 WHERE id = 1')
     
     return nextId
 end

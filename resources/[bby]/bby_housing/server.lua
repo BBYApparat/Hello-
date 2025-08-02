@@ -8,16 +8,35 @@ local RaidCooldowns = {} -- Track raid cooldowns
 local DoorbellHistory = {} -- Store doorbell history
 local HouseDecorations = {} -- Store decorations for each house
 
+-- Helper function to parse houseId from ox_target event data
+local function parseHouseId(houseId)
+    if type(houseId) == 'table' then
+        if houseId.serverEventData then
+            return houseId.serverEventData
+        elseif houseId.id then
+            return houseId.id
+        elseif houseId[1] then
+            return houseId[1]
+        end
+    end
+    
+    if type(houseId) == 'string' then
+        return tonumber(houseId)
+    end
+    
+    return houseId
+end
+
 -- Initialize stashes and vehicle storage for all houses on server start
 CreateThread(function()
-    MySQL.query("SELECT * FROM bby_housing", {}, function(houses)
+    exports.oxmysql:query('SELECT * FROM bby_housing', {}, function(houses)
         for k, house in pairs(houses) do
             HouseOwnership[house.house_id] = house.identifier
         end
     end)
     
     -- Load stored vehicles for each house
-    MySQL.query("SELECT * FROM bby_housing_vehicles", {}, function(vehicles)
+    exports.oxmysql:query('SELECT * FROM bby_housing_vehicles', {}, function(vehicles)
         for k, vehicle in pairs(vehicles) do
             if not HouseVehicles[vehicle.house_id] then
                 HouseVehicles[vehicle.house_id] = {}
@@ -33,19 +52,30 @@ CreateThread(function()
     end)
     
     -- Load stored decorations for each house
-    MySQL.query("SELECT * FROM bby_housing_decorations", {}, function(decorations)
+    exports.oxmysql:query('SELECT * FROM bby_housing_decorations', {}, function(decorations)
         for k, decoration in pairs(decorations) do
             if not HouseDecorations[decoration.house_id] then
                 HouseDecorations[decoration.house_id] = {}
             end
+            
+            local coords = json.decode(decoration.coords)
+            local rotation = json.decode(decoration.rotation)
+            
+            print('[DECORATION] Loading decoration for house ' .. decoration.house_id .. ':')
+            print('[DECORATION] ID: ' .. decoration.id .. ', Model: ' .. decoration.model)
+            print('[DECORATION] Coords: ' .. json.encode(coords))
+            print('[DECORATION] Rotation: ' .. json.encode(rotation))
+            
             table.insert(HouseDecorations[decoration.house_id], {
                 id = decoration.id,
                 model = decoration.model,
-                coords = json.decode(decoration.coords),
-                rotation = json.decode(decoration.rotation),
+                coords = coords,
+                rotation = rotation,
                 name = decoration.name
             })
         end
+        
+        print('[DECORATION] Loaded ' .. #decorations .. ' total decorations from database')
     end)
     
     -- Register stashes for all houses (even unowned ones)
@@ -63,9 +93,11 @@ RegisterNetEvent('housing:purchaseHouse', function(houseId)
     
     if not xPlayer then return end
     
+    houseId = parseHouseId(houseId)
+    
     local house = Config.Houses[houseId]
     if not house then 
-        TriggerClientEvent('esx:showNotification', source, 'House not found!')
+        TriggerClientEvent('esx:showNotification', source, 'House not found! ID: ' .. tostring(houseId))
         return 
     end
     
@@ -91,7 +123,7 @@ RegisterNetEvent('housing:purchaseHouse', function(houseId)
     HouseVehicles[houseId] = {} -- Initialize empty garage
     
     -- Save to database
-    MySQL.insert.await('INSERT INTO `bby_housing` (house_id, identifier, house_type, purchased_at) VALUES (?, ?, ?, ?)', {
+    exports.oxmysql:insert('INSERT INTO `bby_housing` (house_id, identifier, house_type, purchased_at) VALUES (?, ?, ?, ?)', {
         houseId, 
         xPlayer.identifier, 
         house.type,
@@ -108,6 +140,8 @@ RegisterNetEvent('housing:sellHouse', function(houseId)
     local xPlayer = ESX.GetPlayerFromId(source)
     
     if not xPlayer then return end
+    
+    houseId = parseHouseId(houseId)
     
     -- Check if player owns this house
     if HouseOwnership[houseId] ~= xPlayer.identifier then
@@ -127,12 +161,12 @@ RegisterNetEvent('housing:sellHouse', function(houseId)
     -- Clear garage vehicles
     if HouseVehicles[houseId] then
         -- Delete all vehicles from garage in database
-        MySQL.execute.await('DELETE FROM `bby_housing_vehicles` WHERE house_id = ?', {houseId})
+        exports.oxmysql:execute('DELETE FROM `bby_housing_vehicles` WHERE house_id = ?', {houseId})
         HouseVehicles[houseId] = nil
     end
     
     -- Remove from database
-    MySQL.execute.await('DELETE FROM `bby_housing` WHERE house_id = ? AND identifier = ?', {
+    exports.oxmysql:execute('DELETE FROM `bby_housing` WHERE house_id = ? AND identifier = ?', {
         houseId, 
         xPlayer.identifier
     })
@@ -148,6 +182,8 @@ RegisterNetEvent('housing:enterHouse', function(houseId)
     
     if not xPlayer then return end
     
+    houseId = parseHouseId(houseId)
+    
     -- Check if player owns this house
     if HouseOwnership[houseId] ~= xPlayer.identifier then
         TriggerClientEvent('esx:showNotification', source, 'You don\'t own this house!')
@@ -156,6 +192,7 @@ RegisterNetEvent('housing:enterHouse', function(houseId)
     
     -- Set player to unique routing bucket (house ID = bucket ID)
     SetPlayerRoutingBucket(source, houseId)
+    
     local house = Config.Houses[houseId]
     TriggerClientEvent('housing:enterHouse', source, houseId, house.type)
 end)
@@ -259,7 +296,7 @@ RegisterNetEvent('housing:getVehicle', function(houseId, vehicleId)
     
     -- Remove vehicle from garage storage
     table.remove(HouseVehicles[houseId], vehicleIndex)
-    MySQL.execute.await('DELETE FROM `bby_housing_vehicles` WHERE id = ?', {vehicleId})
+    exports.oxmysql:execute('DELETE FROM `bby_housing_vehicles` WHERE id = ?', {vehicleId})
     
     TriggerClientEvent('housing:spawnVehicle', source, vehicle.model, vehicle.props, vehicle.plate)
 end)
@@ -310,7 +347,7 @@ RegisterNetEvent('housing:saveVehicleToGarage', function(houseId, vehicleData)
     end
     
     -- Save to database
-    local insertId = MySQL.insert.await('INSERT INTO `bby_housing_vehicles` (house_id, plate, model, props, slot) VALUES (?, ?, ?, ?, ?)', {
+    local insertId = exports.oxmysql:insert('INSERT INTO `bby_housing_vehicles` (house_id, plate, model, props, slot) VALUES (?, ?, ?, ?, ?)', {
         houseId,
         vehicleData.plate,
         vehicleData.model,
@@ -435,7 +472,7 @@ function endRaid(houseId)
     end
     
     -- Log raid to database
-    MySQL.insert('INSERT INTO bby_housing_raids (house_id, officers, evidence_found, raid_date) VALUES (?, ?, ?, ?)', {
+    exports.oxmysql:insert('INSERT INTO bby_housing_raids (house_id, officers, evidence_found, raid_date) VALUES (?, ?, ?, ?)', {
         houseId,
         json.encode(raidData.officers),
         json.encode(raidData.evidence),
@@ -565,7 +602,7 @@ RegisterNetEvent('housing:ringDoorbell', function(houseId)
         TriggerClientEvent('esx:showNotification', source, 'No one is home!')
         
         -- Save to database for offline notification
-        MySQL.insert('INSERT INTO bby_housing_doorbell (house_id, visitor_name, visitor_identifier, ring_time) VALUES (?, ?, ?, ?)', {
+        exports.oxmysql:insert('INSERT INTO bby_housing_doorbell (house_id, visitor_name, visitor_identifier, ring_time) VALUES (?, ?, ?, ?)', {
             houseId,
             xPlayer.getName(),
             xPlayer.identifier,
@@ -632,7 +669,7 @@ ESX.RegisterServerCallback('housing:getDoorbellHistory', function(source, cb, ho
     end
     
     -- Add offline visitors from database
-    MySQL.query('SELECT * FROM bby_housing_doorbell WHERE house_id = ? ORDER BY ring_time DESC LIMIT ?', {
+    exports.oxmysql:query('SELECT * FROM bby_housing_doorbell WHERE house_id = ? ORDER BY ring_time DESC LIMIT ?', {
         houseId, 
         Config.DoorbellSettings.MaxVisitorHistory
     }, function(results)
@@ -715,7 +752,11 @@ RegisterNetEvent('housing:placeDecoration', function(houseId, decorationData)
     if not xPlayer then return end
     
     -- Check if player owns this house
+    print('[DECORATION] House ownership check - House ID: ' .. houseId .. ', Player: ' .. xPlayer.identifier)
+    print('[DECORATION] House owner: ' .. tostring(HouseOwnership[houseId]))
+    
     if HouseOwnership[houseId] ~= xPlayer.identifier then
+        print('[DECORATION] ERROR: Player does not own this house!')
         TriggerClientEvent('esx:showNotification', source, 'You don\'t own this house!')
         return
     end
@@ -730,34 +771,49 @@ RegisterNetEvent('housing:placeDecoration', function(houseId, decorationData)
         return
     end
     
-    -- Save to database
-    local insertId = MySQL.insert.await('INSERT INTO `bby_housing_decorations` (house_id, model, name, coords, rotation) VALUES (?, ?, ?, ?, ?)', {
+    -- Debug decoration placement coordinates
+    print('[DECORATION] Placing decoration in house ' .. houseId .. ':')
+    print('[DECORATION] Model: ' .. decorationData.model)
+    print('[DECORATION] Name: ' .. decorationData.name)
+    print('[DECORATION] Coords: ' .. json.encode(decorationData.coords))
+    print('[DECORATION] Rotation: ' .. json.encode(decorationData.rotation))
+    
+    -- Save to database with callback
+    print('[DECORATION] Attempting database insert...')
+    exports.oxmysql:insert('INSERT INTO `bby_housing_decorations` (house_id, model, name, coords, rotation) VALUES (?, ?, ?, ?, ?)', {
         houseId,
         decorationData.model,
         decorationData.name,
         json.encode(decorationData.coords),
         json.encode(decorationData.rotation)
-    })
-    
-    -- Add to memory
-    table.insert(HouseDecorations[houseId], {
-        id = insertId,
-        model = decorationData.model,
-        coords = decorationData.coords,
-        rotation = decorationData.rotation,
-        name = decorationData.name
-    })
-    
-    -- Notify all players in the house to spawn the decoration
-    TriggerClientEvent('housing:spawnDecoration', -1, houseId, {
-        id = insertId,
-        model = decorationData.model,
-        coords = decorationData.coords,
-        rotation = decorationData.rotation,
-        name = decorationData.name
-    })
-    
-    TriggerClientEvent('esx:showNotification', source, 'Decoration placed successfully!')
+    }, function(insertId)
+        if insertId then
+            print('[DECORATION] Successfully saved decoration with ID: ' .. insertId)
+            
+            -- Add to memory
+            table.insert(HouseDecorations[houseId], {
+                id = insertId,
+                model = decorationData.model,
+                coords = decorationData.coords,
+                rotation = decorationData.rotation,
+                name = decorationData.name
+            })
+            
+            -- Notify all players in the house to spawn the decoration
+            TriggerClientEvent('housing:spawnDecoration', -1, houseId, {
+                id = insertId,
+                model = decorationData.model,
+                coords = decorationData.coords,
+                rotation = decorationData.rotation,
+                name = decorationData.name
+            })
+            
+            TriggerClientEvent('esx:showNotification', source, 'Decoration placed successfully!')
+        else
+            print('[DECORATION] ERROR: Failed to insert decoration into database')
+            TriggerClientEvent('esx:showNotification', source, 'Failed to place decoration - Database error!')
+        end
+    end)
 end)
 
 -- Remove decoration
@@ -777,11 +833,19 @@ RegisterNetEvent('housing:removeDecoration', function(houseId, decorationId)
     if HouseDecorations[houseId] then
         for i, decoration in ipairs(HouseDecorations[houseId]) do
             if decoration.id == decorationId then
+                print('[DECORATION] Removing decoration from house ' .. houseId .. ':')
+                print('[DECORATION] ID: ' .. decorationId)
+                print('[DECORATION] Model: ' .. decoration.model)
+                print('[DECORATION] Name: ' .. decoration.name)
+                print('[DECORATION] Coords: ' .. json.encode(decoration.coords))
+                
                 -- Remove from database
-                MySQL.execute.await('DELETE FROM `bby_housing_decorations` WHERE id = ?', {decorationId})
+                exports.oxmysql:execute('DELETE FROM `bby_housing_decorations` WHERE id = ?', {decorationId})
                 
                 -- Remove from memory
                 table.remove(HouseDecorations[houseId], i)
+                
+                print('[DECORATION] Successfully removed decoration and cleared from memory')
                 
                 -- Notify all players to remove the decoration
                 TriggerClientEvent('housing:removeDecorationObject', -1, houseId, decorationId)
