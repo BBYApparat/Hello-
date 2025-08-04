@@ -58,12 +58,12 @@ function ESX.Progressbar(message, length, Options)
 end
 
 function ESX.ShowNotification(message, type, length)
-    if GetResourceState("SY_Notify") ~= "missing" then
-       exports['SY_Notify']:Alert("NOTIFICATION", message, length, type)
+    if GetResourceState("notifications") ~= "missing" then
+        exports['notifications']:sendnotify(message, type, length)
     else
-       print("[^1ERROR^7] ^5SY_NOTIFY^7 is Missing!")
+        print("[^1ERROR^7] ^5NOTIFICATIONS^7 is Missing!")
     end
- end
+end
 
 function ESX.TextUI(message, notifyType)
     if GetResourceState("j-textui") ~= "missing" then
