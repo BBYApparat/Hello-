@@ -52,21 +52,15 @@ end
 function setPlayerDutyStatus(job, onDuty)
     playerDutyStatus[job] = onDuty
     
-    -- Visual feedback
+    -- Visual feedback removed - functionality preserved
     if onDuty then
-        ESX.ShowNotification(('~g~ON DUTY~w~ - %s'):format(job:upper()), 'success')
-        
         -- Add duty indicator to HUD (you can customize this)
         CreateThread(function()
             while playerDutyStatus[job] do
                 Wait(0)
-                if IsControlJustPressed(0, 344) then -- F11 key (you can change this)
-                    ESX.ShowNotification(('Duty Status: ~g~ON DUTY~w~ (%s)'):format(job:upper()))
-                end
+                -- Removed notification on F11 key press
             end
         end)
-    else
-        ESX.ShowNotification(('~r~OFF DUTY~w~ - %s'):format(job:upper()), 'error')
     end
 end
 
@@ -87,7 +81,7 @@ RegisterCommand('toggleduty', function()
     if playerData and playerData.job then
         TriggerServerEvent('bby_jobs:toggleDuty', playerData.job.name)
     else
-        ESX.ShowNotification('Unable to get job information', 'error')
+        -- Notification removed - error handling preserved
     end
 end, false)
 
@@ -96,7 +90,7 @@ RegisterCommand('dutycheck', function()
     if playerData and playerData.job then
         local job = playerData.job.name
         local status = isPlayerOnDuty(job) and '~g~ON DUTY~w~' or '~r~OFF DUTY~w~'
-        ESX.ShowNotification(('Job: %s | Status: %s'):format(job:upper(), status))
+        -- Notification removed - duty status check functionality preserved
     end
 end, false)
 

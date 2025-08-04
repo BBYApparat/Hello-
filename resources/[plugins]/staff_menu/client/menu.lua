@@ -1,80 +1,79 @@
 local selectedPlayer = nil
 local playersData = {}
 
+-- NativeUI Setup
+local MenuPosition = {x = 1400, y = 400}
+_menuPool = NativeUI.CreatePool()
+mainMenu = NativeUI.CreateMenu("Staff Menu", "~h~~b~Advanced Staff Management System", MenuPosition.x, MenuPosition.y)
+_menuPool:Add(mainMenu)
+
+function KeyboardInput(TextEntry, ExampleText, MaxStringLength)
+    AddTextEntry('FMMC_KEY_TIP1', TextEntry .. ':')
+    DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP1", "", ExampleText, "", "", "", MaxStringLength)
+    while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+        Wait(0)
+    end
+    if UpdateOnscreenKeyboard() ~= 2 then
+        local result = GetOnscreenKeyboardResult()
+        Wait(500)
+        return result
+    else
+        Wait(500)
+        return nil
+    end
+end
+
+function notify(text)
+    SetNotificationTextEntry("STRING")
+    AddTextComponentString(text)
+    DrawNotification(true, true)
+end
+
 function OpenStaffMenu()
     isMenuOpen = true
     
+    -- Clear existing menu items
+    mainMenu:Clear()
+    
     ESX.TriggerServerCallback('staff_menu:getOnlinePlayers', function(players)
         playersData = players
-        CreateMainMenu()
+        CreateMainMenuItems()
+        mainMenu:Visible(true)
     end)
 end
 
-function CreateMainMenu()
-    local elements = {}
+function CreateMainMenuItems()
+    -- Player Management Submenu
+    local playerMgmtSubmenu = _menuPool:AddSubMenu(mainMenu, "👤 Player Management", "Manage online players", MenuPosition.x, MenuPosition.y)
+    CreatePlayerManagementMenu(playerMgmtSubmenu)
     
-    -- Player Management
-    table.insert(elements, {
-        label = '👤 Player Management',
-        value = 'player_management'
-    })
+    -- Vehicle Management Submenu
+    local vehicleMgmtSubmenu = _menuPool:AddSubMenu(mainMenu, "🚗 Vehicle Management", "Manage vehicles", MenuPosition.x, MenuPosition.y)
+    CreateVehicleManagementMenu(vehicleMgmtSubmenu)
     
-    -- Vehicle Management  
-    table.insert(elements, {
-        label = '🚗 Vehicle Management',
-        value = 'vehicle_management'
-    })
-    
-    -- Server Management
+    -- Server Management Submenu (if has permission)
     if HasPermission('weather') then
-        table.insert(elements, {
-            label = '🌍 Server Management', 
-            value = 'server_management'
-        })
+        local serverMgmtSubmenu = _menuPool:AddSubMenu(mainMenu, "🌍 Server Management", "Server controls", MenuPosition.x, MenuPosition.y)
+        CreateServerManagementMenu(serverMgmtSubmenu)
     end
     
-    -- Utilities
-    table.insert(elements, {
-        label = '⚙️ Utilities',
-        value = 'utilities'
-    })
+    -- Utilities Submenu
+    local utilitiesSubmenu = _menuPool:AddSubMenu(mainMenu, "⚙️ Utilities", "Staff utilities", MenuPosition.x, MenuPosition.y)
+    CreateUtilitiesMenu(utilitiesSubmenu)
     
     -- Player Blips Toggle
-    table.insert(elements, {
-        label = '🗺️ Toggle Player Blips (' .. (blipsEnabled and '~g~ON' or '~r~OFF') .. '~s~)',
-        value = 'toggle_blips'
-    })
+    local blipsToggle = NativeUI.CreateItem("🗺️ Toggle Player Blips", blipsEnabled and "Currently ON" or "Currently OFF")
+    blipsToggle.Activated = function(sender, item, index)
+        TogglePlayerBlips()
+        item:SetRightLabel(blipsEnabled and "Currently ON" or "Currently OFF")
+        notify(blipsEnabled and "~g~Player blips enabled" or "~r~Player blips disabled")
+    end
+    mainMenu:AddItem(blipsToggle)
     
-    local groupLabel = Config.StaffGroups[playerGroup] and Config.StaffGroups[playerGroup].label or 'Staff'
-    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'staff_main_menu', {
-        title = '🛡️ Staff Menu - ' .. groupLabel,
-        align = 'top-left',
-        elements = elements
-    }, function(data, menu)
-        local action = data.current.value
-        
-        if action == 'player_management' then
-            OpenPlayerManagement()
-        elseif action == 'vehicle_management' then
-            OpenVehicleManagement()
-        elseif action == 'server_management' then
-            OpenServerManagement()
-        elseif action == 'utilities' then
-            OpenUtilities()
-        elseif action == 'toggle_blips' then
-            TogglePlayerBlips()
-            menu.close()
-            OpenStaffMenu() -- Refresh menu
-        end
-    end, function(data, menu)
-        menu.close()
-        isMenuOpen = false
-    end)
+    _menuPool:RefreshIndex()
 end
 
-function OpenPlayerManagement()
-    local elements = {}
-    
+function CreatePlayerManagementMenu(submenu)
     for _, player in pairs(playersData) do
         local canSeePlayer = true
         
@@ -84,370 +83,220 @@ function OpenPlayerManagement()
         end
         
         if canSeePlayer then
-            local healthBar = CreateHealthBar(player.health or 200)
-            local armorBar = CreateArmorBar(player.armor or 0)
+            local healthPercent = math.floor(((player.health or 200) / 200) * 100)
+            local armorPercent = player.armor or 0
             
-            local label = string.format(
-                '%s | ID: %s\n%s %s\nSteam: %s\nFood: %d%% | Water: %d%%',
-                player.name,
-                player.id,
-                healthBar,
-                armorBar,
-                player.steamName or 'Unknown',
-                player.food or 0,
-                player.water or 0
+            local playerItem = NativeUI.CreateItem(
+                player.name .. " | ID: " .. player.id,
+                string.format("Health: %d%% | Armor: %d%% | Steam: %s", 
+                    healthPercent, armorPercent, player.steamName or 'Unknown')
             )
             
-            table.insert(elements, {
-                label = label,
-                value = player.id,
-                player = player
-            })
+            playerItem.Activated = function(sender, item, index)
+                selectedPlayer = player
+                OpenPlayerActionsMenu()
+            end
+            
+            submenu:AddItem(playerItem)
         end
     end
-    
-    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'player_management', {
-        title = '👤 Player Management',
-        align = 'top-left',
-        elements = elements
-    }, function(data, menu)
-        selectedPlayer = data.current.player
-        OpenPlayerActions()
-    end, function(data, menu)
-        menu.close()
-        OpenStaffMenu()
-    end)
 end
 
-function OpenPlayerActions()
+function OpenPlayerActionsMenu()
     if not selectedPlayer then return end
     
-    local elements = {}
+    local actionsMenu = NativeUI.CreateMenu("Player Actions", "Actions for: " .. selectedPlayer.name, MenuPosition.x, MenuPosition.y)
+    _menuPool:Add(actionsMenu)
     
-    -- Basic actions available to all staff
+    -- Basic actions
     if HasPermission('goto') then
-        table.insert(elements, {
-            label = '📍 Teleport to Player',
-            value = 'goto'
-        })
+        local gotoItem = NativeUI.CreateItem("📍 Teleport to Player", "")
+        gotoItem.Activated = function(sender, item, index)
+            TriggerServerEvent('staff_menu:teleportToPlayer', selectedPlayer.id)
+            actionsMenu:Visible(false)
+            isMenuOpen = false
+            notify("~g~Teleporting to player...")
+        end
+        actionsMenu:AddItem(gotoItem)
     end
     
     if HasPermission('bring') then
-        table.insert(elements, {
-            label = '📥 Bring Player',
-            value = 'bring'
-        })
+        local bringItem = NativeUI.CreateItem("📥 Bring Player", "")
+        bringItem.Activated = function(sender, item, index)
+            TriggerServerEvent('staff_menu:bringPlayer', selectedPlayer.id)
+            actionsMenu:Visible(false)
+            isMenuOpen = false
+            notify("~g~Bringing player...")
+        end
+        actionsMenu:AddItem(bringItem)
+    end
+    
+    if HasPermission('spectate') then
+        local spectateItem = NativeUI.CreateItem("👁️ Spectate Player", "")
+        spectateItem.Activated = function(sender, item, index)
+            TriggerServerEvent('staff_menu:spectatePlayer', selectedPlayer.id)
+            actionsMenu:Visible(false)
+            isMenuOpen = false
+            notify("~b~Spectating player...")
+        end
+        actionsMenu:AddItem(spectateItem)
     end
     
     -- Moderator+ actions
-    if HasPermission('spectate') then
-        table.insert(elements, {
-            label = '👁️ Spectate Player',
-            value = 'spectate'
-        })
-    end
-    
     if HasPermission('heal') then
-        table.insert(elements, {
-            label = '❤️ Heal Player',
-            value = 'heal'
-        })
+        local healItem = NativeUI.CreateItem("❤️ Heal Player", "")
+        healItem.Activated = function(sender, item, index)
+            TriggerServerEvent('staff_menu:healPlayer', selectedPlayer.id)
+            notify("~g~Player healed!")
+        end
+        actionsMenu:AddItem(healItem)
     end
     
     if HasPermission('armor') then
-        table.insert(elements, {
-            label = '🛡️ Give Armor',
-            value = 'armor'
-        })
+        local armorItem = NativeUI.CreateItem("🛡️ Give Armor", "")
+        armorItem.Activated = function(sender, item, index)
+            TriggerServerEvent('staff_menu:armorPlayer', selectedPlayer.id)
+            notify("~b~Armor given!")
+        end
+        actionsMenu:AddItem(armorItem)
     end
     
     if HasPermission('revive') then
-        table.insert(elements, {
-            label = '💊 Revive Player',
-            value = 'revive'
-        })
+        local reviveItem = NativeUI.CreateItem("💊 Revive Player", "")
+        reviveItem.Activated = function(sender, item, index)
+            TriggerServerEvent('staff_menu:revivePlayer', selectedPlayer.id)
+            notify("~g~Player revived!")
+        end
+        actionsMenu:AddItem(reviveItem)
     end
     
     if HasPermission('freeze') then
-        table.insert(elements, {
-            label = '🧊 Freeze/Unfreeze',
-            value = 'freeze'
-        })
+        local freezeItem = NativeUI.CreateItem("🧊 Freeze/Unfreeze", "")
+        freezeItem.Activated = function(sender, item, index)
+            TriggerServerEvent('staff_menu:freezePlayer', selectedPlayer.id)
+            notify("~y~Player freeze toggled!")
+        end
+        actionsMenu:AddItem(freezeItem)
     end
     
     if HasPermission('kick') then
-        table.insert(elements, {
-            label = '⚠️ Kick Player',
-            value = 'kick'
-        })
+        local kickItem = NativeUI.CreateItem("⚠️ Kick Player", "")
+        kickItem.Activated = function(sender, item, index)
+            local reason = KeyboardInput("Kick Reason", "Rule violation", 50)
+            if reason then
+                TriggerServerEvent('staff_menu:kickPlayer', selectedPlayer.id, reason)
+                actionsMenu:Visible(false)
+                isMenuOpen = false
+                notify("~r~Player kicked!")
+            end
+        end
+        actionsMenu:AddItem(kickItem)
     end
     
     if HasPermission('ban') then
-        table.insert(elements, {
-            label = '🔨 Ban Player',
-            value = 'ban'
-        })
+        local banItem = NativeUI.CreateItem("🔨 Ban Player", "")
+        banItem.Activated = function(sender, item, index)
+            OpenBanMenu()
+        end
+        actionsMenu:AddItem(banItem)
     end
     
     if HasPermission('changegroup') then
-        table.insert(elements, {
-            label = '🔧 Change Group',
-            value = 'changegroup'
-        })
-    end
-    
-    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'player_actions', {
-        title = '👤 Actions: ' .. selectedPlayer.name,
-        align = 'top-left',
-        elements = elements
-    }, function(data, menu)
-        local action = data.current.value
-        
-        if action == 'goto' then
-            TriggerServerEvent('staff_menu:teleportToPlayer', selectedPlayer.id)
-            menu.close()
-            isMenuOpen = false
-        elseif action == 'bring' then
-            TriggerServerEvent('staff_menu:bringPlayer', selectedPlayer.id)
-            menu.close()
-            isMenuOpen = false
-        elseif action == 'heal' then
-            TriggerServerEvent('staff_menu:healPlayer', selectedPlayer.id)
-            ESX.ShowNotification('~g~Player healed!')
-        elseif action == 'armor' then
-            TriggerServerEvent('staff_menu:armorPlayer', selectedPlayer.id)
-            ESX.ShowNotification('~b~Armor given!')
-        elseif action == 'revive' then
-            TriggerServerEvent('staff_menu:revivePlayer', selectedPlayer.id)
-            ESX.ShowNotification('~g~Player revived!')
-        elseif action == 'freeze' then
-            TriggerServerEvent('staff_menu:freezePlayer', selectedPlayer.id)
-            ESX.ShowNotification('~y~Player freeze toggled!')
-        elseif action == 'spectate' then
-            TriggerServerEvent('staff_menu:spectatePlayer', selectedPlayer.id)
-            menu.close()
-            isMenuOpen = false
-        elseif action == 'kick' then
-            ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'kick_reason', {
-                title = 'Kick Reason'
-            }, function(data2, menu2)
-                if data2.value then
-                    TriggerServerEvent('staff_menu:kickPlayer', selectedPlayer.id, data2.value)
-                    menu2.close()
-                    menu.close()
-                    isMenuOpen = false
-                end
-            end, function(data2, menu2)
-                menu2.close()
-            end)
-        elseif action == 'ban' then
-            OpenBanMenu()
-        elseif action == 'changegroup' then
+        local changeGroupItem = NativeUI.CreateItem("🔧 Change Group", "")
+        changeGroupItem.Activated = function(sender, item, index)
             OpenGroupChangeMenu()
         end
-    end, function(data, menu)
-        menu.close()
-        OpenPlayerManagement()
-    end)
-end
-
-function OpenVehicleManagement()
-    local elements = {}
-    
-    if HasPermission('spawncar') then
-        table.insert(elements, {
-            label = '🚗 Spawn Vehicle',
-            value = 'spawn_vehicle'
-        })
+        actionsMenu:AddItem(changeGroupItem)
     end
     
-    table.insert(elements, {
-        label = '🚗 Admin Car (Give Current/Spawn)',
-        value = 'admin_car'
-    })
+    actionsMenu:Visible(true)
+    _menuPool:RefreshIndex()
+end
+
+function CreateVehicleManagementMenu(submenu)
+    if HasPermission('spawncar') then
+        local spawnVehicleItem = NativeUI.CreateItem("🚗 Spawn Vehicle", "")
+        spawnVehicleItem.Activated = function(sender, item, index)
+            local model = KeyboardInput("Vehicle Model", "adder", 20)
+            if model then
+                TriggerServerEvent('staff_menu:spawnVehicle', model)
+                notify("~g~Spawning vehicle: " .. model)
+            end
+        end
+        submenu:AddItem(spawnVehicleItem)
+    end
+    
+    local adminCarItem = NativeUI.CreateItem("🚗 Admin Car", "Give/Spawn admin vehicle")
+    adminCarItem.Activated = function(sender, item, index)
+        TriggerServerEvent('staff_menu:adminCar')
+        notify("~b~Admin car spawned!")
+    end
+    submenu:AddItem(adminCarItem)
     
     if HasPermission('fixgarage') then
-        table.insert(elements, {
-            label = '🔧 Fix Garage',
-            value = 'fix_garage'
-        })
-    end
-    
-    table.insert(elements, {
-        label = '🗑️ Delete Vehicle',
-        value = 'delete_vehicle'
-    })
-    
-    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_management', {
-        title = '🚗 Vehicle Management',
-        align = 'top-left',
-        elements = elements
-    }, function(data, menu)
-        local action = data.current.value
-        
-        if action == 'spawn_vehicle' then
-            ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'spawn_vehicle', {
-                title = 'Vehicle Model'
-            }, function(data2, menu2)
-                if data2.value then
-                    TriggerServerEvent('staff_menu:spawnVehicle', data2.value)
-                    menu2.close()
-                    menu.close()
-                    isMenuOpen = false
-                end
-            end, function(data2, menu2)
-                menu2.close()
-            end)
-        elseif action == 'admin_car' then
-            if selectedPlayer then
-                TriggerServerEvent('staff_menu:adminCar', selectedPlayer.id)
-            else
-                TriggerServerEvent('staff_menu:adminCar')
-            end
-            menu.close()
-            isMenuOpen = false
-        elseif action == 'fix_garage' then
-            ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'fix_garage', {
-                title = 'Vehicle Plate'
-            }, function(data2, menu2)
-                if data2.value then
-                    TriggerServerEvent('staff_menu:fixGarage', data2.value)
-                    menu2.close()
-                    menu.close()
-                    isMenuOpen = false
-                end
-            end, function(data2, menu2)
-                menu2.close()
-            end)
-        elseif action == 'delete_vehicle' then
-            local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-            if vehicle and vehicle ~= 0 then
-                TriggerServerEvent('staff_menu:deleteVehicle', VehToNet(vehicle))
-                ESX.ShowNotification('~r~Vehicle deleted!')
-            else
-                ESX.ShowNotification('~r~You need to be in a vehicle!')
+        local fixGarageItem = NativeUI.CreateItem("🔧 Fix Garage", "")
+        fixGarageItem.Activated = function(sender, item, index)
+            local plate = KeyboardInput("Vehicle Plate", "", 8)
+            if plate then
+                TriggerServerEvent('staff_menu:fixGarage', plate)
+                notify("~g~Garage fixed for plate: " .. plate)
             end
         end
-    end, function(data, menu)
-        menu.close()
-        OpenStaffMenu()
-    end)
+        submenu:AddItem(fixGarageItem)
+    end
+    
+    local deleteVehicleItem = NativeUI.CreateItem("🗑️ Delete Vehicle", "Delete current vehicle")
+    deleteVehicleItem.Activated = function(sender, item, index)
+        local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+        if vehicle and vehicle ~= 0 then
+            TriggerServerEvent('staff_menu:deleteVehicle', VehToNet(vehicle))
+            notify("~r~Vehicle deleted!")
+        else
+            notify("~r~You need to be in a vehicle!")
+        end
+    end
+    submenu:AddItem(deleteVehicleItem)
 end
 
-function OpenServerManagement()
-    local elements = {}
-    
+function CreateServerManagementMenu(submenu)
     if HasPermission('weather') then
-        table.insert(elements, {
-            label = '🌤️ Change Weather',
-            value = 'weather'
-        })
-    end
-    
-    table.insert(elements, {
-        label = '🕐 Set Time',
-        value = 'time'
-    })
-    
-    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'server_management', {
-        title = '🌍 Server Management',
-        align = 'top-left',
-        elements = elements
-    }, function(data, menu)
-        local action = data.current.value
+        local weatherSubmenu = _menuPool:AddSubMenu(submenu, "🌤️ Change Weather", "Weather options", MenuPosition.x, MenuPosition.y)
         
-        if action == 'weather' then
-            OpenWeatherMenu()
-        elseif action == 'time' then
-            ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'set_time', {
-                title = 'Set Time (0-23)'
-            }, function(data2, menu2)
-                local hour = tonumber(data2.value)
-                if hour and hour >= 0 and hour <= 23 then
-                    TriggerServerEvent('staff_menu:setTime', hour)
-                    menu2.close()
-                    menu.close()
-                    isMenuOpen = false
-                else
-                    ESX.ShowNotification('~r~Invalid time! Use 0-23')
-                end
-            end, function(data2, menu2)
-                menu2.close()
-            end)
+        for _, weather in pairs(Config.WeatherTypes) do
+            local weatherItem = NativeUI.CreateItem(weather.label, "")
+            weatherItem.Activated = function(sender, item, index)
+                TriggerServerEvent('staff_menu:setWeather', weather.value)
+                notify("~b~Weather changed to: " .. weather.label)
+            end
+            weatherSubmenu:AddItem(weatherItem)
         end
-    end, function(data, menu)
-        menu.close()
-        OpenStaffMenu()
-    end)
-end
-
-function OpenWeatherMenu()
-    local elements = {}
-    
-    for _, weather in pairs(Config.WeatherTypes) do
-        table.insert(elements, {
-            label = weather.label,
-            value = weather.value
-        })
     end
     
-    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'weather_menu', {
-        title = '🌤️ Weather Options',
-        align = 'top-left',
-        elements = elements
-    }, function(data, menu)
-        TriggerServerEvent('staff_menu:setWeather', data.current.value)
-        menu.close()
-        OpenServerManagement()
-    end, function(data, menu)
-        menu.close()
-        OpenServerManagement()
-    end)
+    local timeItem = NativeUI.CreateItem("🕐 Set Time", "")
+    timeItem.Activated = function(sender, item, index)
+        local time = KeyboardInput("Set Time (0-23)", "12", 2)
+        local hour = tonumber(time)
+        if hour and hour >= 0 and hour <= 23 then
+            TriggerServerEvent('staff_menu:setTime', hour)
+            notify("~b~Time set to: " .. hour .. ":00")
+        else
+            notify("~r~Invalid time! Use 0-23")
+        end
+    end
+    submenu:AddItem(timeItem)
 end
 
-function OpenUtilities()
-    local elements = {}
-    
-    table.insert(elements, {
-        label = '✈️ NoClip (' .. (noclipEnabled and '~g~ON' or '~r~OFF') .. '~s~)',
-        value = 'noclip'
-    })
+function CreateUtilitiesMenu(submenu)
+    local noclipItem = NativeUI.CreateItem("✈️ NoClip", noclipEnabled and "Currently ON" or "Currently OFF")
+    noclipItem.Activated = function(sender, item, index)
+        exports['staff_menu']:ToggleNoClip()
+        item:SetRightLabel(noclipEnabled and "Currently ON" or "Currently OFF")
+    end
+    submenu:AddItem(noclipItem)
     
     if noclipEnabled then
-        table.insert(elements, {
-            label = '🚫 Force Disable NoClip',
-            value = 'disable_noclip'
-        })
-    end
-    
-    table.insert(elements, {
-        label = '💊 Heal Self',
-        value = 'heal_self'
-    })
-    
-    table.insert(elements, {
-        label = '🛡️ Armor Self',
-        value = 'armor_self'
-    })
-    
-    table.insert(elements, {
-        label = '👻 Invisible (' .. (GetEntityAlpha(PlayerPedId()) < 255 and '~g~ON' or '~r~OFF') .. '~s~)',
-        value = 'invisible'
-    })
-    
-    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'utilities', {
-        title = '⚙️ Utilities',
-        align = 'top-left',
-        elements = elements
-    }, function(data, menu)
-        local action = data.current.value
-        
-        if action == 'noclip' then
-            exports['staff_menu']:ToggleNoClip()
-            menu.close()
-            OpenUtilities()
-        elseif action == 'disable_noclip' then
-            -- Force disable noclip
+        local disableNoclipItem = NativeUI.CreateItem("🚫 Force Disable NoClip", "")
+        disableNoclipItem.Activated = function(sender, item, index)
             local ped = PlayerPedId()
             SetEntityInvincible(ped, false)
             SetEntityVisible(ped, true, false)
@@ -457,83 +306,45 @@ function OpenUtilities()
             SetPedCanRagdoll(ped, true)
             SetEntityProofs(ped, false, false, false, false, false, false, false, false)
             noclipEnabled = false
-            ESX.ShowNotification('~g~NoClip force disabled!')
-            menu.close()
-            OpenUtilities()
-        elseif action == 'heal_self' then
-            SetEntityHealth(PlayerPedId(), 200)
-            ESX.ShowNotification('~g~You have been healed!')
-        elseif action == 'armor_self' then
-            SetPedArmour(PlayerPedId(), 100)
-            ESX.ShowNotification('~b~Armor restored!')
-        elseif action == 'invisible' then
-            local ped = PlayerPedId()
-            local alpha = GetEntityAlpha(ped)
-            if alpha < 255 then
-                SetEntityAlpha(ped, 255, false)
-                ESX.ShowNotification('~g~Visibility restored!')
-            else
-                SetEntityAlpha(ped, 0, false)
-                ESX.ShowNotification('~r~You are now invisible!')
-            end
-            menu.close()
-            OpenUtilities()
+            notify("~g~NoClip force disabled!")
         end
-    end, function(data, menu)
-        menu.close()
-        OpenStaffMenu()
-    end)
-end
-
-function CreateHealthBar(health)
-    local maxHealth = 200
-    local percentage = math.floor((health / maxHealth) * 100)
-    local bars = math.floor(percentage / 10)
+        submenu:AddItem(disableNoclipItem)
+    end
     
-    local healthBar = '❤️['
-    for i = 1, 10 do
-        if i <= bars then
-            healthBar = healthBar .. '█'
+    local healSelfItem = NativeUI.CreateItem("💊 Heal Self", "")
+    healSelfItem.Activated = function(sender, item, index)
+        SetEntityHealth(PlayerPedId(), 200)
+        notify("~g~You have been healed!")
+    end
+    submenu:AddItem(healSelfItem)
+    
+    local armorSelfItem = NativeUI.CreateItem("🛡️ Armor Self", "")
+    armorSelfItem.Activated = function(sender, item, index)
+        SetPedArmour(PlayerPedId(), 100)
+        notify("~b~Armor restored!")
+    end
+    submenu:AddItem(armorSelfItem)
+    
+    local invisibleItem = NativeUI.CreateItem("👻 Invisible", GetEntityAlpha(PlayerPedId()) < 255 and "Currently ON" or "Currently OFF")
+    invisibleItem.Activated = function(sender, item, index)
+        local ped = PlayerPedId()
+        local alpha = GetEntityAlpha(ped)
+        if alpha < 255 then
+            SetEntityAlpha(ped, 255, false)
+            notify("~g~Visibility restored!")
+            item:SetRightLabel("Currently OFF")
         else
-            healthBar = healthBar .. '░'
+            SetEntityAlpha(ped, 0, false)
+            notify("~r~You are now invisible!")
+            item:SetRightLabel("Currently ON")
         end
     end
-    healthBar = healthBar .. '] ' .. percentage .. '%'
-    
-    if percentage > 70 then
-        return '~g~' .. healthBar .. '~s~'
-    elseif percentage > 30 then
-        return '~y~' .. healthBar .. '~s~'
-    else
-        return '~r~' .. healthBar .. '~s~'
-    end
-end
-
-function CreateArmorBar(armor)
-    local percentage = math.floor(armor)
-    local bars = math.floor(percentage / 10)
-    
-    local armorBar = '🛡️['
-    for i = 1, 10 do
-        if i <= bars then
-            armorBar = armorBar .. '█'
-        else
-            armorBar = armorBar .. '░'
-        end
-    end
-    armorBar = armorBar .. '] ' .. percentage .. '%'
-    
-    if percentage > 70 then
-        return '~b~' .. armorBar .. '~s~'
-    elseif percentage > 30 then
-        return '~y~' .. armorBar .. '~s~'
-    else
-        return '~r~' .. armorBar .. '~s~'
-    end
+    submenu:AddItem(invisibleItem)
 end
 
 function OpenBanMenu()
-    local elements = {}
+    local banMenu = NativeUI.CreateMenu("Ban Player", "Select ban duration", MenuPosition.x, MenuPosition.y)
+    _menuPool:Add(banMenu)
     
     local durations = {
         {label = '1 Hour', value = 1/24},
@@ -549,71 +360,73 @@ function OpenBanMenu()
     end
     
     for _, duration in pairs(durations) do
-        table.insert(elements, duration)
-    end
-    
-    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'ban_duration', {
-        title = '🔨 Ban Duration',
-        align = 'top-left',
-        elements = elements
-    }, function(data, menu)
-        ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'ban_reason', {
-            title = 'Ban Reason'
-        }, function(data2, menu2)
-            if data2.value then
+        local durationItem = NativeUI.CreateItem(duration.label, "")
+        durationItem.Activated = function(sender, item, index)
+            local reason = KeyboardInput("Ban Reason", "Rule violation", 100)
+            if reason then
                 ESX.TriggerServerCallback('staff_menu:banPlayer', function(success, message)
                     if success then
-                        ESX.ShowNotification('~g~' .. message)
+                        notify('~g~' .. message)
                     else
-                        ESX.ShowNotification('~r~' .. message)
+                        notify('~r~' .. message)
                     end
-                end, selectedPlayer.id, data2.value, data.current.value)
+                end, selectedPlayer.id, reason, duration.value)
                 
-                menu2.close()
-                menu.close()
+                banMenu:Visible(false)
                 isMenuOpen = false
             end
-        end, function(data2, menu2)
-            menu2.close()
-        end)
-    end, function(data, menu)
-        menu.close()
-        OpenPlayerActions()
-    end)
+        end
+        banMenu:AddItem(durationItem)
+    end
+    
+    banMenu:Visible(true)
+    _menuPool:RefreshIndex()
 end
 
 function OpenGroupChangeMenu()
     ESX.TriggerServerCallback('staff_menu:getStaffGroups', function(groups)
-        local elements = {}
+        local groupMenu = NativeUI.CreateMenu("Change Group", "Select new group", MenuPosition.x, MenuPosition.y)
+        _menuPool:Add(groupMenu)
         
         for _, group in pairs(groups) do
-            table.insert(elements, {
-                label = group.label .. ' (Level ' .. group.level .. ')',
-                value = group.value
-            })
+            local groupItem = NativeUI.CreateItem(group.label .. ' (Level ' .. group.level .. ')', "")
+            groupItem.Activated = function(sender, item, index)
+                ESX.TriggerServerCallback('staff_menu:changePlayerGroup', function(success, message)
+                    if success then
+                        notify('~g~' .. message)
+                    else
+                        notify('~r~' .. message)
+                    end
+                end, selectedPlayer.id, group.value)
+                
+                groupMenu:Visible(false)
+                isMenuOpen = false
+            end
+            groupMenu:AddItem(groupItem)
         end
         
-        ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'change_group', {
-            title = '🔧 Change Group',
-            align = 'top-left',
-            elements = elements
-        }, function(data, menu)
-            ESX.TriggerServerCallback('staff_menu:changePlayerGroup', function(success, message)
-                if success then
-                    ESX.ShowNotification('~g~' .. message)
-                else
-                    ESX.ShowNotification('~r~' .. message)
-                end
-            end, selectedPlayer.id, data.current.value)
-            
-            menu.close()
-            isMenuOpen = false
-        end, function(data, menu)
-            menu.close()
-            OpenPlayerActions()
-        end)
+        groupMenu:Visible(true)
+        _menuPool:RefreshIndex()
     end)
 end
+
+-- Main menu processing thread
+CreateThread(function()
+    while true do
+        Wait(0)
+        _menuPool:ProcessMenus()
+        
+        if IsControlJustPressed(1, 167) and isStaff and not isMenuOpen then -- F6 key
+            OpenStaffMenu()
+        end
+        
+        -- Close menu with ESC or when not visible
+        if isMenuOpen and (not mainMenu:Visible() or IsControlJustPressed(1, 177)) then
+            isMenuOpen = false
+            selectedPlayer = nil
+        end
+    end
+end)
 
 -- Refresh player data periodically
 CreateThread(function()
@@ -626,3 +439,5 @@ CreateThread(function()
         end
     end
 end)
+
+_menuPool:RefreshIndex()

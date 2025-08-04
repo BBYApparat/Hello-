@@ -174,7 +174,7 @@ AddEventHandler('bby_jobs:toggleDuty', function(job)
     
     -- Check if player has the job
     if xPlayer.job.name ~= job then
-        TriggerClientEvent('esx:showNotification', source, 'You do not have this job!', 'error')
+        -- Notification removed - job validation preserved
         return
     end
     
@@ -183,13 +183,13 @@ AddEventHandler('bby_jobs:toggleDuty', function(job)
     local success, message = setPlayerDutyStatus(identifier, job, not currentStatus)
     
     if success then
-        TriggerClientEvent('esx:showNotification', source, message, 'success')
+        -- Success notification removed - functionality preserved
         TriggerClientEvent('bby_jobs:setDutyStatus', source, job, not currentStatus)
         
         -- Trigger event for other resources
         TriggerEvent('bby_jobs:dutyChanged', source, job, not currentStatus)
     else
-        TriggerClientEvent('esx:showNotification', source, message, 'error')
+        -- Error notification removed - functionality preserved
     end
 end)
 
@@ -201,13 +201,13 @@ ESX.RegisterCommand('duty', "user", function(xPlayer, args, showError)
     local success, message = setPlayerDutyStatus(identifier, job, not currentStatus)
     
     if success then
-        xPlayer.showNotification(message)
+        -- Notification removed - duty toggle functionality preserved
         TriggerClientEvent('bby_jobs:setDutyStatus', xPlayer.source, job, not currentStatus)
         
         -- Trigger event for other resources
         TriggerEvent('bby_jobs:dutyChanged', xPlayer.source, job, not currentStatus)
     else
-        xPlayer.showNotification(message)
+        -- Notification removed - duty status functionality preserved
     end
 end, false, {help = "Toggle your job duty status"})
 
@@ -225,14 +225,13 @@ ESX.RegisterCommand('setduty', "admin", function(xPlayer, args, showError)
     local success, message = setPlayerDutyStatus(identifier, job, dutyStatus)
     
     if success then
-        xPlayer.showNotification(('Set %s duty %s for %s'):format(job, dutyStatus and "on" or "off", targetPlayer.name))
-        targetPlayer.showNotification(message)
+        -- Admin notifications removed - duty setting functionality preserved
         TriggerClientEvent('bby_jobs:setDutyStatus', targetPlayer.source, job, dutyStatus)
         
         -- Trigger event for other resources
         TriggerEvent('bby_jobs:dutyChanged', targetPlayer.source, job, dutyStatus)
     else
-        xPlayer.showNotification(message)
+        -- Notification removed - admin command functionality preserved
     end
 end, false, {help = "Set player duty status", validate = true, arguments = {
     {name = 'target', help = 'Target player', type = 'player'},

@@ -12,6 +12,7 @@ shared_scripts {
 }
 
 client_scripts {
+    'NativeUI.lua',
     'client/main.lua',
     'client/blips.lua',
     'client/menu.lua'
