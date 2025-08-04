@@ -10062,8 +10062,8 @@ return {
 	}	
 },
 
-['screwdriverset'] = {
-	label = 'Toolkit',
+['racing_gps'] = {
+	label = 'Racing GPS',
 	weight = 1000,
 	stack = false
 },
