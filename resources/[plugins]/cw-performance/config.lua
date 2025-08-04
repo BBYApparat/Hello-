@@ -7,7 +7,7 @@ Config.NotifySystem = 'ox' -- supported: 'ox' and 'qb'. If none of these it will
 
 -- This list holds the lower limits of the classes. So, for example:
 -- A car that gets a score under 350 will be a D, a car that gets 351 becomes a C, a car that gets 451 will be a B
-Config.LowestClass = 'E'
+Config.LowestClass = 'D'
 Config.Classes = {
     D = 250,
     C = 350,
@@ -53,12 +53,12 @@ Config.CheatMods = { -- USE THESE IF YOU WANNA DISPLAY MORE "PRETTY" NUMBERS. DO
 }
 
 -- THE FOLLOWING REQUIRES OXLIB
-Config.AllowDrawTextDisplay = true -- If enabled you can use a hotkey to display classes over vehicles. Make sure oxlib is imported in the fxmanifest
+Config.AllowDrawTextDisplay = false -- If enabled you can use a hotkey to display classes over vehicles. Make sure oxlib is imported in the fxmanifest
 
 Config.DrawTextSetup = {
     height = 2.0, -- height above vehicle the label displays
     distance = 20.0, -- Distance from players where performance index is visible
-    showPillar = true, -- if false then disables pillar, if your arent into that kinda thing
+    showPillar = false, -- if false then disables pillar, if your arent into that kinda thing
     markerType = 1, -- marker type, 0 is a cone and 1 is pillar. Google fivem markers for more
     baseSize = 0.04, -- Pillar size
     defaultButton = 'F6' -- see https://docs.fivem.net/docs/game-references/input-mapper-parameter-ids/keyboard/
