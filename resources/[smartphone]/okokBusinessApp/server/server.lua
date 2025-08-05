@@ -2,8 +2,10 @@
 local ESX = exports['es_extended']:getSharedObject()
 
 -- Get business directory data
-RegisterNUICallback('getBusinessData', function(data, cb)
-    local businesses = {}
+ESX.RegisterServerCallback('okokBusinessApp:getBusinessData', function(source, cb)
+    -- Wrap in pcall for error handling
+    local success, result = pcall(function()
+        local businesses = {}
     
     -- Get all configured jobs
     for _, job in ipairs(Config.Jobs) do
@@ -39,16 +41,23 @@ RegisterNUICallback('getBusinessData', function(data, cb)
         })
     end
     
-    cb({
-        success = true,
-        businesses = businesses,
-        categories = Config.Categories
-    })
+        return {
+            success = true,
+            businesses = businesses,
+            categories = Config.Categories
+        }
+    end)
+    
+    if success then
+        cb(result)
+    else
+        print("Error in getBusinessData:", result)
+        cb({success = false, message = "Internal server error"})
+    end
 end)
 
 -- Get specific business details
-RegisterNUICallback('getBusinessDetails', function(data, cb)
-    local businessName = data.businessName
+ESX.RegisterServerCallback('okokBusinessApp:getBusinessDetails', function(source, cb, businessName)
     local src = source
     
     if not businessName then
@@ -94,8 +103,7 @@ RegisterNUICallback('getBusinessDetails', function(data, cb)
 end)
 
 -- Get employee contact details for calling/messaging
-RegisterNUICallback('getEmployeeContact', function(data, cb)
-    local targetId = data.targetId
+ESX.RegisterServerCallback('okokBusinessApp:getEmployeeContact', function(source, cb, targetId)
     local src = source
     
     if not targetId then

@@ -4,6 +4,28 @@
 -- Initialize ESX
 local ESX = exports['es_extended']:getSharedObject()
 
+-- Get business directory data
+RegisterNUICallback('getBusinessData', function(data, cb)
+    -- Request data from server
+    ESX.TriggerServerCallback('okokBusinessApp:getBusinessData', function(result)
+        cb(result)
+    end)
+end)
+
+-- Get specific business details
+RegisterNUICallback('getBusinessDetails', function(data, cb)
+    ESX.TriggerServerCallback('okokBusinessApp:getBusinessDetails', function(result)
+        cb(result)
+    end, data.businessName)
+end)
+
+-- Get employee contact details
+RegisterNUICallback('getEmployeeContact', function(data, cb)
+    ESX.TriggerServerCallback('okokBusinessApp:getEmployeeContact', function(result)
+        cb(result)
+    end, data.targetId)
+end)
+
 -- Handle call initiation from NUI
 RegisterNUICallback('initiateCall', function(data, cb)
     local targetNumber = data.targetNumber

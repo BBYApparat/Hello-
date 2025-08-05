@@ -22,10 +22,28 @@ async function fetchNui(eventName, data = {}) {
         body: JSON.stringify(data),
       }
     );
-    return await result.json();
+    
+    // Check if response is empty or not OK
+    if (!result.ok) {
+      console.error(`HTTP error calling ${eventName}: ${result.status}`);
+      return { success: false, message: `HTTP error: ${result.status}` };
+    }
+    
+    const text = await result.text();
+    if (!text || text.trim() === '') {
+      console.error(`Empty response from ${eventName}`);
+      return { success: false, message: 'Empty response from server' };
+    }
+    
+    try {
+      return JSON.parse(text);
+    } catch (parseError) {
+      console.error(`JSON parse error for ${eventName}:`, parseError, 'Response text:', text);
+      return { success: false, message: 'Invalid JSON response' };
+    }
   } catch (error) {
     console.error(`Error calling ${eventName}\n`, error);
-    return null;
+    return { success: false, message: error.message || 'Network error' };
   }
 }
 

@@ -1,5 +1,5 @@
 Config = {}
-Config.Debug = false
+Config.Debug = true
 
 Config.UseCommand = true -- Enables checkscore command
 Config.AdminOnly = false -- Only allow using checkscore for admins

@@ -1,5 +1,5 @@
 Config = Config or {}
-Config.Debug = false
+Config.Debug = true
 Config.EnableCommands = false
 
 Config.Locale = TranslationsEN -- This must match one of the variables in your locales/x.lua
@@ -113,7 +113,7 @@ Config.Permissions = {
         startRanked = false,        -- can start ranked races
         startElimination = false,   -- can start elimination races
         startReversed = true,       -- can start races with reversed track (It makes NO sense that this is even needed as an auth, but it was paid for so here it is. Leave it as true)
-        setupParticipation = false, -- will see an option to hand out free cash to all participants. Crypto type is same as Config.Options
+        setupParticipation = false, -- will see an option to hand out free bank to all participants. Crypto type is same as Config.Options
         curateTracks = false,       -- Can set track curated status
         handleBounties = false,     -- Can manage bounties
         handleAutoHost = false,     -- Can handle auto host
@@ -257,7 +257,7 @@ Config.Options = {
     },
     participationCurrencyOptions = {
         { title= 'RAC', value= 'racingcrypto' },
-        { title= 'Cash', value = 'cash' },
+        { title= 'bank', value = 'bank' },
         { title= 'Bank', value= 'bank'}, 
     },
     conversionRate = 0.1, -- money * conversionRate = crypto amount, so if this is 0.1 and you pay $10 you get 1 Racing App Crypto.
@@ -267,20 +267,20 @@ Config.Options = {
     allowSellingCrypto = true, -- if false the selling option wont appear
     allowTransferCrypto = true, -- if false the transfering option wont appear
 
-    sellCharge = 0.05, -- How much is lost upon selling. If 0.05 then you will lose 5% when the crypto is converted to cash
+    sellCharge = 0.05, -- How much is lost upon selling. If 0.05 then you will lose 5% when the crypto is converted to bank
 }
 
--- You can use any payment systems your core support (cash/money/bank). Use 'racingcrypto' to use the built in racing crypto
+-- You can use any payment systems your core support (bank/money/bank). Use 'racingcrypto' to use the built in racing crypto
 Config.Payments = {
-    useRacingCrypto = true, -- set to false if you dont want to use the built in Racing Crypto
+    useRacingCrypto = false, -- set to false if you dont want to use the built in Racing Crypto
     cryptoType = 'RAC',  -- name of your crypto
 
-    racing = 'racingcrypto', -- what money is used for buyins and payots in racing
-    automationPayout = 'racingcrypto', -- what money is used  to payouts in automation races
-    participationPayout = 'racingcrypto', -- what money the participation rewards give out
-    bountyPayout = 'racingcrypto', -- what money bounties pay out
-    createRacingUser = 'cash', -- what money is used to create racing users
-    crypto = 'cash', -- what money type is used to buy Racing App Crypto
+    racing = 'bank', -- what money is used for buyins and payots in racing
+    automationPayout = 'bank', -- what money is used  to payouts in automation races
+    participationPayout = 'bank', -- what money the participation rewards give out
+    bountyPayout = 'bank', -- what money bounties pay out
+    createRacingUser = 'bank', -- what money is used to create racing users
+    crypto = 'bank', -- what money type is used to buy Racing App Crypto
 }
 
 Config.Trader = {
@@ -290,12 +290,12 @@ Config.Trader = {
     model = 'csb_paige',
     animation = 'WORLD_HUMAN_SEAT_WALL_TABLET',
     location = vector4(852.58, -1543.87, 29.12, 230.19),
-    moneyType = Config.Payments.createRacingUser, -- cash/bank/crypto
+    moneyType = Config.Payments.createRacingUser, -- bank/bank/crypto
     racingUserCosts = {
         racer = 1000,
         creator = 5000,
         master = 10000,
-        god = 1000000
+        god = 100
     },
     useSlimmed = true -- set to true if you want menu to cut out cid input
 }
@@ -306,12 +306,12 @@ Config.Laptop = {
     requireToken = false,                                                         -- using cw tokens?
     model = 'xm_prop_x17_laptop_mrsr',                                            -- entity model
     location = vector4(938.56, -1549.8, 34.37, 163.59),                           -- world location
-    moneyType = Config.Payments.createRacingUser,                                                           -- cash/bank/crypto
+    moneyType = Config.Payments.createRacingUser,                                                           -- bank/bank/crypto
     racingUserCosts = {                                                           -- cost of creating an account
         racer = 1000,
         creator = 5000,
         master = 10000,
-        god = 1000000
+        god = 100
     },
 }
 
