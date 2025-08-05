@@ -1,0 +1,19 @@
+{
+  "allowOnlyConnectedPlayers": false,
+  "restrictOrigin": {
+    "allowedOrigins": ["https://cfx-nui-okokphone"],
+    "enabled": false
+  },
+  "mediaApiKeys": {
+    "fivemanage": {
+      "images": "4212fcB5vyc5seIYsW924qtoEIHYkJSA",
+      "video": "4212fcB5vyc5seIYsW924qtoEIHYkJSA",
+      "audio": "4212fcB5vyc5seIYsW924qtoEIHYkJSA"
+    },
+    "fivemerr": {
+      "images": "",
+      "video": "",
+      "audio": ""
+    }
+  }
+}

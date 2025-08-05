@@ -1,0 +1,120 @@
+{
+  "avatar": "./images/default_user.png",
+  "clock": {
+    "alarms": []
+  },
+  "contacts": [],
+  "flashlight_color": {
+    "b": 255,
+    "g": 255,
+    "r": 255
+  },
+  "homescreen": {
+    "dock": [
+      {
+        "name": "calls",
+        "type": "app"
+      },
+      {
+        "name": "browser",
+        "type": "app"
+      },
+      {
+        "name": "messages",
+        "type": "app"
+      },
+      {
+        "name": "camera",
+        "type": "app"
+      }
+    ],
+    "pages": [
+      [
+        {
+          "name": "weather_widget",
+          "type": "widget"
+        },
+        {
+          "name": "garage",
+          "type": "app"
+        },
+        {
+          "name": "calendar",
+          "type": "app"
+        },
+        {
+          "name": "wallet",
+          "type": "app"
+        },
+        {
+          "name": "gallery",
+          "type": "app"
+        },
+        {
+          "name": "maps",
+          "type": "app"
+        },
+        {
+          "name": "notes",
+          "type": "app"
+        },
+        {
+          "name": "calculator",
+          "type": "app"
+        },
+        {
+          "name": "find",
+          "type": "app"
+        },
+        {
+          "name": "weather",
+          "type": "app"
+        },
+        {
+          "name": "app_store",
+          "type": "app"
+        },
+        {
+          "name": "clock",
+          "type": "app"
+        },
+        {
+          "name": "news",
+          "type": "app"
+        },
+        {
+          "name": "email",
+          "type": "app"
+        },
+        {
+          "name": "settings",
+          "type": "app"
+        },
+        {
+          "name": "services",
+          "type": "app"
+        },
+        {
+          "name": "work",
+          "type": "app"
+        }
+      ],
+      []
+    ]
+  },
+  "lockscreen": "./images/lockscreen/1.png",
+  "name": "john doe",
+  "notification_sound": "./audio/notifications/1.mp3",
+  "notifications": [],
+  "phone_number": "",
+  "ringtone": "./audio/ringtones/1.mp3",
+  "settings": {
+    "frameColor": "41",
+    "wallpaperBlur": false
+  },
+  "wallpaper": "./images/wallpapers/1.jpg",
+  "email": "",
+  "storage": {
+    "apps": {}
+  }
+}

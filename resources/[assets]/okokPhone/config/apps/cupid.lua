@@ -1,0 +1,6 @@
+return {
+      genders = {
+            "male",
+            "female",
+      }
+}

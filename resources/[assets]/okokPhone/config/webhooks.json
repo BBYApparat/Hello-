@@ -1,0 +1,12 @@
+{
+  "webhooks": {
+    "darknet": "https://discord.com/api/webhooks/109747",
+    "v": "https://discord.com/api/webhooks/1351236587521966172/wrLr9XECO1V05cwCVMgXxRSUaRgN9pWuB5q93nin3P5kNtfd1BnmPYIUgxamVC-BnmJG"
+  },
+  "settings": {
+    "v": {
+      "show_discord_id": true,
+      "show_license": false
+    }
+  }
+}

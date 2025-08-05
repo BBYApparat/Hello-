@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Info App - okokPhone</title>
+    <script defer src="./assets/dev.js"></script>
+    <script defer src="./assets/utils.js"></script>
+    <script src="./assets/script.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/style.css" />
+  </head>
+  <body style="visibility: hidden">
+    <div id="app-container">
+      <main class="w-full h-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-6 overflow-y-auto">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-bold">Personal Info</h1>
+          <button onclick="refreshInfo()" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded-md text-sm transition-colors">
+            Refresh
+          </button>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="flex items-center justify-center h-64">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400"></div>
+        </div>
+
+        <!-- Info Content -->
+        <div id="info-content" class="hidden space-y-4">
+          <!-- State ID -->
+          <div class="bg-black/30 rounded-lg p-4 backdrop-blur">
+            <h3 class="text-lg font-semibold mb-2 text-purple-300">State ID</h3>
+            <p id="state-id" class="font-mono text-sm break-all">-</p>
+          </div>
+
+          <!-- Financial Info -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-black/30 rounded-lg p-4 backdrop-blur">
+              <h3 class="text-lg font-semibold mb-2 text-green-300">Bank Balance</h3>
+              <p id="bank-balance" class="text-2xl font-bold text-green-400">$0</p>
+            </div>
+            <div class="bg-black/30 rounded-lg p-4 backdrop-blur">
+              <h3 class="text-lg font-semibold mb-2 text-yellow-300">Cash</h3>
+              <p id="cash-balance" class="text-2xl font-bold text-yellow-400">$0</p>
+            </div>
+          </div>
+
+          <!-- Job Info -->
+          <div class="bg-black/30 rounded-lg p-4 backdrop-blur">
+            <h3 class="text-lg font-semibold mb-2 text-blue-300">Job</h3>
+            <div class="space-y-1">
+              <p class="text-blue-400 font-semibold" id="job-label">-</p>
+              <p class="text-sm text-gray-300" id="job-grade">-</p>
+            </div>
+          </div>
+
+          <!-- Gang Info -->
+          <div class="bg-black/30 rounded-lg p-4 backdrop-blur">
+            <h3 class="text-lg font-semibold mb-2 text-red-300">Gang</h3>
+            <div class="space-y-1">
+              <p class="text-red-400 font-semibold" id="gang-label">-</p>
+              <p class="text-sm text-gray-300" id="gang-grade">-</p>
+            </div>
+          </div>
+        </div>
+
+        </div>
+
+        <!-- Error State -->
+        <div id="error-content" class="hidden">
+          <div class="bg-red-900/50 border border-red-600 rounded-lg p-4 text-center">
+            <h3 class="text-lg font-semibold mb-2 text-red-300">Error</h3>
+            <p id="error-message" class="text-red-400">Failed to load information</p>
+            <button onclick="refreshInfo()" class="mt-3 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md transition-colors">
+              Try Again
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
