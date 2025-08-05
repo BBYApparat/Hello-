@@ -9554,329 +9554,216 @@ return {
 	},
 
 	-- Add to your ox_inventory/data/items.lua
+	['tomatoes'] = {
+		label = 'Tomatoes',
+		weight = 100,
+		stack = true,
+		description = 'Fresh tomatoes',
+	},
 
--- Equipment
-['pizza_oven'] = {
-    label = 'Pizza Oven',
-    weight = 5000,
-    stack = false,
-    close = true,
-},
-['pizza_table'] = {
-    label = 'Pizza Table',
-    weight = 2000,
-    stack = false,
-    close = true,
-},
-['cutting_board'] = {
-    label = 'Cutting Board',
-    weight = 500,
-    stack = false,
-    close = true,
-},
-['pizza_roller'] = {
-    label = 'Pizza Roller',
-    weight = 200,
-    stack = true,
-    close = true,
-},
+	['onions'] = {
+		label = 'Onions',
+		weight = 100,
+		stack = true,
+		description = 'Fresh onions',
+	},
 
--- Raw Ingredients
-['pizza_dough'] = {
-    label = 'Pizza Dough',
-    weight = 250,
-    stack = true,
-    close = true,
-},
-['tomato_sauce'] = {
-    label = 'Tomato Sauce',
-    weight = 100,
-    stack = true,
-    close = true,
-},
-['cheese'] = {
-    label = 'Mozzarella Cheese',
-    weight = 100,
-    stack = true,
-    close = true,
-},
-['pepperoni'] = {
-    label = 'Pepperoni',
-    weight = 100,
-    stack = true,
-    close = true,
-},
-['mushrooms'] = {
-    label = 'Mushrooms',
-    weight = 50,
-    stack = true,
-    close = true,
-},
-['olives'] = {
-    label = 'Olives',
-    weight = 50,
-    stack = true,
-    close = true,
-},
+	['lettuce'] = {
+		label = 'Lettuce',
+		weight = 100,
+		stack = true,
+		description = 'Fresh lettuce',
+	},
 
--- Status Effects for Consumption (Optional)
-['margherita_pizza'] = {
-    label = 'Margherita Pizza',
-    weight = 500,
-    stack = true,
-    close = true,
-    client = {
-        status = { hunger = 200000 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'v_res_fa_pizza01', 
-                 pos = vec3(0.020000, 0.020000, -0.020000),
-                 rot = vec3(0.0, 0.0, 0.0) },
-        usetime = 2500,
-    },
-},
+	-- Snacks and Candy
+	['bzzz_cgreen'] = {
+		label = 'Green Snack',
+		weight = 100,
+		stack = true,
+		close = true,
+		description = 'A tasty green snack',
+		client = {
+			status = { hunger = 15, stress = -5 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_vending_prop_cgreen', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
+			usetime = 2500,
+		}
+	},
 
--- Repeat similar status effects for other pizza types
-['pepperoni_pizza'] = {
-    label = 'Pepperoni Pizza',
-    weight = 600,
-    stack = true,
-    close = true,
-    client = {
-        status = { hunger = 250000 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'v_res_fa_pizza01',
-                 pos = vec3(0.020000, 0.020000, -0.020000),
-                 rot = vec3(0.0, 0.0, 0.0) },
-        usetime = 2500,
-    },
-},
+	['bzzz_cred'] = {
+		label = 'Red Snack',
+		weight = 100,
+		stack = true,
+		close = true,
+		description = 'A tasty red snack',
+		client = {
+			status = { hunger = 15, stress = -5 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_vending_prop_cred', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
+			usetime = 2500,
+		}
+	},
 
-['pizza_slice'] = {
-    label = 'Pizza Slice',
-    weight = 100,
-    stack = true,
-    close = true,
-    client = {
-        status = { hunger = 50000 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'v_res_fa_pizza01',
-                 pos = vec3(0.020000, 0.020000, -0.020000),
-                 rot = vec3(0.0, 0.0, 0.0) },
-        usetime = 2000,
-    },
-},
+	['bzzz_cyellow'] = {
+		label = 'Yellow Snack',
+		weight = 100,
+		stack = true,
+		close = true,
+		description = 'A tasty yellow snack',
+		client = {
+			status = { hunger = 15, stress = -5 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_vending_prop_cbyellow', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
+			usetime = 2500,
+		}
+	},
 
+	-- Chips varieties
+	['bzzz_chips_a'] = {
+		label = 'Chips A',
+		weight = 100,
+		stack = true,
+		close = true,
+		description = 'Crispy potato chips',
+		client = {
+			status = { hunger = 15 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_vending_prop_chips_a', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
+			usetime = 2500,
+		}
+	},
 
-['tomatoes'] = {
-    label = 'Tomatoes',
-    weight = 100,
-    stack = true,
-    description = 'Fresh tomatoes',
-},
+	-- [Add similar entries for chips_b through chips_f]
 
-['onions'] = {
-    label = 'Onions',
-    weight = 100,
-    stack = true,
-    description = 'Fresh onions',
-},
+	['bzzz_meteorite'] = {
+		label = 'Meteorite Bar',
+		weight = 100,
+		stack = true,
+		close = true,
+		description = 'Chocolate and caramel bar',
+		client = {
+			status = { hunger = 10, stress = -10 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_vending_prop_meteorite', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
+			usetime = 2500,
+		}
+	},
 
-['lettuce'] = {
-    label = 'Lettuce',
-    weight = 100,
-    stack = true,
-    description = 'Fresh lettuce',
-},
+	['bzzz_nothings'] = {
+		label = 'Nothings Bar',
+		weight = 100,
+		stack = true,
+		close = true,
+		description = 'Light and crispy wafer bar',
+		client = {
+			status = { hunger = 10, stress = -5 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_vending_prop_nothings', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
+			usetime = 2500,
+		}
+	},
 
--- Snacks and Candy
-['bzzz_cgreen'] = {
-    label = 'Green Snack',
-    weight = 100,
-    stack = true,
-    close = true,
-    description = 'A tasty green snack',
-    client = {
-        status = { hunger = 15, stress = -5 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'bzzz_vending_prop_cgreen', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
-        usetime = 2500,
-    }
-},
+	-- Relief candies
+	['bzzz_relblue'] = {
+		label = 'Blue Relief',
+		weight = 50,
+		stack = true,
+		close = true,
+		description = 'Refreshing mint candy',
+		client = {
+			status = { stress = -15 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_vending_prop_relblue', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
+			usetime = 2500,
+		}
+	},
 
-['bzzz_cred'] = {
-    label = 'Red Snack',
-    weight = 100,
-    stack = true,
-    close = true,
-    description = 'A tasty red snack',
-    client = {
-        status = { hunger = 15, stress = -5 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'bzzz_vending_prop_cred', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
-        usetime = 2500,
-    }
-},
+	['bzzz_relgreen'] = {
+		label = 'Green Relief',
+		weight = 50,
+		stack = true,
+		close = true,
+		description = 'Soothing herbal candy',
+		client = {
+			status = { stress = -15 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_vending_prop_relgreen', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
+			usetime = 2500,
+		}
+	},
 
-['bzzz_cyellow'] = {
-    label = 'Yellow Snack',
-    weight = 100,
-    stack = true,
-    close = true,
-    description = 'A tasty yellow snack',
-    client = {
-        status = { hunger = 15, stress = -5 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'bzzz_vending_prop_cbyellow', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
-        usetime = 2500,
-    }
-},
+	['bzzz_relpink'] = {
+		label = 'Pink Relief',
+		weight = 50,
+		stack = true,
+		close = true,
+		description = 'Sweet fruity candy',
+		client = {
+			status = { stress = -15 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_vending_prop_relpink', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
+			usetime = 2500,
+		}
+	},
 
--- Chips varieties
-['bzzz_chips_a'] = {
-    label = 'Chips A',
-    weight = 100,
-    stack = true,
-    close = true,
-    description = 'Crispy potato chips',
-    client = {
-        status = { hunger = 15 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'bzzz_vending_prop_chips_a', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
-        usetime = 2500,
-    }
-},
+	['bzzz_zebrabar'] = {
+		label = 'Zebra Bar',
+		weight = 100,
+		stack = true,
+		close = true,
+		description = 'Black and white chocolate bar',
+		client = {
+			status = { hunger = 10, stress = -10 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_vending_prop_zebrabar', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
+			usetime = 2500,
+		}
+	},
 
--- [Add similar entries for chips_b through chips_f]
-
-['bzzz_meteorite'] = {
-    label = 'Meteorite Bar',
-    weight = 100,
-    stack = true,
-    close = true,
-    description = 'Chocolate and caramel bar',
-    client = {
-        status = { hunger = 10, stress = -10 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'bzzz_vending_prop_meteorite', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
-        usetime = 2500,
-    }
-},
-
-['bzzz_nothings'] = {
-    label = 'Nothings Bar',
-    weight = 100,
-    stack = true,
-    close = true,
-    description = 'Light and crispy wafer bar',
-    client = {
-        status = { hunger = 10, stress = -5 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'bzzz_vending_prop_nothings', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
-        usetime = 2500,
-    }
-},
-
--- Relief candies
-['bzzz_relblue'] = {
-    label = 'Blue Relief',
-    weight = 50,
-    stack = true,
-    close = true,
-    description = 'Refreshing mint candy',
-    client = {
-        status = { stress = -15 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'bzzz_vending_prop_relblue', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
-        usetime = 2500,
-    }
-},
-
-['bzzz_relgreen'] = {
-    label = 'Green Relief',
-    weight = 50,
-    stack = true,
-    close = true,
-    description = 'Soothing herbal candy',
-    client = {
-        status = { stress = -15 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'bzzz_vending_prop_relgreen', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
-        usetime = 2500,
-    }
-},
-
-['bzzz_relpink'] = {
-    label = 'Pink Relief',
-    weight = 50,
-    stack = true,
-    close = true,
-    description = 'Sweet fruity candy',
-    client = {
-        status = { stress = -15 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'bzzz_vending_prop_relpink', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
-        usetime = 2500,
-    }
-},
-
-['bzzz_zebrabar'] = {
-    label = 'Zebra Bar',
-    weight = 100,
-    stack = true,
-    close = true,
-    description = 'Black and white chocolate bar',
-    client = {
-        status = { hunger = 10, stress = -10 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'bzzz_vending_prop_zebrabar', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
-        usetime = 2500,
-    }
-},
-
-['bzzz_candybox'] = {
-    label = 'Candy Box',
-    weight = 300,
-    stack = true,
-    close = true,
-    description = 'Box full of assorted candies',
-    client = {
-        status = { hunger = 25, stress = -20 },
-        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
-        prop = { model = 'bzzz_vending_prop_candybox', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
-        usetime = 2500,
-    }
-},
+	['bzzz_candybox'] = {
+		label = 'Candy Box',
+		weight = 300,
+		stack = true,
+		close = true,
+		description = 'Box full of assorted candies',
+		client = {
+			status = { hunger = 25, stress = -20 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_vending_prop_candybox', pos = vec3(0.01, 0.01, 0.02), rot = vec3(5.0, 5.0, -1.5) },
+			usetime = 2500,
+		}
+	},
 
 
-["cash_roll"] = {
-	label = "Roll of Cash",
-	weight = 0.1,
-	stack = true,
-	close = true,
-},
+	["cash_roll"] = {
+		label = "Roll of Cash",
+		weight = 0.1,
+		stack = true,
+		close = true,
+	},
 
-["meth_bag"] = {
-	label = "Meth Bag",
-	weight = 0.3,
-	stack = true,
-	close = true,
-},
+	["meth_bag"] = {
+		label = "Meth Bag",
+		weight = 0.3,
+		stack = true,
+		close = true,
+	},
 
-['washed_money'] = {
-    label = 'Dirty Money',
-    weight = 0,
-    stack = true,
-    close = true,
-    description = 'Money that needs to be laundered',
-},
+	['washed_money'] = {
+		label = 'Dirty Money',
+		weight = 0,
+		stack = true,
+		close = true,
+		description = 'Money that needs to be laundered',
+	},
 
-['black_money'] = {
-    label = 'Black Money',
-    weight = 0,
-    stack = true,
-    close = true,
-    description = 'Illegally obtained money',
-},
+	['black_money'] = {
+		label = 'Black Money',
+		weight = 0,
+		stack = true,
+		close = true,
+		description = 'Illegally obtained money',
+	},
 
 
 	["spray_remover"] = {
@@ -9951,120 +9838,126 @@ return {
 	},
 	
 	['camera_pd'] = {
-	label = 'PD Camera',
-	weight = 3000,
-	stack = false,
-	close = true,
-	consume = 0,
-	server = {
-		export = 'sf_camerasecurity.cam_camera_pd'
+		label = 'PD Camera',
+		weight = 3000,
+		stack = false,
+		close = true,
+		consume = 0,
+		server = {
+			export = 'sf_camerasecurity.cam_camera_pd'
+		},
+		client = {
+			image = 'camera_pd.png',
+		}	
 	},
-	client = {
-		image = 'camera_pd.png',
-	}	
-},
 
-['camera_ems'] = {
-	label = 'EMS Camera',
-	weight = 3000,
-	stack = false,
-	close = true,
-	consume = 0,
-	server = {
-		export = 'sf_camerasecurity.cam_camera_ems'
+	['camera_ems'] = {
+		label = 'EMS Camera',
+		weight = 3000,
+		stack = false,
+		close = true,
+		consume = 0,
+		server = {
+			export = 'sf_camerasecurity.cam_camera_ems'
+		},
+		client = {
+			image = 'camera_ems.png',
+		}	
 	},
-	client = {
-		image = 'camera_ems.png',
-	}	
-},
 
-['camera_citizen'] = {
-	label = 'Camera',
-	weight = 3000,
-	stack = false,
-	close = true,
-	consume = 0,
-	server = {
-		export = 'sf_camerasecurity.cam_camera_citizen'
+	['camera_citizen'] = {
+		label = 'Camera',
+		weight = 3000,
+		stack = false,
+		close = true,
+		consume = 0,
+		server = {
+			export = 'sf_camerasecurity.cam_camera_citizen'
+		},
+		client = {
+			image = 'camera_citizen.png',
+		}	
 	},
-	client = {
-		image = 'camera_citizen.png',
-	}	
-},
 
-['camera_viewer'] = {
-	label = 'Camera Viewer',
-	weight = 1000,
-	stack = false,
-	close = true,
-	consume = 0,
-	server = {
-		export = 'sf_camerasecurity.cam_camera_viewer'
+	['camera_viewer'] = {
+		label = 'Camera Viewer',
+		weight = 1000,
+		stack = false,
+		close = true,
+		consume = 0,
+		server = {
+			export = 'sf_camerasecurity.cam_camera_viewer'
+		},
+		client = {
+			image = 'camera_viewer.png',
+		}	
 	},
-	client = {
-		image = 'camera_viewer.png',
-	}	
-},
 
-['camera_paper'] = {
-	label = 'Camera Signal Paper',
-	weight = 200,
-	stack = false,
-	close = true,
-	consume = 0,
-	server = {
-		export = 'sf_camerasecurity.cam_camera_paper'
+	['camera_paper'] = {
+		label = 'Camera Signal Paper',
+		weight = 200,
+		stack = false,
+		close = true,
+		consume = 0,
+		server = {
+			export = 'sf_camerasecurity.cam_camera_paper'
+		},
+		client = {
+			image = 'camera_paper.png',
+		}	
 	},
-	client = {
-		image = 'camera_paper.png',
-	}	
-},
 
-['camera_tablet'] = {
-	label = 'CamView Tablet',
-	weight = 2000,
-	stack = false,
-	close = true,
-	consume = 0,
-	server = {
-		export = 'sf_camerasecurity.cam_camera_tablet'
+	['camera_tablet'] = {
+		label = 'CamView Tablet',
+		weight = 2000,
+		stack = false,
+		close = true,
+		consume = 0,
+		server = {
+			export = 'sf_camerasecurity.cam_camera_tablet'
+		},
+		client = {
+			image = 'camera_tablet.png',
+		}	
 	},
-	client = {
-		image = 'camera_tablet.png',
-	}	
-},
 
-['camera_personal'] = {
-	label = 'Personal Camera',
-	weight = 3000,
-	stack = false,
-	close = true,
-	consume = 0,
-	server = {
-		export = 'sf_camerasecurity.cam_camera_personal'
+	['camera_personal'] = {
+		label = 'Personal Camera',
+		weight = 3000,
+		stack = false,
+		close = true,
+		consume = 0,
+		server = {
+			export = 'sf_camerasecurity.cam_camera_personal'
+		},
+		client = {
+			image = 'camera_personal.png',
+		}	
 	},
-	client = {
-		image = 'camera_personal.png',
-	}	
-},
 
-['camera_personaltablet'] = {
-	label = 'Personal CamView',
-	weight = 2000,
-	stack = false,
-	close = true,
-	consume = 0,
-	server = {
-		export = 'sf_camerasecurity.cam_camera_personaltablet'
+	['camera_personaltablet'] = {
+		label = 'Personal CamView',
+		weight = 2000,
+		stack = false,
+		close = true,
+		consume = 0,
+		server = {
+			export = 'sf_camerasecurity.cam_camera_personaltablet'
+		},
+		client = {
+			image = 'camera_personaltablet.png',
+		}	
 	},
-	client = {
-		image = 'camera_personaltablet.png',
-	}	
-},
 
-['racing_gps'] = {
-	label = 'Racing GPS',
-	weight = 1000,
-	stack = false
-},
+	['racing_gps'] = {
+		label = 'Racing GPS',
+		weight = 1000,
+		stack = false
+	},
+
+	['simcard'] = {
+		label = 'Sim Card',
+		weight = 1000,
+		stack = false
+	},
 }
