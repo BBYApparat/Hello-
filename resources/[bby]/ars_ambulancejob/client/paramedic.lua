@@ -133,7 +133,7 @@ function initParamedic()
                 fn = function()
                     if not Config.AllowAlways then
                         local medicsOnline = lib.callback.await('ars_ambulancejob:getMedicsOniline', false)
-                        if medicsOnline <= 0 then
+                        if medicsOnline <= 3 then
                             openParamedicMenu(ped, hospital)
                         else
                             utils.showNotification(locale("medics_online"))
@@ -150,7 +150,7 @@ end
 local function offlineRevive()
     if not player.isDead then return end
     local medicsOnline = lib.callback.await('ars_ambulancejob:getMedicsOniline', false)
-    if medicsOnline > 0 then return utils.showNotification(locale("medics_online")) end
+    if medicsOnline > 3 then return utils.showNotification(locale("medics_online")) end
     if player.timePassedForCommand > 0 then return utils.showNotification(locale("wait_time"):format(player.timePassedForCommand)) end
 
     utils.showNotification(locale("medic_coming"))

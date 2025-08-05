@@ -2,12 +2,12 @@
 
 # cw-notes 📓
 
-> Supports QB core, Ox Core and QBox core
+> Supports QB core, Ox Core, QBox core and ESX
 
 A lil tiny script that has two items in it: A notepad and notes.
 The script is pretty simple, you use the notepad and you can type some notes. The text and title are saved in the item metadata, which means you don't need to save into the database etc. 
 
-The script has support for QB inventory and OX inventory, you can toggle this in the config.
+The script has support for QB inventory, OX inventory, and ESX inventory, you can toggle this in the config.
 
 # Preview 
 ## Video 📽
@@ -37,6 +37,35 @@ Items to add to qb-core>shared>items.lua
 # OX INV ❗📦
 This one has a degrade of about 2 weeks. So users will need to buy new ones
 
+```
+	["cwnotepad"] = {
+		label = "Note Pad",
+		weight = 300,
+		stack = true,
+		close = true,
+		allowArmed = true,
+		description = "Use this to write notes",
+	},
+	["cwnote"] = {
+		label = "Note",
+		weight = 350,
+		stack = true,
+		close = true,
+		allowArmed = true,
+		description = "A note",
+	},
+```
+
+# ESX INV ❗📦
+Items to add to your ESX items database or items.sql:
+
+```sql
+INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
+('cwnotepad', 'Note Pad', 300, 0, 1),
+('cwnote', 'Note', 35, 0, 1);
+```
+
+Or if using ox_inventory with ESX:
 ```
 	["cwnotepad"] = {
 		label = "Note Pad",
