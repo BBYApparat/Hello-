@@ -31,11 +31,11 @@ return {
       --[[ Inventory ]]
       --[[ Auto will attempt to detect the inventory system automatically ]]
       --[[ Note: If you have ps-inventory or lj-inventory, change it to "qb" ]]
-      Inventory = 'auto', -- Options: auto, qb, ox, qs, codem, origen, ak47, tgiann
+      Inventory = 'ox', -- Options: auto, qb, ox, qs, codem, origen, ak47, tgiann
       ----[[ 💀 Death Screen 💀 ]]
       -- Triggered after the player dies
       DeathScreen = {
-            enabled = true,
+            enabled = false,
             sound = true,                                      -- Enable sound
             jobs_notified = { "ambulance", --[[ "police" ]] }, -- Jobs that will receive a notification when a player dies
       },
@@ -48,14 +48,14 @@ return {
       --[[ 📱 Phone  ]]
       Phone = {
             item = {
-                  enabled = true,       -- If disabled, it wont check if player has a phone item
+                  enabled = false,       -- If disabled, it wont check if player has a phone item
                   name = 'phone', -- Item name, used to check if player has a phone
                   unique_phones = true, -- If enabled, each phone will be unique
             },
             command = {
                   -- Command will only be registered if item.enabled is disabled
                   name = 'phone',
-                  description = 'Open OKOK Phone',
+                  description = 'Open Phone',
                   keybinding = {
                         name = 'phone', -- This is just for the keybinding, it doesn't affect the command
                         enabled = true,
@@ -376,5 +376,5 @@ return {
             label = 'Notification 1',
             url = './audio/alarms/1.wav',
       } },
-      DEBUG = false, -- true, false
+      DEBUG = true, -- true, false
 }
