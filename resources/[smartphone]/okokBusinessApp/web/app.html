@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
     <title>Business Directory - okokPhone</title>
     <script defer src="./assets/dev.js"></script>
     <script defer src="./assets/utils.js"></script>
@@ -12,73 +14,136 @@
   </head>
   <body style="visibility: hidden">
     <div id="app-container">
-      <main class="w-full h-full bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 text-white overflow-y-auto">
+      <main class="w-full h-full bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 text-white p-6 overflow-y-auto">
         
         <!-- Header -->
-        <div class="sticky top-0 bg-black/30 backdrop-blur p-4 border-b border-white/10">
-          <div class="flex items-center justify-between mb-3">
-            <h1 class="text-xl font-bold">Business Directory</h1>
-            <button onclick="refreshBusinesses()" class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md text-sm transition-colors">
-              Refresh
-            </button>
-          </div>
-          
-          <!-- Category Filter -->
-          <div class="flex gap-2 overflow-x-auto pb-2">
-            <button onclick="filterByCategory('All')" class="category-filter active bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full text-xs whitespace-nowrap transition-colors">
-              All
-            </button>
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-bold">Companies</h1>
+          <button onclick="refreshBusinesses()" class="bg-gray-600 hover:bg-gray-500 px-3 py-1 rounded-md text-sm transition-colors">
+            Refresh
+          </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative mb-6">
+          <input type="text" id="search-input" placeholder="Search companies..." 
+                 class="w-full bg-gray-700/50 backdrop-blur border border-gray-500 rounded-lg px-4 py-3 text-white placeholder-gray-300 focus:outline-none focus:border-gray-400">
+          <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            🔍
           </div>
         </div>
 
         <!-- Loading State -->
         <div id="loading" class="flex items-center justify-center h-64">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400"></div>
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-400"></div>
         </div>
 
         <!-- Business List -->
-        <div id="business-list" class="hidden p-4 space-y-3">
+        <div id="business-list" class="hidden space-y-4">
           <!-- Businesses will be inserted here -->
         </div>
 
-        <!-- Business Detail Modal -->
-        <div id="business-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center p-4 z-50">
-          <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg w-full max-w-md max-h-[80vh] overflow-y-auto">
-            <!-- Modal Header -->
-            <div class="sticky top-0 bg-slate-800/90 backdrop-blur p-4 border-b border-white/10">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <span id="modal-icon" class="text-2xl">🏢</span>
-                  <div>
-                    <h2 id="modal-title" class="font-bold text-lg">Business Name</h2>
-                    <div id="modal-rating" class="flex items-center gap-1 text-sm">
-                      <!-- Stars will be inserted here -->
-                    </div>
-                  </div>
-                </div>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-white text-xl">×</button>
+        <!-- Business Detail View (Full Screen Background) -->
+        <div id="business-detail-view" class="hidden w-full h-full relative overflow-hidden">
+          <!-- Full Screen Background Image -->
+          <div id="company-background-fullscreen" class="absolute inset-0 w-full h-full" style="background-size: cover; background-position: center; background-repeat: no-repeat; background-image: url('https://images.unsplash.com/photo-1593104547489-5cfb3839a3b5?w=800&h=600&fit=crop&auto=format');">
+            <!-- Dark Overlay -->
+            <div class="absolute inset-0 bg-black/70"></div>
+          </div>
+          
+          <!-- Back Button - Positioned at Top -->
+          <div class="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
+            <button onclick="goBackToBusiness()" class="bg-gray-800/80 backdrop-blur text-white px-3 py-2 rounded-lg hover:bg-gray-700/80 transition-colors">
+              ← Back
+            </button>
+            <span class="text-white font-semibold">Company Details</span>
+          </div>
+
+          <!-- Company Info - Centered on Screen -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-6">
+            <!-- Company Icon -->
+            <div class="mb-6">
+              <div id="detail-icon-circle" class="w-20 h-20 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-3xl">
+                <span id="detail-icon">🏢</span>
               </div>
             </div>
             
-            <!-- Modal Content -->
-            <div class="p-4">
-              <p id="modal-description" class="text-gray-300 mb-4">Business description</p>
-              
-              <!-- Online Employees -->
-              <div id="employees-section">
-                <h3 class="font-semibold mb-3 flex items-center gap-2">
-                  <span class="w-2 h-2 bg-green-400 rounded-full"></span>
-                  Online Staff (<span id="online-count">0</span>)
-                </h3>
-                <div id="employees-list" class="space-y-2">
-                  <!-- Employees will be inserted here -->
+            <!-- Company Name and Category -->
+            <h2 id="detail-title" class="text-3xl font-bold mb-2 text-white">Business Name</h2>
+            <p id="detail-category" class="text-gray-200 text-xl mb-6">Category</p>
+            
+            <!-- Business Rating Section -->
+            <div class="mb-8">
+              <span class="text-sm font-medium text-white block mb-3">RATE THIS BUSINESS</span>
+              <div id="business-star-rating-detail" class="flex gap-2 justify-center">
+                <button class="business-star-btn text-3xl text-gray-400 hover:text-yellow-400 transition-colors" data-rating="1">★</button>
+                <button class="business-star-btn text-3xl text-gray-400 hover:text-yellow-400 transition-colors" data-rating="2">★</button>
+                <button class="business-star-btn text-3xl text-gray-400 hover:text-yellow-400 transition-colors" data-rating="3">★</button>
+                <button class="business-star-btn text-3xl text-gray-400 hover:text-yellow-400 transition-colors" data-rating="4">★</button>
+                <button class="business-star-btn text-3xl text-gray-400 hover:text-yellow-400 transition-colors" data-rating="5">★</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Employee List - Bottom Section -->
+          <div class="absolute bottom-0 left-0 right-0 bg-gray-900/90 backdrop-blur p-4 z-15" style="max-height: 40%;">
+            <h3 class="text-lg font-semibold text-gray-200 mb-3">Online Staff</h3>
+            <div id="detail-employees-list" class="space-y-3 overflow-y-auto" style="max-height: 25vh;">
+              <!-- Employees will be inserted here -->
+            </div>
+            
+            <!-- No Online Staff -->
+            <div id="detail-no-employees" class="hidden text-center py-4">
+              <p class="text-gray-300">No staff members are currently online</p>
+              <p class="text-sm text-gray-400 mt-1">Try again later</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Employee Dropdown -->
+        <div id="employee-dropdown" class="hidden absolute bg-gray-800/95 backdrop-blur rounded-lg border border-gray-600/50 shadow-xl z-50 w-56">
+          <div class="p-3">
+            <!-- Employee Info Header -->
+            <div class="flex items-center gap-2 mb-2">
+              <div id="dropdown-employee-avatar" class="w-8 h-8 rounded-full bg-gray-600/40 backdrop-blur flex items-center justify-center text-white font-bold overflow-hidden text-xs">
+                J
+              </div>
+              <div class="flex-1">
+                <h4 id="dropdown-employee-name" class="font-semibold text-white text-xs">Employee Name</h4>
+                <p id="dropdown-employee-job" class="text-gray-300 text-xs">Job Title</p>
+              </div>
+              <button onclick="closeEmployeeDropdown()" class="text-gray-400 hover:text-white text-sm">×</button>
+            </div>
+            
+            <!-- Current Rating -->
+            <div class="mb-2">
+              <div class="flex items-center gap-1 text-xs">
+                <span class="text-gray-300">Rating:</span>
+                <div id="dropdown-current-rating" class="flex items-center gap-1">
+                  <!-- Stars will be shown here -->
                 </div>
               </div>
-              
-              <!-- No Online Staff -->
-              <div id="no-employees" class="hidden text-center py-8 text-gray-400">
-                <p>No staff members are currently online</p>
-                <p class="text-sm mt-1">Try again later</p>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="space-y-1 mb-2">
+              <button id="dropdown-call-btn" class="w-full bg-gray-600 hover:bg-gray-500 py-1 px-2 rounded text-xs transition-colors flex items-center justify-center gap-1">
+                📞 Call
+              </button>
+              <button id="dropdown-message-btn" class="w-full bg-gray-700 hover:bg-gray-600 py-1 px-2 rounded text-xs transition-colors flex items-center justify-center gap-1">
+                💬 Message
+              </button>
+            </div>
+            
+            <!-- Rating Stars -->
+            <div>
+              <span class="text-xs text-gray-300 mb-1 block">Rate:</span>
+              <div id="dropdown-rating-stars" class="flex gap-1 justify-center">
+                <button class="dropdown-rating-star text-sm text-gray-600 hover:text-yellow-400 transition-colors" data-rating="1">★</button>
+                <button class="dropdown-rating-star text-sm text-gray-600 hover:text-yellow-400 transition-colors" data-rating="2">★</button>
+                <button class="dropdown-rating-star text-sm text-gray-600 hover:text-yellow-400 transition-colors" data-rating="3">★</button>
+                <button class="dropdown-rating-star text-sm text-gray-600 hover:text-yellow-400 transition-colors" data-rating="4">★</button>
+                <button class="dropdown-rating-star text-sm text-gray-600 hover:text-yellow-400 transition-colors" data-rating="5">★</button>
               </div>
             </div>
           </div>

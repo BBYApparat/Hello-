@@ -1,6 +1,7 @@
 // Global variables
 let playerInfo = null;
 
+
 // Load player information (only when requested)
 async function loadPlayerInfo() {
   showLoading();
@@ -23,19 +24,28 @@ function displayPlayerInfo(data) {
   if (!data) return;
 
   // Update State ID
-  document.getElementById('state-id').textContent = data.state_id || 'N/A';
+  const stateIdEl = document.getElementById('state-id');
+  if (stateIdEl) stateIdEl.textContent = data.state_id || '-';
+  
+  // Update Phone Number
+  const phoneEl = document.getElementById('phone-number');
+  if (phoneEl) phoneEl.textContent = data.phone_number || '-';
   
   // Update Financial Info
-  document.getElementById('bank-balance').textContent = formatCurrency(data.bank_balance);
-  document.getElementById('cash-balance').textContent = formatCurrency(data.cash_balance);
+  const bankEl = document.getElementById('bank-balance');
+  const cashEl = document.getElementById('cash-balance');
+  if (bankEl) bankEl.textContent = formatCurrency(data.bank_balance);
+  if (cashEl) cashEl.textContent = formatCurrency(data.cash_balance);
   
   // Update Job Info
-  document.getElementById('job-label').textContent = data.job?.label || 'Unemployed';
-  document.getElementById('job-grade').textContent = data.job?.grade_label || 'N/A';
+  const jobInfo = `${data.job?.label || 'Unemployed'} - ${data.job?.grade_label || 'No Grade'}`;
+  const jobEl = document.getElementById('job-info');
+  if (jobEl) jobEl.textContent = jobInfo;
   
-  // Update Gang Info
-  document.getElementById('gang-label').textContent = data.gang?.label || 'No Gang';
-  document.getElementById('gang-grade').textContent = data.gang?.grade_label || 'N/A';
+  // Update Gang Info  
+  const gangInfo = `${data.gang?.label || 'No Gang'} - ${data.gang?.grade_label || 'No Rank'}`;
+  const gangEl = document.getElementById('gang-info');
+  if (gangEl) gangEl.textContent = gangInfo;
   
   showContent();
 }
@@ -50,22 +60,30 @@ function formatCurrency(amount) {
 
 // Show loading state
 function showLoading() {
-  document.getElementById('loading').classList.remove('hidden');
-  document.getElementById('info-content').classList.add('hidden');
-  document.getElementById('error-content').classList.add('hidden');
+  const loading = document.getElementById('loading');
+  const content = document.getElementById('info-content');
+  const error = document.getElementById('error-content');
+  
+  if (loading) loading.style.display = 'block';
+  if (content) content.style.display = 'none';
+  if (error) error.classList.add('hidden');
 }
 
 // Show content
 function showContent() {
-  document.getElementById('loading').classList.add('hidden');
-  document.getElementById('info-content').classList.remove('hidden');
-  document.getElementById('error-content').classList.add('hidden');
+  const loading = document.getElementById('loading');
+  const content = document.getElementById('info-content');
+  const error = document.getElementById('error-content');
+  
+  if (loading) loading.style.display = 'none';
+  if (content) content.style.display = 'block';
+  if (error) error.classList.add('hidden');
 }
 
 // Show error
 function showError(message) {
-  document.getElementById('loading').classList.add('hidden');
-  document.getElementById('info-content').classList.add('hidden');
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('info-content').style.display = 'none';
   document.getElementById('error-content').classList.remove('hidden');
   document.getElementById('error-message').textContent = message;
 }
@@ -109,16 +127,13 @@ function refreshInfo() {
 document.addEventListener("loadedPhoneFunctions", () => {
   console.log("props", document.okokPhone);
   loadPlayerInfo();
-  startAutoRefresh(); // Start auto-refresh when phone functions are loaded
-  notifyFocusChange(true);
 });
 
 document.addEventListener("DOMContentLoaded", (event) => {
   console.log("DOM fully loaded and parsed");
+  
   // Try to load info immediately if phone functions are already available
   if (document.okokPhone) {
     loadPlayerInfo();
-    startAutoRefresh();
-    notifyFocusChange(true);
   }
 });

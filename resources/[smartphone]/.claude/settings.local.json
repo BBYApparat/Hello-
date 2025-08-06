@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start app.html)",
+      "Bash(start test.html)",
+      "Bash(start working.html)",
+      "Bash(del test.html working.html)",
+      "Bash(rm:*)"
+    ],
+    "deny": []
+  }
+}

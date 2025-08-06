@@ -144,3 +144,106 @@ AddEventHandler('okokBusinessApp:client:messageReceived', function(senderNumber,
         exports.okokNotify:Alert("Business Message", ("Message from %s: %s"):format(senderName, message), 5000, "info")
     end
 end)
+
+-- ===== MUGSHOT HANDLING =====
+
+-- Handle mugshot request from server
+RegisterNetEvent('okokBusinessApp:requestMugshot')
+AddEventHandler('okokBusinessApp:requestMugshot', function(targetServerId)
+    -- Check if MugShotBase64 resource is available
+    if not GetResourceState('MugShotBase64') or GetResourceState('MugShotBase64') ~= 'started' then
+        print('[okokBusinessApp] MugShotBase64 resource not found or not started')
+        return
+    end
+    
+    -- Get the target player's ped
+    local targetPlayer = GetPlayerFromServerId(targetServerId)
+    if targetPlayer == -1 then
+        print('[okokBusinessApp] Target player not found for mugshot: ' .. targetServerId)
+        return
+    end
+    
+    local targetPed = GetPlayerPed(targetPlayer)
+    if not DoesEntityExist(targetPed) then
+        print('[okokBusinessApp] Target ped not found for mugshot: ' .. targetServerId)
+        return
+    end
+    
+    -- Create a thread to generate the mugshot
+    CreateThread(function()
+        -- Wait a moment to ensure ped is loaded
+        Wait(100)
+        
+        -- Get mugshot using MugShotBase64 export
+        local mugshot = exports["MugShotBase64"]:GetMugShotBase64(targetPed, true)
+        
+        if mugshot and mugshot ~= "" then
+            -- Send mugshot back to server for caching
+            TriggerServerEvent('okokBusinessApp:storeMugshot', targetServerId, mugshot)
+            print('[okokBusinessApp] Generated mugshot for player: ' .. targetServerId)
+        else
+            print('[okokBusinessApp] Failed to generate mugshot for player: ' .. targetServerId)
+        end
+    end)
+end)
+
+-- Auto-generate mugshot for self on job change (optimization)
+RegisterNetEvent('esx:setJob')
+AddEventHandler('esx:setJob', function(job)
+    -- Check if MugShotBase64 resource is available
+    if not GetResourceState('MugShotBase64') or GetResourceState('MugShotBase64') ~= 'started' then
+        return
+    end
+    
+    -- Only generate for jobs that are in the business directory
+    local isBusinessJob = false
+    if Config and Config.Jobs then
+        for _, configJob in ipairs(Config.Jobs) do
+            if configJob.name == job.name then
+                isBusinessJob = true
+                break
+            end
+        end
+    end
+    
+    if isBusinessJob then
+        CreateThread(function()
+            Wait(2000) -- Wait for job change to fully process
+            
+            local playerPed = PlayerPedId()
+            local mugshot = exports["MugShotBase64"]:GetMugShotBase64(playerPed, true)
+            
+            if mugshot and mugshot ~= "" then
+                TriggerServerEvent('okokBusinessApp:storeMugshot', GetPlayerServerId(PlayerId()), mugshot)
+                print('[okokBusinessApp] Auto-updated mugshot after job change')
+            end
+        end)
+    end
+end)
+
+-- Command to manually refresh your mugshot (for testing/admin purposes)
+RegisterCommand('refreshmugshot', function()
+    if not GetResourceState('MugShotBase64') or GetResourceState('MugShotBase64') ~= 'started' then
+        TriggerEvent('chat:addMessage', {
+            color = { 255, 0, 0 },
+            args = { "okokBusinessApp", "MugShotBase64 resource not found or not started" }
+        })
+        return
+    end
+    
+    local playerPed = PlayerPedId()
+    local mugshot = exports["MugShotBase64"]:GetMugShotBase64(playerPed, true)
+    
+    if mugshot and mugshot ~= "" then
+        TriggerServerEvent('okokBusinessApp:storeMugshot', GetPlayerServerId(PlayerId()), mugshot)
+        TriggerEvent('chat:addMessage', {
+            color = { 0, 255, 0 },
+            args = { "okokBusinessApp", "Mugshot refreshed successfully" }
+        })
+    else
+        TriggerEvent('chat:addMessage', {
+            color = { 255, 0, 0 },
+            args = { "okokBusinessApp", "Failed to generate mugshot" }
+        })
+    end
+end, false)

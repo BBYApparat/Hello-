@@ -10,6 +10,11 @@ dependencies {
     'okokPhone'
 }
 
+-- Optional dependency for mugshots (recommended)
+optional_dependencies {
+    'MugShotBase64'
+}
+
 shared_scripts {
       "config.lua",
       "init.lua"
