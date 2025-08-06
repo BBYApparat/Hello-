@@ -5,7 +5,9 @@
       "Bash(start test.html)",
       "Bash(start working.html)",
       "Bash(del test.html working.html)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }

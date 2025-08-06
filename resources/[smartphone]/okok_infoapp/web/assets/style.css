@@ -32,7 +32,42 @@ body {
   overflow: hidden;
 }
 
-/* Create your custom styles bellow 👇 */
-/* For a better experience use REM as your unit */
-/* Tailwind is recommended, and comes installed by default. */
-/* You can remove tailwind in the app.html */
+/* Custom styles for Info App */
+
+/* Info item hover effects */
+.info-item {
+  @apply transition-all duration-200;
+}
+
+.info-item:hover {
+  @apply bg-gray-700/60 border-gray-600/50;
+}
+
+/* Job and Gang card styling */
+.job-card, .gang-card {
+  @apply transition-all duration-200;
+}
+
+.job-card:hover, .gang-card:hover {
+  @apply bg-gray-700/60 border-gray-600/50;
+}
+
+/* Badge styling */
+.job-badge {
+  @apply bg-green-700 text-white px-3 py-1 rounded text-xs font-bold uppercase;
+}
+
+.gang-badge {
+  @apply bg-red-700 text-white px-3 py-1 rounded text-xs font-bold uppercase;
+}
+
+/* Loading animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Utility classes */
+.hidden {
+  display: none !important;
+}

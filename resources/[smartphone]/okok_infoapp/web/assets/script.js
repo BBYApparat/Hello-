@@ -64,8 +64,8 @@ function showLoading() {
   const content = document.getElementById('info-content');
   const error = document.getElementById('error-content');
   
-  if (loading) loading.style.display = 'block';
-  if (content) content.style.display = 'none';
+  if (loading) loading.classList.remove('hidden');
+  if (content) content.classList.add('hidden');
   if (error) error.classList.add('hidden');
 }
 
@@ -75,15 +75,15 @@ function showContent() {
   const content = document.getElementById('info-content');
   const error = document.getElementById('error-content');
   
-  if (loading) loading.style.display = 'none';
-  if (content) content.style.display = 'block';
+  if (loading) loading.classList.add('hidden');
+  if (content) content.classList.remove('hidden');
   if (error) error.classList.add('hidden');
 }
 
 // Show error
 function showError(message) {
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('info-content').style.display = 'none';
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('info-content').classList.add('hidden');
   document.getElementById('error-content').classList.remove('hidden');
   document.getElementById('error-message').textContent = message;
 }
@@ -101,36 +101,18 @@ function refreshInfo() {
 // Handle Dark Mode Toggle
 document.addEventListener("darkMode", (e) => {
   const isDark = e.detail;
-  if (isDark) {
-    console.log("Dark Mode is enabled");
-  } else {
-    console.log("Dark Mode is disabled");
-  }
+  console.log(`Info App: Dark Mode ${isDark ? 'enabled' : 'disabled'}`);
 });
 
+// Initialize when phone functions are loaded
 document.addEventListener("loadedPhoneFunctions", () => {
-  console.log("props", document.okokPhone);
-  // Load player info when phone functions are loaded
+  console.log("Info App: Phone functions loaded");
   loadPlayerInfo();
 });
 
-// Manual refresh function
-function refreshInfo() {
-  loadPlayerInfo();
-  notifyIsland({
-    title: "Info",
-    text: "Information refreshed",
-    duration: 2000,
-  });
-}
-
-document.addEventListener("loadedPhoneFunctions", () => {
-  console.log("props", document.okokPhone);
-  loadPlayerInfo();
-});
-
+// Initialize on DOM load as fallback
 document.addEventListener("DOMContentLoaded", (event) => {
-  console.log("DOM fully loaded and parsed");
+  console.log("Info App: DOM loaded");
   
   // Try to load info immediately if phone functions are already available
   if (document.okokPhone) {

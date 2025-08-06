@@ -7,260 +7,95 @@
     <script defer src="./assets/dev.js"></script>
     <script defer src="./assets/utils.js"></script>
     <script src="./assets/script.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/style.css" />
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600;700&display=swap');
-      
-      * {
-        font-family: 'Poppins', sans-serif;
-        box-sizing: border-box;
-      }
-      
-      /* Details App specific styles */
-      .details-app {
-        display: block;
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-        background: linear-gradient(135deg, rgba(23,24,41,1) 0%, rgba(14,17,28,1) 30%, rgba(23,24,41,1) 65%, rgba(14,17,28,1) 100%);
-        position: relative;
-      }
-      
-      .details-app-text {
-        color: whitesmoke;
-        text-transform: capitalize;
-        font-size: 2.8vh;
-        margin-top: 5vh;
-        margin-left: 1.2vh;
-        font-weight: bolder;
-      }
-      
-      .details-header {
-        position: absolute;
-        width: 90%;
-        height: 30%;
-        top: 16%;
-        left: 0;
-        right: 0;
-        color: white;
-        font-size: 1.8vh;
-        margin: 0 auto;
-      }
-      
-      .details-header-text {
-        width: 100%;
-        color: whitesmoke;
-        text-transform: capitalize;
-        font-size: 1.5vh;
-        font-weight: bold;
-        margin-bottom: 2vh;
-      }
-      
-      .details-money-types {
-        position: relative;
-        width: 100%;
-        color: whitesmoke;
-        font-size: 1.6vh;
-        line-height: 4vh;
-        text-transform: capitalize;
-      }
-      
-      .details-moneys-body-main {
-        display: block;
-        width: 100%;
-        margin-left: -1%;
-        margin-bottom: 4%;
-        max-width: 100%;
-        height: 4vh;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        background: #0b0e15;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        border-radius: 0.6rem;
-      }
-      
-      .details-icon-class {
-        display: inline-block;
-        width: 30%;
-        margin-left: 1vh;
-        line-height: 4vh;
-      }
-      
-      .details-text-class {
-        display: inline-block;
-        width: 65%;
-        text-align: right;
-        line-height: 4vh;
-        padding-right: 1vh;
-      }
-      
-      .details-list {
-        position: absolute;
-        width: 90%;
-        height: 27%;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
-        bottom: 15.5%;
-        border-radius: .5vh;
-        overflow-y: scroll;
-      }
-      
-      .details-list::-webkit-scrollbar {
-        display: none;
-      }
-      
-      .details-license-body-main {
-        display: block;
-        width: 100%;
-        margin-bottom: 3%;
-        height: 5vh;
-        color: whitesmoke;
-        line-height: 4.5vh;
-        text-transform: capitalize;
-        background: #0b0e15;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        border-radius: 0.6rem;
-      }
-      
-      .details-license-icon-class {
-        display: inline-block;
-        margin-top: 3%;
-        width: 15%;
-        height: 3vh;
-        line-height: 3vh;
-        color: whitesmoke;
-        text-align: center;
-        text-transform: capitalize;
-        border-radius: 0.2rem;
-        margin-left: 1vh;
-      }
-      
-      .job-badge {
-        background: #15661b;
-      }
-      
-      .gang-badge {
-        background: #661515;
-      }
-      
-      .details-license-text-class {
-        display: inline-block;
-        width: 75%;
-        margin-left: 1vh;
-      }
-      
-      .details-text-license {
-        width: 100%;
-        color: whitesmoke;
-        text-align: left;
-        text-transform: capitalize;
-        font-weight: bold;
-      }
-      
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      .hidden {
-        display: none !important;
-      }
-    </style>
   </head>
   <body style="visibility: hidden">
     <div id="app-container">
-      <div class="details-app">
-        <!-- App Title -->
-        <div class="details-app-text">Details</div>
+      <!-- Main App Container -->
+      <main class="w-full h-full bg-gradient-to-br from-slate-800 via-gray-900 to-slate-800 flex flex-col text-white relative">
         
         <!-- Header Section -->
-        <div class="details-header">
-          <!-- Info Label -->
-          <div class="details-header-text">Info</div>
+        <header class="p-6">
+          <h1 class="text-3xl font-bold text-white mb-6">Details</h1>
+          <h2 class="text-lg font-semibold text-gray-200 mb-4">Info</h2>
           
           <!-- Loading State -->
-          <div id="loading" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-            <div style="width: 4vh; height: 4vh; border: 2px solid white; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+          <div id="loading" class="absolute inset-0 flex items-center justify-center hidden">
+            <div class="w-10 h-10 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
           </div>
 
-          <!-- Money Types Section -->
-          <div id="info-content" class="details-money-types">
+          <!-- Info Content Section -->
+          <div id="info-content" class="space-y-3">
             
             <!-- Wallet -->
-            <div class="details-moneys-body-main">
-              <div class="details-icon-class">
-                <span style="color: #ffffff;">Wallet:</span>
-              </div>
-              <div class="details-text-class details-cashmoney" id="cash-balance">$0</div>
+            <div class="info-item bg-gray-800/60 border border-gray-700/50 rounded-lg p-4 flex justify-between items-center">
+              <span class="text-white font-medium">Wallet:</span>
+              <span class="text-emerald-400 font-bold" id="cash-balance">$0</span>
             </div>
 
             <!-- Bank Balance -->
-            <div class="details-moneys-body-main">
-              <div class="details-icon-class">
-                <span style="color: #ffffff;">Bank Balance:</span>
-              </div>
-              <div class="details-text-class details-bankmoney" id="bank-balance">$0</div>
+            <div class="info-item bg-gray-800/60 border border-gray-700/50 rounded-lg p-4 flex justify-between items-center">
+              <span class="text-white font-medium">Bank Balance:</span>
+              <span class="text-emerald-400 font-bold" id="bank-balance">$0</span>
             </div>
 
             <!-- State ID -->
-            <div class="details-moneys-body-main">
-              <div class="details-icon-class">
-                <span style="color: #ffffff;">State ID:</span>
-              </div>
-              <div class="details-text-class details-stateid" id="state-id">-</div>
+            <div class="info-item bg-gray-800/60 border border-gray-700/50 rounded-lg p-4 flex justify-between items-center">
+              <span class="text-white font-medium">State ID:</span>
+              <span class="text-gray-300 font-mono" id="state-id">-</span>
             </div>
 
             <!-- Phone Number -->
-            <div class="details-moneys-body-main">
-              <div class="details-icon-class">
-                <span style="color: #ffffff;">Phone Number:</span>
-              </div>
-              <div class="details-text-class details-phone" id="phone-number">-</div>
+            <div class="info-item bg-gray-800/60 border border-gray-700/50 rounded-lg p-4 flex justify-between items-center">
+              <span class="text-white font-medium">Phone Number:</span>
+              <span class="text-gray-300 font-mono" id="phone-number">-</span>
             </div>
           </div>
-        </div>
+        </header>
 
         <!-- Job Info Section -->
-        <div class="details-list">
-          
-          <!-- Job License Card -->
-          <div id="job-card" class="details-license-body-main">
-            <div class="details-license-icon-class job-badge">
-              JOB
-            </div>
-            <div class="details-license-text-class">
-              <div class="details-text-license" id="job-info">
-                Unemployed - No Grade
+        <div class="flex-1 p-6 pt-0">
+          <div class="space-y-3">
+            
+            <!-- Job Card -->
+            <div id="job-card" class="job-card bg-gray-800/60 border border-gray-700/50 rounded-lg p-4 flex items-center gap-4">
+              <div class="job-badge bg-green-700 text-white px-3 py-1 rounded text-xs font-bold">
+                JOB
+              </div>
+              <div class="flex-1">
+                <div class="text-white font-medium" id="job-info">
+                  Unemployed - No Grade
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Gang License Card -->
-          <div id="gang-card" class="details-license-body-main">
-            <div class="details-license-icon-class gang-badge">
-              GANG
-            </div>
-            <div class="details-license-text-class">
-              <div class="details-text-license" id="gang-info">
-                No Gang - No Rank
+            <!-- Gang Card -->
+            <div id="gang-card" class="gang-card bg-gray-800/60 border border-gray-700/50 rounded-lg p-4 flex items-center gap-4">
+              <div class="gang-badge bg-red-700 text-white px-3 py-1 rounded text-xs font-bold">
+                GANG
+              </div>
+              <div class="flex-1">
+                <div class="text-white font-medium" id="gang-info">
+                  No Gang - No Rank
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Error State -->
-        <div id="error-content" class="hidden" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-          <div style="background: #0b0e15; border: 1px solid rgba(255, 0, 0, 0.3); border-radius: 0.6rem; padding: 2vh; color: whitesmoke;">
-            <h3 style="font-size: 1.8vh; font-weight: bold; margin-bottom: 1vh; color: #ff6b6b;">Error</h3>
-            <p id="error-message" style="font-size: 1.4vh; color: #ffcc99;">Failed to load information</p>
-            <button onclick="refreshInfo()" style="margin-top: 1vh; background: #661515; border: none; border-radius: 0.4rem; padding: 1vh 2vh; color: white; cursor: pointer;">
+        <div id="error-content" class="absolute inset-0 flex items-center justify-center hidden">
+          <div class="bg-gray-800/90 border border-red-600/50 rounded-lg p-6 text-center backdrop-blur-sm">
+            <h3 class="text-xl font-bold mb-2 text-red-400">Error</h3>
+            <p id="error-message" class="text-red-300 mb-4">Failed to load information</p>
+            <button onclick="refreshInfo()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
               Try Again
             </button>
           </div>
         </div>
-      </div>
+        
+      </main>
     </div>
   </body>
 </html>

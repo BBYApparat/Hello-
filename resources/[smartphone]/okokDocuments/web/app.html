@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documents - okokPhone</title>
+    <script defer src="./assets/dev.js"></script>
+    <script defer src="./assets/utils.js"></script>
+    <script src="./assets/script.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </head>
+  <body style="visibility: hidden">
+    <div id="app-container">
+      <!-- Main App Container -->
+      <main class="w-full h-full bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 flex flex-col relative">
+        
+        <!-- Header Section -->
+        <header class="flex flex-col p-4 space-y-3 bg-gray-800/30 backdrop-blur-sm border-b border-gray-700/50">
+          <!-- Title -->
+          <h1 class="text-2xl font-bold text-white">Documents</h1>
+          
+          <!-- Search Bar -->
+          <input 
+            type="text" 
+            class="w-full px-3 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            id="documents-search" 
+            placeholder="Search documents..." 
+          />
+          
+          <!-- Controls -->
+          <div class="flex justify-between items-center">
+            <!-- Document Type Dropdown -->
+            <div class="relative">
+              <button 
+                class="bg-gray-700/50 border border-gray-600/50 rounded-lg px-3 py-2 text-white flex items-center space-x-2 min-w-32"
+                id="document-type-dropdown"
+              >
+                <span id="selected-type">All Documents</span>
+                <i class="fas fa-chevron-down text-xs"></i>
+              </button>
+              <div class="dropdown-menu absolute top-full left-0 right-0 mt-1 bg-gray-800/95 border border-gray-600/50 rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto hidden" id="type-dropdown-menu">
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-type="all">All Documents</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-type="license">Driving License</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-type="id">ID Card</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-type="registration">Vehicle Registration</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-type="permit">Permit</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-type="certificate">Certificate</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-type="other">Other</div>
+              </div>
+            </div>
+            
+            <!-- Add New Document Button -->
+            <button 
+              class="bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-lg transition-colors"
+              id="add-document-btn"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </header>
+        
+        <!-- Documents List -->
+        <div class="flex-1 overflow-hidden">
+          <div class="h-full overflow-y-auto p-4 space-y-3" id="documents-list">
+            <!-- Documents will be populated here -->
+          </div>
+          
+          <!-- Loading State -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-white hidden" id="loading-state">
+            <div class="loading-spinner w-8 h-8 border-2 border-gray-600 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
+            <div>Loading documents...</div>
+          </div>
+          
+          <!-- Empty State -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 hidden" id="empty-state">
+            <i class="fas fa-folder-open text-6xl mb-4 text-gray-600"></i>
+            <div class="text-xl mb-2">No documents found</div>
+            <div class="text-sm">Create your first document using the + button</div>
+          </div>
+        </div>
+        
+        <!-- Create/Edit Document Modal -->
+        <div class="modal fixed inset-0 bg-black/50 backdrop-blur-sm z-50 p-4 hidden" id="document-modal">
+          <div class="bg-gray-900 border border-gray-700 rounded-lg w-full h-full flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+              <h2 class="text-xl font-bold text-white" id="modal-title">New Document</h2>
+              <button class="text-red-400 hover:text-red-300 text-xl" id="modal-close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div class="flex-1 p-4 space-y-4 overflow-y-auto">
+              <div>
+                <label class="block text-white text-sm font-medium mb-1">Document Title</label>
+                <input 
+                  type="text" 
+                  class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  id="document-title" 
+                  placeholder="Enter document title..." 
+                  maxlength="50" 
+                />
+              </div>
+              
+              <div>
+                <label class="block text-white text-sm font-medium mb-1">Document Type</label>
+                <select class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500" id="document-type">
+                  <option value="license">Driving License</option>
+                  <option value="id">ID Card</option>
+                  <option value="registration">Vehicle Registration</option>
+                  <option value="permit">Permit</option>
+                  <option value="certificate">Certificate</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              
+              <div class="flex-1 flex flex-col">
+                <label class="block text-white text-sm font-medium mb-1">Document Content</label>
+                <textarea 
+                  class="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-48"
+                  id="document-content" 
+                  placeholder="Enter document content..." 
+                  maxlength="4000"
+                ></textarea>
+              </div>
+            </div>
+            
+            <div class="flex gap-3 p-4 border-t border-gray-700">
+              <button class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition-colors" id="cancel-btn">Cancel</button>
+              <button class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg transition-colors" id="save-btn">Save Document</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Share State ID Modal -->
+        <div class="modal fixed inset-0 bg-black/50 backdrop-blur-sm z-50 p-4 hidden" id="share-modal">
+          <div class="bg-gray-900 border border-gray-700 rounded-lg w-full max-h-64 flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+              <h2 class="text-xl font-bold text-white">Share Document</h2>
+              <button class="text-red-400 hover:text-red-300 text-xl" id="share-modal-close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div class="p-4">
+              <label class="block text-white text-sm font-medium mb-2">Recipient State ID</label>
+              <input 
+                type="text" 
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                id="recipient-state-id" 
+                placeholder="Enter recipient's State ID..." 
+                maxlength="10" 
+              />
+            </div>
+            
+            <div class="flex gap-3 p-4 border-t border-gray-700">
+              <button class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition-colors" id="share-cancel-btn">Cancel</button>
+              <button class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg transition-colors" id="share-send-btn">Send Document</button>
+            </div>
+          </div>
+        </div>
+        
+      </main>
+    </div>
+  </body>
+</html>

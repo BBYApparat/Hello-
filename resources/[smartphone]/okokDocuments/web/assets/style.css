@@ -1,0 +1,109 @@
+/* Don't touch these */
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.app-dev {
+  display: block;
+  aspect-ratio: 645/1398;
+  height: 80vh;
+  background-color: black;
+  overflow: hidden;
+  border-radius: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  background-color: black;
+  color: white;
+}
+
+.app-prod {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  color: white;
+  overflow: hidden;
+}
+
+/* Custom styles for Documents App */
+
+/* Dropdown menu visibility */
+.dropdown-menu.show {
+  display: block !important;
+}
+
+/* Document item styling */
+.document-item {
+  @apply bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 cursor-pointer transition-all duration-200 relative;
+}
+
+.document-item:hover {
+  @apply bg-gray-700/50;
+}
+
+.document-item.selected {
+  @apply border-emerald-500 bg-emerald-900/20;
+}
+
+.document-title {
+  @apply font-bold text-base mb-2 flex items-center gap-2;
+}
+
+.document-type-badge {
+  @apply bg-emerald-600 text-black px-2 py-1 rounded text-xs font-bold;
+}
+
+.document-content {
+  @apply text-sm text-gray-300 mb-2 overflow-hidden;
+  max-height: 3rem;
+}
+
+.document-date {
+  @apply text-xs text-gray-500 text-right;
+}
+
+.document-actions {
+  @apply absolute top-4 right-4 hidden gap-2;
+}
+
+.document-item.selected .document-actions {
+  @apply flex;
+}
+
+.action-btn {
+  @apply w-8 h-8 rounded border-none cursor-pointer text-xs flex items-center justify-center transition-all duration-200;
+}
+
+.action-btn.share-local {
+  @apply bg-teal-600 text-teal-100 hover:bg-teal-700;
+}
+
+.action-btn.share-perm {
+  @apply bg-yellow-600 text-yellow-100 hover:bg-yellow-700;
+}
+
+.action-btn.delete {
+  @apply bg-red-600 text-red-100 hover:bg-red-700;
+}
+
+.action-btn.save {
+  @apply bg-blue-600 text-blue-100 hover:bg-blue-700;
+}
+
+/* Modal visibility */
+.modal.active {
+  display: block !important;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
