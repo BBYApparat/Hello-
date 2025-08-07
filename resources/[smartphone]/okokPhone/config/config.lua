@@ -376,5 +376,5 @@ return {
             label = 'Notification 1',
             url = './audio/alarms/1.wav',
       } },
-      DEBUG = true, -- true, false
+      DEBUG = false, -- true, false
 }

@@ -1,5 +1,5 @@
 return {
-  email_domain = 'mycity.com',
+  email_domain = 'bby.com',
   reserved_aliases = {
     -- Can only be created via command or directly on the database
     'admin',
