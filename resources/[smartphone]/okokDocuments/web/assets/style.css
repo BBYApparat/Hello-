@@ -35,6 +35,10 @@ body {
 /* Custom styles for Documents App */
 
 /* Dropdown menu visibility */
+.dropdown-menu {
+  display: none;
+}
+
 .dropdown-menu.show {
   display: block !important;
 }
@@ -98,6 +102,10 @@ body {
 }
 
 /* Modal visibility */
+.modal {
+  display: none;
+}
+
 .modal.active {
   display: block !important;
 }

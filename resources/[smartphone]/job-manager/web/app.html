@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Manager - okokPhone</title>
+    <script defer src="./assets/dev.js"></script>
+    <script defer src="./assets/utils.js"></script>
+    <script src="./assets/script.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </head>
+  <body style="visibility: hidden">
+    <div id="app-container">
+      <!-- Main App Container -->
+      <main class="w-full h-full bg-gradient-to-br from-blue-900 via-indigo-800 to-blue-900 flex flex-col relative">
+        
+        <!-- Header Section -->
+        <header class="flex flex-col p-4 space-y-3 bg-gray-800/30 backdrop-blur-sm border-b border-gray-700/50">
+          <!-- Title and Company Info -->
+          <div class="flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+              <i class="fas fa-users-cog text-blue-400"></i>
+              Job Manager
+            </h1>
+            <div id="company-info" class="text-right">
+              <div class="text-white font-medium" id="company-name">Loading...</div>
+              <div class="text-gray-300 text-sm" id="user-role">Loading...</div>
+            </div>
+          </div>
+          
+          <!-- Search Bar -->
+          <input 
+            type="text" 
+            class="w-full px-3 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            id="employee-search" 
+            placeholder="Search employees..." 
+          />
+          
+          <!-- Controls -->
+          <div class="flex justify-between items-center">
+            <!-- Status Filter -->
+            <div class="relative">
+              <button 
+                class="bg-gray-700/50 border border-gray-600/50 rounded-lg px-3 py-2 text-white flex items-center space-x-2 min-w-32"
+                id="status-dropdown"
+              >
+                <span id="selected-status">All Status</span>
+                <i class="fas fa-chevron-down text-xs"></i>
+              </button>
+              <div class="dropdown-menu absolute top-full left-0 right-0 mt-1 bg-gray-800/95 border border-gray-600/50 rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto hidden" id="status-dropdown-menu">
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-status="all">All Status</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-status="online">
+                  <i class="fas fa-circle text-green-400 mr-2"></i>Online Only
+                </div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-status="offline">
+                  <i class="fas fa-circle text-red-400 mr-2"></i>Offline Only
+                </div>
+              </div>
+            </div>
+            
+            <!-- Hire Employee Button -->
+            <button 
+              class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"
+              id="hire-employee-btn"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </header>
+        
+        <!-- Employees List -->
+        <div class="flex-1 overflow-hidden">
+          <div class="h-full overflow-y-auto p-4 space-y-3" id="employees-list">
+            <!-- Employees will be populated here -->
+          </div>
+          
+          <!-- Loading State -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-white hidden" id="loading-state">
+            <div class="loading-spinner w-8 h-8 border-2 border-gray-600 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+            <div>Loading employees...</div>
+          </div>
+          
+          <!-- Empty State -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 hidden" id="empty-state">
+            <i class="fas fa-users text-6xl mb-4 text-gray-600"></i>
+            <div class="text-xl mb-2">No employees found</div>
+            <div class="text-sm">Hire your first employee using the + button</div>
+          </div>
+          
+          <!-- Unauthorized State -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 hidden" id="unauthorized-state">
+            <i class="fas fa-lock text-6xl mb-4 text-gray-600"></i>
+            <div class="text-xl mb-2">Access Denied</div>
+            <div class="text-sm">You don't have permission to manage employees</div>
+          </div>
+        </div>
+        
+        <!-- Employee Actions Modal -->
+        <div class="modal fixed inset-0 bg-black/50 backdrop-blur-sm z-50 p-4 hidden" id="employee-modal">
+          <div class="bg-gray-900 border border-gray-700 rounded-lg w-full h-full flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+              <h2 class="text-xl font-bold text-white" id="employee-modal-title">Employee Management</h2>
+              <button class="text-red-400 hover:text-red-300 text-xl" id="employee-modal-close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div class="flex-1 p-4 space-y-4 overflow-y-auto" id="employee-details-content">
+              <!-- Employee details will be populated here -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Hire Employee Modal -->
+        <div class="modal fixed inset-0 bg-black/50 backdrop-blur-sm z-50 p-4 hidden" id="hire-modal">
+          <div class="bg-gray-900 border border-gray-700 rounded-lg w-full max-h-96 flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+              <h2 class="text-xl font-bold text-white">Hire Employee</h2>
+              <button class="text-red-400 hover:text-red-300 text-xl" id="hire-modal-close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div class="p-4 space-y-4">
+              <div>
+                <label class="block text-white text-sm font-medium mb-1">Player ID or Name</label>
+                <input 
+                  type="text" 
+                  class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  id="hire-player-input" 
+                  placeholder="Enter player ID or name..." 
+                />
+              </div>
+              
+              <div>
+                <label class="block text-white text-sm font-medium mb-1">Starting Grade</label>
+                <select class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" id="hire-grade-select">
+                  <!-- Grade options will be populated dynamically -->
+                </select>
+              </div>
+            </div>
+            
+            <div class="flex gap-3 p-4 border-t border-gray-700">
+              <button class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition-colors" id="hire-cancel-btn">Cancel</button>
+              <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors" id="hire-confirm-btn">Hire Employee</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Give Bonus Modal -->
+        <div class="modal fixed inset-0 bg-black/50 backdrop-blur-sm z-50 p-4 hidden" id="bonus-modal">
+          <div class="bg-gray-900 border border-gray-700 rounded-lg w-full max-h-64 flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+              <h2 class="text-xl font-bold text-white">Give Bonus</h2>
+              <button class="text-red-400 hover:text-red-300 text-xl" id="bonus-modal-close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div class="p-4">
+              <p class="text-gray-300 mb-4">Give bonus to <span id="bonus-employee-name" class="text-white font-bold"></span></p>
+              <div>
+                <label class="block text-white text-sm font-medium mb-1">Bonus Amount ($)</label>
+                <input 
+                  type="number" 
+                  class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  id="bonus-amount" 
+                  placeholder="Enter amount..." 
+                  min="1"
+                  max="100000"
+                />
+              </div>
+            </div>
+            
+            <div class="flex gap-3 p-4 border-t border-gray-700">
+              <button class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition-colors" id="bonus-cancel-btn">Cancel</button>
+              <button class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition-colors" id="bonus-confirm-btn">Give Bonus</button>
+            </div>
+          </div>
+        </div>
+        
+      </main>
+    </div>
+  </body>
+</html>
