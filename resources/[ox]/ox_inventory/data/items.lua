@@ -93,6 +93,13 @@ return {
         label = 'Radio',
         weight = 1000,
         stack = false,
+        allowArmed = false
+    },
+
+	['okokphone'] = {
+        label = 'phone',
+        weight = 1000,
+        stack = false,
         allowArmed = true
     },
 

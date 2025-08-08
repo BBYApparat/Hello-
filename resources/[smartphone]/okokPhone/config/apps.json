@@ -79,6 +79,26 @@
     "notifications": false,
     "previewImagesCount": 3
   },
+  "darknet": {
+    "custom": false,
+    "description": "Shady Deals happen here",
+    "disabled": false,
+    "icon": "darknet.png",
+    "id": "darknet",
+    "label": "Dark Net",
+    "notifications": true,
+    "previewImagesCount": 2
+  },
+  "find": {
+    "custom": false,
+    "description": "NOT_NEEDED",
+    "disabled": false,
+    "icon": "find.png",
+    "id": "find",
+    "label": "Find",
+    "notifications": false,
+    "previewImagesCount": 3
+  },
   "gallery": {
     "custom": false,
     "description": "NOT_NEEDED",
@@ -96,6 +116,16 @@
     "icon": "garage.png",
     "id": "garage",
     "label": "Garage",
+    "notifications": true,
+    "previewImagesCount": 3
+  },
+  "maps": {
+    "custom": false,
+    "description": "NOT_NEEDED",
+    "disabled": false,
+    "icon": "maps.png",
+    "id": "maps",
+    "label": "Maps",
     "notifications": true,
     "previewImagesCount": 3
   },
@@ -169,6 +199,26 @@
     "notifications": false,
     "previewImagesCount": 3
   },
+  "work": {
+    "custom": false,
+    "description": "Manage your society with ease",
+    "disabled": false,
+    "icon": "work.png",
+    "id": "work",
+    "label": "Work",
+    "notifications": true,
+    "previewImagesCount": 4
+  },
+  "radio": {
+    "custom": false,
+    "description": "Join and listen to radio frequencies",
+    "disabled": false,
+    "icon": "radio.png",
+    "id": "radio",
+    "label": "Radio",
+    "notifications": false,
+    "previewImagesCount": 1
+  },
   "news": {
     "custom": false,
     "description": "Breaking news and updates from the city",
@@ -208,45 +258,45 @@
     "label": "Music",
     "notifications": false,
     "previewImagesCount": 2
+  },
+  "tasty": {
+    "custom": false,
+    "description": "Deliver Food and Make Money",
+    "disabled": false,
+    "icon": "tasty.png",
+    "id": "tasty",
+    "label": "Tasty",
+    "notifications": true,
+    "previewImagesCount": 2
+  },
+  "services": {
+    "custom": false,
+    "description": "Chat with businesses",
+    "disabled": false,
+    "icon": "services.png",
+    "id": "services",
+    "label": "Services",
+    "notifications": true,
+    "previewImagesCount": 1
+  },
+  "racing": {
+    "custom": false,
+    "description": "Race and make money",
+    "disabled": false,
+    "icon": "racing.png",
+    "id": "racing",
+    "label": "Racing",
+    "notifications": true,
+    "previewImagesCount": 2
+  },
+  "vehicle_lookup": {
+    "custom": false,
+    "description": "Find the owner of a vehicle",
+    "disabled": false,
+    "icon": "vehicle_lookup.png",
+    "id": "vehicle_lookup",
+    "label": "Vehicle Lookup",
+    "notifications": true,
+    "previewImagesCount": 1
   }
-  // "tasty": {
-  //   "custom": false,
-  //   "description": "Deliver Food and Make Money",
-  //   "disabled": false,
-  //   "icon": "tasty.png",
-  //   "id": "tasty",
-  //   "label": "Tasty",
-  //   "notifications": true,
-  //   "previewImagesCount": 2
-  // },
-  // "services": {
-  //   "custom": false,
-  //   "description": "Chat with businesses",
-  //   "disabled": false,
-  //   "icon": "services.png",
-  //   "id": "services",
-  //   "label": "Services",
-  //   "notifications": true,
-  //   "previewImagesCount": 1
-  // },
-  // "racing": {
-  //   "custom": false,
-  //   "description": "Race and make money",
-  //   "disabled": false,
-  //   "icon": "racing.png",
-  //   "id": "racing",
-  //   "label": "Racing",
-  //   "notifications": true,
-  //   "previewImagesCount": 2
-  // },
-  // "vehicle_lookup": {
-  //   "custom": false,
-  //   "description": "Find the owner of a vehicle",
-  //   "disabled": false,
-  //   "icon": "vehicle_lookup.png",
-  //   "id": "vehicle_lookup",
-  //   "label": "Vehicle Lookup",
-  //   "notifications": true,
-  //   "previewImagesCount": 1
-  // }
 }
