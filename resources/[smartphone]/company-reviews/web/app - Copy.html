@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Company Reviews - okokPhone</title>
+    <script defer src="./assets/dev.js"></script>
+    <script defer src="./assets/utils.js"></script>
+    <script src="./assets/script.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </head>
+  <body style="visibility: hidden">
+    <div id="app-container">
+      <!-- Main App Container -->
+      <main class="w-full h-full bg-gradient-to-br from-indigo-900 via-purple-800 to-indigo-900 flex flex-col relative">
+        
+        <!-- Header Section -->
+        <header class="flex flex-col p-4 space-y-3 bg-gray-800/30 backdrop-blur-sm border-b border-gray-700/50">
+          <!-- Title -->
+          <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fas fa-star text-yellow-400"></i>
+            Company Reviews
+          </h1>
+          
+          <!-- Search Bar -->
+          <input 
+            type="text" 
+            class="w-full px-3 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            id="company-search" 
+            placeholder="Search companies..." 
+          />
+          
+          <!-- Controls -->
+          <div class="flex justify-between items-center">
+            <!-- Category Dropdown -->
+            <div class="relative">
+              <button 
+                class="bg-gray-700/50 border border-gray-600/50 rounded-lg px-3 py-2 text-white flex items-center space-x-2 min-w-32"
+                id="category-dropdown"
+              >
+                <span id="selected-category">All Categories</span>
+                <i class="fas fa-chevron-down text-xs"></i>
+              </button>
+              <div class="dropdown-menu absolute top-full left-0 right-0 mt-1 bg-gray-800/95 border border-gray-600/50 rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto hidden" id="category-dropdown-menu">
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-category="all">All Categories</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-category="restaurant">Restaurants</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-category="retail">Retail Stores</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-category="automotive">Automotive</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-category="services">Services</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-category="entertainment">Entertainment</div>
+                <div class="dropdown-item px-3 py-2 hover:bg-gray-700/50 cursor-pointer" data-category="healthcare">Healthcare</div>
+              </div>
+            </div>
+            
+            <!-- Add Review Button -->
+            <button 
+              class="bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-lg transition-colors"
+              id="add-review-btn"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </header>
+        
+        <!-- Companies List -->
+        <div class="flex-1 overflow-hidden">
+          <div class="h-full overflow-y-auto p-4 space-y-3" id="companies-list">
+            <!-- Companies will be populated here -->
+          </div>
+          
+          <!-- Loading State -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-white hidden" id="loading-state">
+            <div class="loading-spinner w-8 h-8 border-2 border-gray-600 border-t-purple-500 rounded-full animate-spin mb-4"></div>
+            <div>Loading companies...</div>
+          </div>
+          
+          <!-- Empty State -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 hidden" id="empty-state">
+            <i class="fas fa-building text-6xl mb-4 text-gray-600"></i>
+            <div class="text-xl mb-2">No companies found</div>
+            <div class="text-sm">Add your first review using the + button</div>
+          </div>
+        </div>
+        
+        <!-- Company Details Modal -->
+        <div class="modal fixed inset-0 bg-black/50 backdrop-blur-sm z-50 p-4 hidden" id="company-modal">
+          <div class="bg-gray-900 border border-gray-700 rounded-lg w-full h-full flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+              <h2 class="text-xl font-bold text-white" id="company-modal-title">Company Details</h2>
+              <button class="text-red-400 hover:text-red-300 text-xl" id="company-modal-close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div class="flex-1 p-4 space-y-4 overflow-y-auto" id="company-details-content">
+              <!-- Company details will be populated here -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Add/Edit Review Modal -->
+        <div class="modal fixed inset-0 bg-black/50 backdrop-blur-sm z-50 p-4 hidden" id="review-modal">
+          <div class="bg-gray-900 border border-gray-700 rounded-lg w-full h-full flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+              <h2 class="text-xl font-bold text-white" id="review-modal-title">Add Review</h2>
+              <button class="text-red-400 hover:text-red-300 text-xl" id="review-modal-close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div class="flex-1 p-4 space-y-4 overflow-y-auto">
+              <!-- Company Name -->
+              <div>
+                <label class="block text-white text-sm font-medium mb-1">Company Name</label>
+                <input 
+                  type="text" 
+                  class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  id="review-company-name" 
+                  placeholder="Enter company name..." 
+                  maxlength="50" 
+                />
+              </div>
+              
+              <!-- Company Category -->
+              <div>
+                <label class="block text-white text-sm font-medium mb-1">Category</label>
+                <select class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500" id="review-company-category">
+                  <option value="restaurant">Restaurant</option>
+                  <option value="retail">Retail Store</option>
+                  <option value="automotive">Automotive</option>
+                  <option value="services">Services</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="healthcare">Healthcare</option>
+                </select>
+              </div>
+              
+              <!-- Company Description -->
+              <div>
+                <label class="block text-white text-sm font-medium mb-1">Company Description</label>
+                <textarea 
+                  class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 h-20"
+                  id="review-company-description" 
+                  placeholder="Brief description of the company..." 
+                  maxlength="200"
+                ></textarea>
+              </div>
+              
+              <!-- Star Rating -->
+              <div>
+                <label class="block text-white text-sm font-medium mb-2">Your Rating</label>
+                <div class="flex gap-2" id="star-rating">
+                  <button class="star-btn text-2xl text-gray-600 hover:text-yellow-400 transition-colors" data-rating="1">
+                    <i class="fas fa-star"></i>
+                  </button>
+                  <button class="star-btn text-2xl text-gray-600 hover:text-yellow-400 transition-colors" data-rating="2">
+                    <i class="fas fa-star"></i>
+                  </button>
+                  <button class="star-btn text-2xl text-gray-600 hover:text-yellow-400 transition-colors" data-rating="3">
+                    <i class="fas fa-star"></i>
+                  </button>
+                  <button class="star-btn text-2xl text-gray-600 hover:text-yellow-400 transition-colors" data-rating="4">
+                    <i class="fas fa-star"></i>
+                  </button>
+                  <button class="star-btn text-2xl text-gray-600 hover:text-yellow-400 transition-colors" data-rating="5">
+                    <i class="fas fa-star"></i>
+                  </button>
+                </div>
+                <input type="hidden" id="selected-rating" value="0">
+              </div>
+              
+              <!-- Review Text -->
+              <div class="flex-1 flex flex-col">
+                <label class="block text-white text-sm font-medium mb-1">Your Review</label>
+                <textarea 
+                  class="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-32"
+                  id="review-text" 
+                  placeholder="Share your experience with this company..." 
+                  maxlength="500"
+                ></textarea>
+              </div>
+            </div>
+            
+            <div class="flex gap-3 p-4 border-t border-gray-700">
+              <button class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition-colors" id="review-cancel-btn">Cancel</button>
+              <button class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg transition-colors" id="review-save-btn">Save Review</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Company Reply Modal -->
+        <div class="modal fixed inset-0 bg-black/50 backdrop-blur-sm z-50 p-4 hidden" id="reply-modal">
+          <div class="bg-gray-900 border border-gray-700 rounded-lg w-full max-h-96 flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+              <h2 class="text-xl font-bold text-white">Reply to Review</h2>
+              <button class="text-red-400 hover:text-red-300 text-xl" id="reply-modal-close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div class="p-4">
+              <div class="mb-4 p-3 bg-gray-800/50 rounded-lg">
+                <div class="text-sm text-gray-400 mb-2">Original Review:</div>
+                <div id="reply-original-review" class="text-white"></div>
+              </div>
+              
+              <div class="flex-1 flex flex-col">
+                <label class="block text-white text-sm font-medium mb-2">Company Reply</label>
+                <textarea 
+                  class="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 h-24"
+                  id="reply-text" 
+                  placeholder="Reply as the company..." 
+                  maxlength="500"
+                ></textarea>
+              </div>
+            </div>
+            
+            <div class="flex gap-3 p-4 border-t border-gray-700">
+              <button class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition-colors" id="reply-cancel-btn">Cancel</button>
+              <button class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg transition-colors" id="reply-save-btn">Send Reply</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Claim Company Modal -->
+        <div class="modal fixed inset-0 bg-black/50 backdrop-blur-sm z-50 p-4 hidden" id="claim-modal">
+          <div class="bg-gray-900 border border-gray-700 rounded-lg w-full max-h-64 flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+              <h2 class="text-xl font-bold text-white">Claim Company</h2>
+              <button class="text-red-400 hover:text-red-300 text-xl" id="claim-modal-close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div class="p-4">
+              <p class="text-gray-300 mb-4">Do you want to claim ownership of <span id="claim-company-name" class="text-white font-bold"></span>? This will allow you to reply to reviews as the company.</p>
+            </div>
+            
+            <div class="flex gap-3 p-4 border-t border-gray-700">
+              <button class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition-colors" id="claim-cancel-btn">Cancel</button>
+              <button class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg transition-colors" id="claim-confirm-btn">Claim Company</button>
+            </div>
+          </div>
+        </div>
+        
+      </main>
+    </div>
+  </body>
+</html>

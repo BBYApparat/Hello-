@@ -178,6 +178,11 @@ return {
         server = {
             export = 'rep-weed.joint',
         },
+        client = {
+            anim = { dict = 'rick_drugemotes@animations', clip = 'rollblunt1_clip' },
+            prop = { model = 'p_cs_joint_02', pos = vec3(0.13, 0.07, 0.02), rot = vec3(0.0, 30.0, 150.0) },
+            usetime = 6000,
+        },
         description = 'Its a Joint, man.'
     },
     ['emptybaggies'] = {
@@ -449,6 +454,11 @@ return {
         weight = 2,
         stack = true,
         close = true,
+        client = {
+            anim = { dict = 'rick_drugemotes@animations', clip = 'takingpills_clip' },
+            prop = { model = 'prop_cs_pills', pos = vec3(0.12, 0.03, 0.0), rot = vec3(-57.0, 90.0, 0.0) },
+            usetime = 3000,
+        },
     },
 
     ['morphine15'] = {
@@ -456,6 +466,11 @@ return {
         weight = 2,
         stack = true,
         close = true,
+        client = {
+            anim = { dict = 'rick_drugemotes@animations', clip = 'morphineleg_clip' },
+            prop = { model = 'p_syringe_01_s', pos = vec3(0.1, 0.01, 0.02), rot = vec3(250.0, 0.0, 0.0) },
+            usetime = 4000,
+        },
     },
 
     ['perc30'] = {
@@ -3891,6 +3906,14 @@ return {
 		weight = 0.08,
 		stack = true,
 		close = true,
+		client = {
+			anim = { dict = 'rick_drugemotes@animations', clip = 'cokesniff_clip' },
+			prop = { 
+				model = 'prop_meth_bag_01', pos = vec3(0.1, -0.02, -0.02), rot = vec3(98.0, 2.0, -50.0),
+				model2 = 'tr_prop_tr_note_rolled_01a', pos2 = vec3(0.03, -0.02, -0.03), rot2 = vec3(80.0, 0.0, 0.0)
+			},
+			usetime = 5000,
+		},
 	},
 
 	["coca_cola"] = {
@@ -5364,6 +5387,14 @@ return {
 		weight = 0.08,
 		stack = true,
 		close = true,
+		client = {
+			anim = { dict = 'rick_drugemotes@animations', clip = 'heroin_clip' },
+			prop = { 
+				model = 'xm3_prop_xm3_bottle_pills_01a', pos = vec3(0.11, -0.09, -0.06), rot = vec3(-71.0, 6.0, -1.0),
+				model2 = 'prop_syringe_01', pos2 = vec3(0.1, 0.0, 0.03), rot2 = vec3(-90.0, 50.0, 0.0)
+			},
+			usetime = 5500,
+		},
 	},
 
 	["heroinbrick"] = {
@@ -6494,6 +6525,14 @@ return {
 		weight = 0.1,
 		stack = true,
 		close = true,
+		client = {
+			anim = { dict = 'rick_drugemotes@animations', clip = 'methsmoke_clip' },
+			prop = { 
+				model = 'rick_torchlighter', pos = vec3(0.04, 0.05, 0.05), rot = vec3(0.0, 21.0, 90.0),
+				model2 = 'prop_cs_meth_pipe', pos2 = vec3(0.02, -0.01, -0.02), rot2 = vec3(90.0, 1.0, 0.0)
+			},
+			usetime = 4500,
+		},
 	},
 
 	["methbrick"] = {
@@ -8183,6 +8222,11 @@ return {
 		weight = 0.02,
 		stack = true,
 		close = true,
+		client = {
+			anim = { dict = 'rick_drugemotes@animations', clip = 'morphineleg_clip' },
+			prop = { model = 'p_syringe_01_s', pos = vec3(0.1, 0.01, 0.02), rot = vec3(250.0, 0.0, 0.0) },
+			usetime = 3500,
+		},
 	},
 
 	["syrup"] = {
@@ -9171,6 +9215,11 @@ return {
 		weight = 0.01,
 		stack = true,
 		close = true,
+		client = {
+			anim = { dict = 'rick_drugemotes@animations', clip = 'takingpills_clip' },
+			prop = { model = 'prop_cs_pills', pos = vec3(0.12, 0.03, 0.0), rot = vec3(-57.0, 90.0, 0.0) },
+			usetime = 3000,
+		},
 	},
 
 	["xray"] = {
