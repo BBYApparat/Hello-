@@ -9679,4 +9679,230 @@ return {
 		weight = 1000,
 		stack = false
 	},
+
+	-- BZZZ Snack Props
+	['bzzz_croissant'] = {
+		label = 'Croissant',
+		weight = 500,
+		stack = true,
+		close = true,
+		description = 'Fresh buttery croissant',
+		client = {
+			status = { hunger = 200000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_new_snacks_croissant_a', pos = vec3(0.0, 0.0, 0.0), rot = vec3(0.0, -50.0, 80.0) },
+			usetime = 2500,
+		}
+	},
+
+	['bzzz_donut_a'] = {
+		label = 'Pink Donut',
+		weight = 500,
+		stack = true,
+		close = true,
+		description = 'Delicious pink glazed donut',
+		client = {
+			status = { hunger = 150000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_new_snacks_donut_a', pos = vec3(0.0, 0.0, -0.02), rot = vec3(0.0, -20.0, 80.0) },
+			usetime = 2500,
+		}
+	},
+
+	['bzzz_donut_b'] = {
+		label = 'Chocolate Donut',
+		weight = 500,
+		stack = true,
+		close = true,
+		description = 'Rich chocolate glazed donut',
+		client = {
+			status = { hunger = 150000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_new_snacks_donut_b', pos = vec3(0.0, 0.0, -0.02), rot = vec3(0.0, -20.0, 80.0) },
+			usetime = 2500,
+		}
+	},
+
+	['bzzz_peanuts'] = {
+		label = 'Peanuts',
+		weight = 500,
+		stack = true,
+		close = true,
+		description = 'Salted roasted peanuts',
+		client = {
+			status = { hunger = 100000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_new_snacks_peanuts_a', pos = vec3(0.0, -0.02, -0.01), rot = vec3(0.0, -20.0, 80.0) },
+			usetime = 2500,
+		}
+	},
+
+	['bzzz_pretzels'] = {
+		label = 'Pretzels',
+		weight = 500,
+		stack = true,
+		close = true,
+		description = 'Crispy salted pretzels',
+		client = {
+			status = { hunger = 100000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_new_snacks_pretzels_a', pos = vec3(0.03, -0.04, -0.01), rot = vec3(-80.0, 0.0, 70.0) },
+			usetime = 2500,
+		}
+	},
+
+	['bzzz_pepsiloca_a'] = {
+		label = 'Pepsiloca',
+		weight = 500,
+		stack = true,
+		close = true,
+		description = 'Refreshing cola drink',
+		client = {
+			status = { thirst = 200000 },
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+			prop = { model = 'bzzz_new_snacks_pepsiloca_a', pos = vec3(0.01, 0.00, 0.07), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 2500,
+		}
+	},
+
+	['bzzz_pepsiloca_b'] = {
+		label = 'Pepsiloca Light',
+		weight = 500,
+		stack = true,
+		close = true,
+		description = 'Diet cola drink',
+		client = {
+			status = { thirst = 200000 },
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+			prop = { model = 'bzzz_new_snacks_pepsiloca_b', pos = vec3(0.01, 0.00, 0.07), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 2500,
+		}
+	},
+
+	['bzzz_energy'] = {
+		label = 'Energy Drink',
+		weight = 500,
+		stack = true,
+		close = true,
+		description = 'High-energy boost drink',
+		client = {
+			status = { thirst = 150000 },
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+			prop = { model = 'bzzz_new_snacks_energy_a', pos = vec3(0.01, 0.00, 0.05), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 2500,
+		}
+	},
+
+	-- BZZZ Ice Cream
+	['icecream_chr'] = {
+		label = 'Cherry Ice Cream',
+		weight = 200,
+		stack = true,
+		close = true,
+		description = 'Delicious cherry flavored ice cream',
+		client = {
+			status = { hunger = 250000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_icecream_cherry', pos = vec3(0.0, 0.0, 0.0), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 3000,
+		}
+	},
+
+	['icecream_chc'] = {
+		label = 'Chocolate Ice Cream',
+		weight = 250,
+		stack = true,
+		close = true,
+		description = 'Rich chocolate ice cream',
+		client = {
+			status = { hunger = 250000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_icecream_chocolate', pos = vec3(0.0, 0.0, 0.0), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 3000,
+		}
+	},
+
+	['icecream_lmn'] = {
+		label = 'Lemon Ice Cream',
+		weight = 200,
+		stack = true,
+		close = true,
+		description = 'Refreshing lemon ice cream',
+		client = {
+			status = { hunger = 250000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_icecream_lemon', pos = vec3(0.0, 0.0, 0.0), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 3000,
+		}
+	},
+
+	['icecream_pst'] = {
+		label = 'Pistachio Ice Cream',
+		weight = 230,
+		stack = true,
+		close = true,
+		description = 'Creamy pistachio ice cream',
+		client = {
+			status = { hunger = 250000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_icecream_pistachio', pos = vec3(0.0, 0.0, 0.0), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 3000,
+		}
+	},
+
+	['icecream_rsp'] = {
+		label = 'Raspberry Ice Cream',
+		weight = 220,
+		stack = true,
+		close = true,
+		description = 'Sweet raspberry ice cream',
+		client = {
+			status = { hunger = 250000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_icecream_raspberry', pos = vec3(0.0, 0.0, 0.0), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 3000,
+		}
+	},
+
+	['icecream_stc'] = {
+		label = 'Stracciatella Ice Cream',
+		weight = 240,
+		stack = true,
+		close = true,
+		description = 'Vanilla ice cream with chocolate chips',
+		client = {
+			status = { hunger = 250000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_icecream_stracciatella', pos = vec3(0.0, 0.0, 0.0), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 3000,
+		}
+	},
+
+	['icecream_str'] = {
+		label = 'Strawberry Ice Cream',
+		weight = 210,
+		stack = true,
+		close = true,
+		description = 'Fresh strawberry ice cream',
+		client = {
+			status = { hunger = 250000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_icecream_strawberry', pos = vec3(0.0, 0.0, 0.0), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 3000,
+		}
+	},
+
+	['icecream_wnt'] = {
+		label = 'Walnut Ice Cream',
+		weight = 260,
+		stack = true,
+		close = true,
+		description = 'Nutty walnut ice cream',
+		client = {
+			status = { hunger = 250000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = 'bzzz_icecream_walnut', pos = vec3(0.0, 0.0, 0.0), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 3000,
+		}
+	},
 }

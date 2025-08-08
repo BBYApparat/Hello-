@@ -5,9 +5,10 @@ thank you for your purchase.
 
 --------------------------------------------------
 My contact: 
-Cfx forum:			 https://forum.cfx.re/u/bzzzi/summary
-Tebex:				 https://bzzz.tebex.io/
-Discord:			  /PpAHBCMW97
+Cfx forum:				 https://forum.cfx.re/u/bzzzi/summary
+Tebex:					 https://bzzz.tebex.io/
+Discord:				 https://discord.gg/PpAHBCMW97
+Images for inventory:	 https://bzzz.wiki/
 --------------------------------------------------
 
 

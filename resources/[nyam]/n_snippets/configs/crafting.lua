@@ -602,13 +602,111 @@ Config.Crafting = {
 				duration = 5000,
 				count = 1,
 			},
+			-- BZZZ Ice Cream Items
+			{
+				name = 'icecream_chr',
+				ingredients = {
+					milk = 1,
+					cherry = 5,
+					sugar = 2,
+					ice = 3,
+					water = 1
+				},
+				duration = 6000,
+				count = 1,
+			},
+			{
+				name = 'icecream_chc',
+				ingredients = {
+					milk = 1,
+					chocolate = 3,
+					sugar = 2,
+					ice = 3,
+					water = 1
+				},
+				duration = 6000,
+				count = 1,
+			},
+			{
+				name = 'icecream_lmn',
+				ingredients = {
+					milk = 1,
+					lemon = 3,
+					sugar = 2,
+					ice = 3,
+					water = 1
+				},
+				duration = 6000,
+				count = 1,
+			},
+			{
+				name = 'icecream_pst',
+				ingredients = {
+					milk = 1,
+					sugar = 3,
+					ice = 3,
+					water = 1,
+					egg_crate = 1
+				},
+				duration = 6000,
+				count = 1,
+			},
+			{
+				name = 'icecream_rsp',
+				ingredients = {
+					milk = 1,
+					strawberry = 3,
+					blueberry = 2,
+					sugar = 2,
+					ice = 3,
+					water = 1
+				},
+				duration = 6000,
+				count = 1,
+			},
+			{
+				name = 'icecream_stc',
+				ingredients = {
+					milk = 1,
+					chocolate = 2,
+					sugar = 2,
+					ice = 3,
+					water = 1
+				},
+				duration = 6000,
+				count = 1,
+			},
+			{
+				name = 'icecream_str',
+				ingredients = {
+					milk = 1,
+					strawberry = 5,
+					sugar = 2,
+					ice = 3,
+					water = 1
+				},
+				duration = 6000,
+				count = 1,
+			},
+			{
+				name = 'icecream_wnt',
+				ingredients = {
+					milk = 1,
+					sugar = 3,
+					ice = 3,
+					water = 1,
+					egg_crate = 1
+				},
+				duration = 6000,
+				count = 1,
+			},
 		}
 	},
 
 	
-	["donut_craft_1"] = {
+	["bakery_craft_1"] = {
 		--	blip = {label = "Ore Smelter", sprite = 436, size = 0.8, color = 21, coords = vec3(1108.27, -2006.58, 30.94)},
-		label = "Donut Cuisine",
+		label = "Bakery",
 		icon = "fa-solid fa-burger",
 		-- object = `v_ilev_found_cranebucket`,
 		coords = vec4(272.08, 134.8, 104.44, 202.25),
@@ -616,92 +714,64 @@ Config.Crafting = {
 		jobs = { "donut" },
 		-- jobGrades = {1, 5, 11}, -- You can use "all" or table of grade levels example: {1, 5, 11}
 		items = {
+			-- BZZZ Snack Items
 			{
-				name = 'donut1',
+				name = 'bzzz_croissant',
 				ingredients = {
 					egg_crate = 1,
-					corn_flour = 1,
-					water = 2,
+					corn_flour = 2,
+					water = 1,
 					milk = 1,
-					sugar = 7
+					sugar = 2
 				},
-				duration = 10000,
+				duration = 8000,
 				count = 1,
 			},
-			
 			{
-				name = 'donut2',
+				name = 'bzzz_donut_a',
 				ingredients = {
 					egg_crate = 1,
 					corn_flour = 1,
 					water = 2,
 					milk = 1,
-					sugar = 3,
-					chocolate = 1
-				},
-				duration = 10000,
-				count = 1,
-			},
-			
-			{
-				name = 'donut3',
-				ingredients = {
-					egg_crate = 1,
-					corn_flour = 1,
-					water = 2,
-					milk = 1,
-					sugar = 3,
-					chocolate = 1,
+					sugar = 5,
 					strawberry = 1
 				},
-				duration = 10000,
+				duration = 9000,
 				count = 1,
 			},
-			
 			{
-				name = 'donut4',
+				name = 'bzzz_donut_b',
 				ingredients = {
 					egg_crate = 1,
 					corn_flour = 1,
 					water = 2,
 					milk = 1,
 					sugar = 3,
-					chocolate = 1,
-					banana = 1
+					chocolate = 2
 				},
-				duration = 10000,
+				duration = 9000,
 				count = 1,
 			},
-			
 			{
-				name = 'donut5',
+				name = 'bzzz_peanuts',
 				ingredients = {
-					egg_crate = 1,
-					corn_flour = 1,
-					water = 2,
-					milk = 1,
-					sugar = 3,
-					blueberry = 1,
-					strawberry = 1
+					sugar = 1,
+					water = 1
 				},
-				duration = 10000,
+				duration = 3000,
 				count = 1,
 			},
-			
 			{
-				name = 'donut6',
+				name = 'bzzz_pretzels',
 				ingredients = {
-					egg_crate = 1,
 					corn_flour = 1,
 					water = 2,
-					milk = 1,
-					sugar = 3,
-					cherry = 1,
-					strawberry = 1
+					sugar = 1
 				},
-				duration = 10000,
+				duration = 4000,
 				count = 1,
-			},			
+			},		
 		}
 	},
 
