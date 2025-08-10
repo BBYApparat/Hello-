@@ -336,6 +336,11 @@ function SpawnVehicle(props, coords)
         
         Config.SetFuelExport(vehicle, props?.fuelLevel)
         TriggerServerEvent("aty_garage:takeOutVehicle", props.plate, NetworkGetNetworkIdFromEntity(vehicle))
+        
+        -- Auto-assign vehicle keys for SimpleCarlock (ESX integration)
+        if GetResourceState('SimpleCarlock') == 'started' then
+          exports['SimpleCarlock']:giveKeys(GetPlayerServerId(PlayerId()), props.plate)
+        end
     end)
   elseif Utils.Framework == "qb-core" then
       Utils.FrameworkObject.Functions.SpawnVehicle(props.model, function(vehicle)
@@ -353,7 +358,13 @@ function SpawnVehicle(props, coords)
 
         Config.SetFuelExport(vehicle, props?.fuelLevel)
         TriggerServerEvent("aty_garage:takeOutVehicle", props.plate, NetworkGetNetworkIdFromEntity(vehicle))
-        TriggerEvent("qb-vehiclekeys:client:AddKeys", Utils.FrameworkObject.Functions.GetPlate(vehicle))
+        
+        -- Auto-assign vehicle keys - prioritize SimpleCarlock over qb-vehiclekeys
+        if GetResourceState('SimpleCarlock') == 'started' then
+          exports['SimpleCarlock']:giveKeys(GetPlayerServerId(PlayerId()), Utils.FrameworkObject.Functions.GetPlate(vehicle))
+        else
+          TriggerEvent("qb-vehiclekeys:client:AddKeys", Utils.FrameworkObject.Functions.GetPlate(vehicle))
+        end
         
         SetVehicleEngineOn(vehicle, true, true)
     end, coords, true, false)

@@ -16,7 +16,8 @@ local list = {
   "qs-advancedgarages",
   "m-Garages",
   "op-garages",
-  "hex_2_Garage"
+  "hex_2_Garage",
+  "aty_garage"
 }
 
 local foundGarageScript = false
