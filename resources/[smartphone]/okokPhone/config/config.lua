@@ -48,9 +48,9 @@ return {
       --[[ 📱 Phone  ]]
       Phone = {
             item = {
-                  enabled = false,       -- If disabled, it wont check if player has a phone item
+                  enabled = true,       -- If disabled, it wont check if player has a phone item
                   name = 'phone', -- Item name, used to check if player has a phone
-                  unique_phones = true, -- If enabled, each phone will be unique
+                  unique_phones = false, -- If enabled, each phone will be unique
             },
             command = {
                   -- Command will only be registered if item.enabled is disabled

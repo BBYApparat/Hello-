@@ -30,9 +30,9 @@ AddEventHandler('playerDropped', function()
     if identifier and onlinePlayers[identifier] then
         -- Update last seen in database
         if ESX then
-            MySQL.update.await('UPDATE users SET last_seen = NOW() WHERE identifier = ?', { identifier })
+            exports.oxmysql:update_async('UPDATE users SET last_seen = NOW() WHERE identifier = ?', { identifier })
         elseif QBCore then
-            MySQL.update.await('UPDATE players SET last_login = NOW() WHERE citizenid = ?', { identifier })
+            exports.oxmysql:update_async('UPDATE players SET last_login = NOW() WHERE citizenid = ?', { identifier })
         end
         
         onlinePlayers[identifier] = nil
@@ -314,7 +314,7 @@ lib.callback.register('job-manager:giveBonus', function(source, data)
     -- Check society funds (ESX) or company account
     local jobName = playerJob
     if ESX then
-        local society = MySQL.single.await('SELECT money FROM addon_account_data WHERE account_name = ?', { 'society_' .. jobName })
+        local society = exports.oxmysql:single_async('SELECT money FROM addon_account_data WHERE account_name = ?', { 'society_' .. jobName })
         local societyMoney = society and society.money or 0
         
         if societyMoney < data.amount then
@@ -322,7 +322,7 @@ lib.callback.register('job-manager:giveBonus', function(source, data)
         end
         
         -- Deduct from society
-        MySQL.update.await('UPDATE addon_account_data SET money = money - ? WHERE account_name = ?', { data.amount, 'society_' .. jobName })
+        exports.oxmysql:update_async('UPDATE addon_account_data SET money = money - ? WHERE account_name = ?', { data.amount, 'society_' .. jobName })
     end
     
     -- Find target player
@@ -407,7 +407,7 @@ end
 
 function GetJobInfo(jobName)
     if ESX then
-        local job = MySQL.single.await('SELECT label FROM jobs WHERE name = ?', { jobName })
+        local job = exports.oxmysql:single_async('SELECT label FROM jobs WHERE name = ?', { jobName })
         return job
     elseif QBCore then
         return QBCore.Shared.Jobs[jobName]
@@ -417,7 +417,7 @@ end
 
 function GetJobGrades(jobName)
     if ESX then
-        local grades = MySQL.query.await('SELECT grade, name, salary FROM job_grades WHERE job_name = ? ORDER BY grade ASC', { jobName })
+        local grades = exports.oxmysql:query_async('SELECT grade, name, salary FROM job_grades WHERE job_name = ? ORDER BY grade ASC', { jobName })
         return grades or {}
     elseif QBCore then
         local job = QBCore.Shared.Jobs[jobName]
@@ -440,7 +440,7 @@ end
 
 function GetJobEmployees(jobName)
     if ESX then
-        local employees = MySQL.query.await([[
+        local employees = exports.oxmysql:query_async([[
             SELECT u.identifier, u.firstname, u.lastname, u.job_grade, jg.name as grade_name, u.last_seen
             FROM users u 
             JOIN job_grades jg ON u.job = jg.job_name AND u.job_grade = jg.grade
@@ -462,7 +462,7 @@ function GetJobEmployees(jobName)
         end
         return formatted
     elseif QBCore then
-        local employees = MySQL.query.await([[
+        local employees = exports.oxmysql:query_async([[
             SELECT citizenid, charinfo, job
             FROM players 
             WHERE JSON_EXTRACT(job, '$.name') = ?
@@ -491,7 +491,7 @@ end
 
 function GetGradeName(jobName, grade)
     if ESX then
-        local gradeInfo = MySQL.single.await('SELECT name FROM job_grades WHERE job_name = ? AND grade = ?', { jobName, grade })
+        local gradeInfo = exports.oxmysql:single_async('SELECT name FROM job_grades WHERE job_name = ? AND grade = ?', { jobName, grade })
         return gradeInfo and gradeInfo.name or 'Unknown'
     elseif QBCore then
         local job = QBCore.Shared.Jobs[jobName]
@@ -505,7 +505,7 @@ end
 
 function GetMaxJobGrade(jobName)
     if ESX then
-        local maxGrade = MySQL.single.await('SELECT MAX(grade) as max_grade FROM job_grades WHERE job_name = ?', { jobName })
+        local maxGrade = exports.oxmysql:single_async('SELECT MAX(grade) as max_grade FROM job_grades WHERE job_name = ?', { jobName })
         return maxGrade and maxGrade.max_grade or 0
     elseif QBCore then
         local job = QBCore.Shared.Jobs[jobName]
@@ -587,7 +587,7 @@ end
 
 function UpdateOfflinePlayerJob(identifier, jobName, action, managerGrade)
     if ESX then
-        local currentJob = MySQL.single.await('SELECT job, job_grade FROM users WHERE identifier = ?', { identifier })
+        local currentJob = exports.oxmysql:single_async('SELECT job, job_grade FROM users WHERE identifier = ?', { identifier })
         if not currentJob then
             return { success = false, message = "Employee not found" }
         end
@@ -608,10 +608,10 @@ function UpdateOfflinePlayerJob(identifier, jobName, action, managerGrade)
             newGrade = 0
         end
         
-        MySQL.update.await('UPDATE users SET job = ?, job_grade = ? WHERE identifier = ?', { jobName, newGrade, identifier })
+        exports.oxmysql:update_async('UPDATE users SET job = ?, job_grade = ? WHERE identifier = ?', { jobName, newGrade, identifier })
         return { success = true }
     elseif QBCore then
-        local player = MySQL.single.await('SELECT job FROM players WHERE citizenid = ?', { identifier })
+        local player = exports.oxmysql:single_async('SELECT job FROM players WHERE citizenid = ?', { identifier })
         if not player then
             return { success = false, message = "Employee not found" }
         end
@@ -642,7 +642,7 @@ function UpdateOfflinePlayerJob(identifier, jobName, action, managerGrade)
             }
         }
         
-        MySQL.update.await('UPDATE players SET job = ? WHERE citizenid = ?', { json.encode(newJob), identifier })
+        exports.oxmysql:update_async('UPDATE players SET job = ? WHERE citizenid = ?', { json.encode(newJob), identifier })
         return { success = true }
     end
     

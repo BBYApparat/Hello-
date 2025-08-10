@@ -14,8 +14,8 @@ local logoPath     = ("https://cfx-nui-%s/web/icon.png"):format(resourceName)
 
 ---@type okokApp
 local appInfo      = {
-      id = "customapp",
-      label = "Custom App Name",
+      id = "reviews",
+      label = "Reviews",
       description = "This is a custom app for the okokPhone.",
       custom = true,
       icon = logoPath,

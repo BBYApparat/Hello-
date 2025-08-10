@@ -51,13 +51,13 @@ if foundGarageScript then return functions end
 --- Fallback, didn't find a garage script
 --- Framework specific functions
 if CurrentFramework == 'esx' then
-  if not GetResourceState('esx_garage') == 'started' then
-    error("No compatible garage script found, check bridge/server/garage, for more info")
-    return
-  end
+  -- if not GetResourceState('esx_garage') == 'started' then
+  --   error("No compatible garage script found, check bridge/server/garage, for more info")
+  --   return
+  -- end
 
-  local garages = exports["esx_garage"]:getGarages()
-  local impounds = exports["esx_garage"]:getImpounds()
+  -- local garages = exports["esx_garage"]:getGarages()
+  -- local impounds = exports["esx_garage"]:getImpounds()
 
   function functions.removeVehicleFromGarage(plate)
     MySQL.prepare.await("UPDATE owned_vehicles SET stored = ?, parking = NULL WHERE plate = ? LIMIT 1", { 0, plate })
