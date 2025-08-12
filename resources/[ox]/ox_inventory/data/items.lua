@@ -9912,4 +9912,100 @@ return {
 			usetime = 3000,
 		}
 	},
+
+	['bshot_baugette_meat'] = {
+		label = 'Torpedo',
+		weight = 350,
+		client = {
+			status = { hunger = 300000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger_fp' },
+			prop = { model = `npds_baugette_meat_01`, bone = 18905, pos = vec3(0.1, 0.04, 0.01), rot = vec3(32.0, 161.0, 20.0) },
+			usetime = 2500,
+			notification = 'You ate a Torpedo'
+		}
+	},
+
+	['bshot_baugette_vegan'] = {
+		label = 'Baugette & Vegan',
+		weight = 350,
+		client = {
+			status = { hunger = 200000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger_fp' },
+			prop = { model = `npds_baugette_vegan_01`, bone = 18905, pos = vec3(0.1, 0.04, 0.01), rot = vec3(32.0, 161.0, 20.0) },
+			usetime = 2500,
+			notification = 'You ate a vegan baugette'
+		}
+	},
+
+	['bshot_hamburger_01'] = {
+		label = 'Moneyshot',
+		weight = 350,
+		client = {
+			status = { hunger = 250000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger_fp' },
+			prop = { model = `npds_hamburger_01`, bone = 18905, pos = vec3(0.13, 0.06, 0.03), rot = vec3(-200.0, -19.0, 1.0) },
+			usetime = 2500,
+			notification = 'You ate a moneyshot burger'
+		}
+	},
+
+	['bshot_hamburger_02'] = {
+		label = 'Bleeder',
+		weight = 350,
+		client = {
+			status = { hunger = 300000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger_fp' },
+			prop = { model = `npds_hamburger_02`, bone = 18905, pos = vec3(0.13, 0.06, 0.03), rot = vec3(-200.0, -19.0, 1.0) },
+			usetime = 2500,
+			notification = 'You ate a Bleeder burger'
+		}
+	},
+
+	['bshot_hamburger_03'] = {
+		label = 'Hearthstopper',
+		weight = 350,
+		client = {
+			status = { hunger = 400000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger_fp' },
+			prop = { model = `npds_hamburger_03`, bone = 18905, pos = vec3(0.13, 0.06, 0.03), rot = vec3(-200.0, -19.0, 1.0) },
+			usetime = 2500,
+			notification = 'You ate a Hearthstopper burger'
+		}
+	},
+
+	['bshot_sodadrink_01'] = {
+		label = 'Small Soda',
+		weight = 350,
+		client = {
+			status = { thirst = 200000 },
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle', flag = 49 },
+			prop = { model = `npds_drink_small_bs`, bone = 18905, pos = vec3(0.13, 0.05, 0.07), rot = vec3(-129.0, -16.0, 1.0) },
+			usetime = 2500,
+			notification = 'You drank a small soda'
+		}
+	},
+
+	['bshot_sodadrink_02'] = {
+		label = 'Medium Soda',
+		weight = 350,
+		client = {
+			status = { thirst = 250000 },
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle', flag = 49 },
+			prop = { model = `npds_drink_med_bs`, bone = 18905, pos = vec3(0.13, 0.05, 0.07), rot = vec3(-129.0, -16.0, 1.0) },
+			usetime = 3500,
+			notification = 'You drank a medium soda'
+		}
+	},
+
+	['bshot_sodadrink_03'] = {
+		label = 'XXL Soda',
+		weight = 450,
+		client = {
+			status = { thirst = 300000 },
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle', flag = 49 },
+			prop = { model = `npds_drink_xxl_bs`, bone = 18905, pos = vec3(0.13, 0.05, 0.07), rot = vec3(-129.0, -16.0, 1.0) },
+			usetime = 4500,
+			notification = 'You drank an XXL soda'
+		}
+	},
 }
