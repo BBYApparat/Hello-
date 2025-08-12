@@ -6,7 +6,8 @@ version '1.0.0'
 
 shared_scripts {
     '@ox_lib/init.lua',
-    'config.lua'
+    'config.lua',
+    'config_mdt.lua'
 }
 
 server_scripts {
@@ -33,4 +34,8 @@ exports {
 
 lua54 'yes'
 
-dependency 'ox_lib'
+dependencies {
+    'ox_lib',
+    'oxmysql',
+    'es_extended'
+}
