@@ -254,6 +254,13 @@
                     </button>
                 </template>
 
+                <template v-if="record.type.toLowerCase() == 'arrest'">
+                    <button type="button" class="btn green-btn me-3" @click="OpenReportStash()">
+                        <i class="fas fa-box"></i>
+                        Report Stash
+                    </button>
+                </template>
+
                 <template v-if="perms.delete">
                     <button type="button" class="btn red-btn" @click="ConfirmDeleteEntry()">
                         {{ $store.getters.GetTranslation('viewreport', 'delete') }}
@@ -361,6 +368,21 @@ export default {
             setTimeout(() => {
                 this.editing = true;
             }, 200);
+        },
+
+        OpenReportStash() {
+            // Create unique stash ID based on report ID
+            const stashId = `report_stash_${this.record.id}`;
+            
+            // Call server to create/open the stash
+            api.reports.OpenReportStash(this.record.id, stashId);
+            
+            this.SendNotification(
+                'Report Stash',
+                `Opening stash for report ${this.FormatNumber(this.record.id)}`,
+                3000,
+                'success'
+            );
         },
 
         TransitionEl(incoming, outgoing) {

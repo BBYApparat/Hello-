@@ -61,6 +61,19 @@ class charactersApi {
         return queryResults
     }
 
+    // [POST] Fetch character by State ID
+    async GetCharacterByStateId(stateId) {
+        let charData = await this.Post('getCharacterByStateId', {
+            stateId: stateId
+        })
+
+        if (Array.isArray(charData)) {
+            return charData;
+        }
+        
+        return charData ? [charData] : [];
+    }
+
     // [POST] Fetch detailed profile
     async GetDetailedProfile(identifier) {
         return await this.Post('getCharacterDetailedProfile', { identifier: identifier })

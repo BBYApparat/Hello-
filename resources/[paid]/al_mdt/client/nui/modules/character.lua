@@ -8,6 +8,16 @@ RegisterNUICallback('getCharacterByName', function(data, cb)
     end, mdt.k, data.firstName, data.lastName, data.gender)
 end)
 
+RegisterNUICallback('getCharacterByStateId', function(data, cb)
+    TriggerServerCallback('al_mdt:FetchProfilesByStateId', function(resp)
+        if resp then
+            cb(resp)
+        else
+            cb(false)
+        end
+    end, mdt.k, data.stateId)
+end)
+
 RegisterNUICallback('getCharacterDetailedProfile', function(data, cb)
     TriggerServerCallback('al_mdt:FetchDetailedProfile', function(resp)
         if resp then

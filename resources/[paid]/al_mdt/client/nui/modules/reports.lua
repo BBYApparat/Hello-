@@ -57,3 +57,9 @@ RegisterNUICallback('jailPlayer', function(data, cb)
 
     cb({})
 end)
+
+RegisterNUICallback('openReportStash', function(data, cb)
+    TriggerServerEvent('al_mdt:OpenReportStash', mdt.k, data.reportId, data.stashId)
+
+    cb({})
+end)

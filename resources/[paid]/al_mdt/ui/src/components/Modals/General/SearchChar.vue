@@ -11,7 +11,28 @@
 
                 <div class="modal-body">
                     <div class="container-fluid" v-if="!queryResults.length > 0">
-                        <div class="row justify-content-md-center mdt-form">
+                        <!-- Search Type Selection -->
+                        <div class="row justify-content-md-center mb-3">
+                            <div class="col-6 text-center">
+                                <div class="form-check form-check-inline">
+                                    <input id="search-by-name" name="searchType" class="form-check-input"
+                                        type="radio" value="name" v-model="searchType" />
+                                    <label class="form-check-label" for="search-by-name">
+                                        Search by Name
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input id="search-by-stateid" name="searchType" class="form-check-input"
+                                        type="radio" value="stateid" v-model="searchType" />
+                                    <label class="form-check-label" for="search-by-stateid">
+                                        Search by State ID
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Name Search Fields -->
+                        <div class="row justify-content-md-center mdt-form" v-if="searchType === 'name'">
                             <div class="col-4 text-center">
                                 <label for="mdt-search-modal-firstname" class="col-form-label">
                                     {{ $store.getters.GetTranslation('searchchar', 'col_fname') }}
@@ -31,7 +52,19 @@
                             </div>
                         </div>
 
-                        <div class="row justify-content-md-center mdt-form mt-3">
+                        <!-- State ID Search Field -->
+                        <div class="row justify-content-md-center mdt-form" v-if="searchType === 'stateid'">
+                            <div class="col-4 text-center">
+                                <label for="mdt-search-modal-stateid" class="col-form-label">
+                                    State ID Number
+                                </label>
+                                <input id="mdt-search-modal-stateid" class="form-control" type="number"
+                                    placeholder="Enter State ID..."
+                                    v-model="inputFields.stateId" />
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-md-center mdt-form mt-3" v-if="searchType === 'name'">
                             <div class="col-6 text-center">
                                 <label class="col-form-label" :class="{ 'is-invalid': validationFeedback.length > 0 }">
                                     {{ $store.getters.GetTranslation('searchchar', 'col_gender') }}
@@ -71,8 +104,7 @@
                         </div>
 
                         <div class="mt-3 mb-2 text-center">
-                            <button type="button" class="btn green-btn"
-                                @click=" SearchForCharacter( inputFields.firstName, inputFields.lastName, inputFields.gender ) ">
+                            <button type="button" class="btn green-btn" @click="HandleSearch()">
                                 {{ $store.getters.GetTranslation('searchchar', 'search') }}
                                 <span v-if="isLoading">
                                     <div class="spinner-border ms-1" style="width: 1rem; height: 1rem" role="status">
@@ -136,10 +168,12 @@ export default {
         return {
             modalId: "searchChar" + "Modal",
             beingShown: false,
+            searchType: 'name', // 'name' or 'stateid'
             inputFields: {
                 firstName: "",
                 lastName: "",
                 gender: "",
+                stateId: "",
             },
             validationFeedback: "",
             isLoading: false,
@@ -158,6 +192,13 @@ export default {
         }, 100);
     },
     methods: {
+        HandleSearch() {
+            if (this.searchType === 'name') {
+                this.SearchForCharacter(this.inputFields.firstName, this.inputFields.lastName, this.inputFields.gender);
+            } else if (this.searchType === 'stateid') {
+                this.SearchByStateId(this.inputFields.stateId);
+            }
+        },
         SearchForCharacter(firstName, lastName, gender) {
             if ( (firstName === "" && lastName !== "" || firstName !== "" && lastName === "" || firstName !== "" && lastName !== "") && !this.isLoading ) {
                 if ( gender !== "" ) {
@@ -172,6 +213,15 @@ export default {
                 this.validationFeedback = this.$store.getters.GetTranslation('searchchar', 'feedback_2');
             }
 
+        },
+        SearchByStateId(stateId) {
+            if (stateId && !this.isLoading) {
+                this.isLoading = true;
+                this.validationFeedback = "";
+                this.GetCharacterByStateId(stateId);
+            } else if (!stateId && !this.isLoading) {
+                this.validationFeedback = "Please enter a valid State ID number";
+            }
         },
         async GetCharacter(firstName, lastName, gender) {
             try {
@@ -190,6 +240,26 @@ export default {
             } catch (error) {
                 console.log('Error fetching character', error)
                 this.validationFeedback = this.$store.getters.GetTranslation('searchchar', 'feedback_5');
+                this.isLoading = false;
+            }
+        },
+        async GetCharacterByStateId(stateId) {
+            try {
+                const result = await api.characters.GetCharacterByStateId( stateId );
+
+                if (!result) {
+                    this.validationFeedback = "No character found with this State ID";
+                } else if (Array.isArray(result)) {
+                    this.queryResults = result;
+
+                    if (this.queryResults.length == 0) {
+                        this.validationFeedback = "No character found with this State ID";
+                    }
+                }
+                this.isLoading = false;
+            } catch (error) {
+                console.log('Error fetching character by State ID', error)
+                this.validationFeedback = "An error occurred while searching";
                 this.isLoading = false;
             }
         },
@@ -223,10 +293,12 @@ export default {
             }
         },
         ResetSession() {
+            this.searchType = 'name';
             this.inputFields = {
                 firstName: "",
                 lastName: "",
                 gender: "",
+                stateId: "",
             };
             this.isLoading = false;
             this.queryResults = [];

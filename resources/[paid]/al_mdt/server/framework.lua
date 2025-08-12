@@ -138,11 +138,21 @@ function JailPlayer(src, identifier, reason, time)
     if Config.UsingESX then -- ESX Method
         local xPlayer = ESX.GetPlayerFromIdentifier(identifier) -- For player id, use xPlayer.source
 
-        -- Use your jailing script here 
+        if xPlayer then
+            -- Use advanced_jail script to jail the player
+            TriggerEvent('advanced_jail:sendToJail', xPlayer.source, time, reason or 'Prison sentence')
+        else
+            print('^3[AL_MDT] ^1Error: ^0Could not find player with identifier: ' .. tostring(identifier))
+        end
     elseif Config.UsingQBCore then -- QBCore Method
         local xPlayer = QBCore.Functions.GetPlayerByCitizenId(identifier) -- For player id, use xPlayer.PlayerData.source
 
-        -- Use your jailing script here 
+        if xPlayer then
+            -- Use advanced_jail script to jail the player
+            TriggerEvent('advanced_jail:sendToJail', xPlayer.PlayerData.source, time, reason or 'Prison sentence')
+        else
+            print('^3[AL_MDT] ^1Error: ^0Could not find player with citizen ID: ' .. tostring(identifier))
+        end
     else
         -- Setup your own system that reflects your framework
     end

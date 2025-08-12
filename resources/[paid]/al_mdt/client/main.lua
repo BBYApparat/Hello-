@@ -152,3 +152,11 @@ function StopTabletAnim()
     ClearPedTasks(PlayerPedId())
     attatchedEntity = nil;
 end
+
+-- Event handler for opening report stash
+RegisterNetEvent('al_mdt:openReportStash', function(stashId)
+    if stashId then
+        -- Open the stash using ox_inventory
+        exports.ox_inventory:openInventory('stash', {id = stashId})
+    end
+end)

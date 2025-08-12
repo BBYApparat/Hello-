@@ -113,6 +113,14 @@ RegisterCallback('al_mdt:FetchProfilesByName', function(source, ...)
     end, ...)
 end)
 
+RegisterCallback('al_mdt:FetchProfilesByStateId', function(source, ...)
+    TriggerProtFunction('FetchProfilesByStateId', source, function(src, cb, key, ...)
+        if VerifyKey(src, key) then
+            cb(FetchCharactersByStateId(...))
+        end
+    end, ...)
+end)
+
 -- Profiles (Vehicles) --
 function RegisterVehProfile(plate, color, photoId, notes) -- Register new veh profile
     if plate and color and photoId and notes then

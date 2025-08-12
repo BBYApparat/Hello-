@@ -128,6 +128,18 @@ class reportsApi {
             console.log('Error caught (Exempting fine): ', error)
         }
     }
+
+    // [POST] Open Report Stash
+    OpenReportStash(reportId, stashId) {
+        try {
+            this.Post('openReportStash', {
+                reportId: reportId,
+                stashId: stashId
+            })
+        } catch (error) {
+            console.log('Error caught (Opening report stash): ', error)
+        }
+    }
 }
 
 const instance = new reportsApi()

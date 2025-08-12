@@ -364,6 +364,55 @@ DbQueries = {
 
             return finalResults
         end,
+        FetchByStateId = function(stateId)
+            -- First try to find in mdt_char_profiles
+            local mdtResults = SQL.SyncFetch('SELECT * FROM `mdt_char_profiles` WHERE identifier IN (SELECT identifier FROM `users` WHERE state_id = @stateId)', {
+                ['stateId'] = tonumber(stateId),
+            })
+            
+            -- If not found in mdt_char_profiles, get from users table directly
+            if #mdtResults == 0 then
+                local userResults = SQL.SyncFetch('SELECT identifier, firstname as firstName, lastname as lastName, dateofbirth as dob, sex, state_id FROM `users` WHERE state_id = @stateId', {
+                    ['stateId'] = tonumber(stateId),
+                })
+                
+                -- Create mdt_char_profiles entry if user exists
+                if #userResults > 0 then
+                    for i=1, #userResults do
+                        local user = userResults[i]
+                        SQL.AsyncExecute('INSERT INTO `mdt_char_profiles` (identifier, firstName, lastName, dob, sex, photoId, contact, notes) VALUES (@identifier, @firstName, @lastName, @dob, @sex, @photoId, @contact, @notes)',
+                        {
+                            ['identifier'] = user.identifier,
+                            ['firstName'] = user.firstName,
+                            ['lastName'] = user.lastName,
+                            ['dob'] = user.dob,
+                            ['sex'] = user.sex,
+                            ['photoId'] = '',
+                            ['contact'] = '{"phone":"","address":"","relatedTo":[]}',
+                            ['notes'] = '',
+                        },
+                        function(affectedRows)
+                        end)
+                        
+                        -- Add state_id to the result
+                        user.state_id = user.state_id
+                        mdtResults[i] = user
+                    end
+                end
+            else
+                -- Add state_id from users table to mdt results
+                for i=1, #mdtResults do
+                    local stateIdResult = SQL.SyncFetch('SELECT state_id FROM `users` WHERE identifier = @identifier', {
+                        ['identifier'] = mdtResults[i].identifier,
+                    })
+                    if #stateIdResult > 0 then
+                        mdtResults[i].state_id = stateIdResult[1].state_id
+                    end
+                end
+            end
+            
+            return mdtResults
+        end,
     },
 
     fines = {

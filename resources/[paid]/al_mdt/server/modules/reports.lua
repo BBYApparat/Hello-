@@ -122,3 +122,116 @@ RegisterNetEvent('al_mdt:JailPlayer', function(...)
         end
     end, ...)
 end)
+
+function OpenReportStash(src, reportId, stashId)
+    if reportId and stashId then
+        local stashLabel = "Arrest Report #" .. reportId .. " - Evidence Stash"
+        
+        -- Register the stash with ox_inventory (15 slots, 50kg weight limit)
+        exports.ox_inventory:RegisterStash(stashId, stashLabel, 15, 50000)
+        
+        -- Log the stash access
+        local xPlayer = ESX.GetPlayerFromId(src)
+        if xPlayer then
+            print('^3[AL_MDT] ^0Player ' .. xPlayer.getName() .. ' (' .. xPlayer.identifier .. ') opened report stash: ' .. stashId)
+            LogStashAccess(xPlayer.identifier, xPlayer.getName(), stashId, 'STASH_OPENED', 'Opened evidence stash for report #' .. reportId)
+        end
+        
+        -- Trigger client to open the stash
+        TriggerClientEvent('al_mdt:openReportStash', src, stashId)
+    end
+end
+
+function LogStashAccess(identifier, playerName, stashId, action, details)
+    -- Create a comprehensive log entry
+    local timestamp = os.date('%Y-%m-%d %H:%M:%S')
+    local logEntry = string.format(
+        '[%s] Player: %s (%s) | Action: %s | Stash: %s | Details: %s',
+        timestamp, playerName, identifier, action, stashId, details or 'N/A'
+    )
+    
+    -- Print to server console
+    print('^2[STASH LOG] ^7' .. logEntry)
+    
+    -- You could also save to a database table here
+    -- Example:
+    -- MySQL.Async.execute('INSERT INTO stash_logs (identifier, player_name, stash_id, action, details, timestamp) VALUES (@identifier, @player_name, @stash_id, @action, @details, @timestamp)', {
+    --     ['@identifier'] = identifier,
+    --     ['@player_name'] = playerName,
+    --     ['@stash_id'] = stashId,
+    --     ['@action'] = action,
+    --     ['@details'] = details,
+    --     ['@timestamp'] = timestamp
+    -- })
+end
+
+RegisterNetEvent('al_mdt:OpenReportStash', function(...)
+    TriggerProtFunction('OpenReportStash', source, function(src, key, ...)
+        if VerifyKey(src, key) then
+            OpenReportStash(src, ...)
+        end
+    end, ...)
+end)
+
+-- Hook into ox_inventory to track stash item changes
+AddEventHandler('ox_inventory:stashSaved', function(stashId, stashData)
+    -- Check if this is a report stash
+    if string.find(stashId, 'report_stash_') then
+        local reportId = string.gsub(stashId, 'report_stash_', '')
+        
+        -- Get all players to find who might have made the change
+        local players = GetPlayers()
+        for _, playerId in pairs(players) do
+            local xPlayer = ESX.GetPlayerFromId(tonumber(playerId))
+            if xPlayer then
+                -- Log the stash change (we can't determine exact item changes without deeper hooks)
+                LogStashAccess(
+                    xPlayer.identifier, 
+                    xPlayer.getName(), 
+                    stashId, 
+                    'STASH_MODIFIED', 
+                    'Items added/removed from evidence stash for report #' .. reportId
+                )
+                break -- Only log once per stash change
+            end
+        end
+    end
+end)
+
+-- Alternative method using ox_inventory hooks (if available)
+if GetResourceState('ox_inventory') == 'started' then
+    -- Try to hook into item add/remove events
+    AddEventHandler('ox_inventory:itemAdded', function(source, item, count, slot)
+        local xPlayer = ESX.GetPlayerFromId(source)
+        if xPlayer then
+            local inventory = exports.ox_inventory:GetInventory(source, false)
+            if inventory and inventory.type == 'stash' and string.find(inventory.id, 'report_stash_') then
+                local reportId = string.gsub(inventory.id, 'report_stash_', '')
+                LogStashAccess(
+                    xPlayer.identifier,
+                    xPlayer.getName(),
+                    inventory.id,
+                    'ITEM_ADDED',
+                    string.format('Added %dx %s to evidence stash for report #%s', count, item, reportId)
+                )
+            end
+        end
+    end)
+    
+    AddEventHandler('ox_inventory:itemRemoved', function(source, item, count, slot)
+        local xPlayer = ESX.GetPlayerFromId(source)
+        if xPlayer then
+            local inventory = exports.ox_inventory:GetInventory(source, false)
+            if inventory and inventory.type == 'stash' and string.find(inventory.id, 'report_stash_') then
+                local reportId = string.gsub(inventory.id, 'report_stash_', '')
+                LogStashAccess(
+                    xPlayer.identifier,
+                    xPlayer.getName(),
+                    inventory.id,
+                    'ITEM_REMOVED',
+                    string.format('Removed %dx %s from evidence stash for report #%s', count, item, reportId)
+                )
+            end
+        end
+    end)
+end

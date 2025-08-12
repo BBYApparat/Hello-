@@ -11,6 +11,7 @@ function FetchCharactersByName(firstName, lastName, gender) -- Fetch characters 
                 lastName = char.lastName,
                 dob = char.dob,
                 sex = char.sex,
+                state_id = char.state_id or 'N/A',
                 photoId = '',
                 contact = {
                     phone = '',
@@ -24,6 +25,40 @@ function FetchCharactersByName(firstName, lastName, gender) -- Fetch characters 
         end
 
         return resp
+    else
+        return false
+    end
+end
+
+function FetchCharactersByStateId(stateId) -- Fetch characters by State ID
+    if stateId ~= nil and tonumber(stateId) then
+        local resp = DbQueries.characters.FetchByStateId(stateId)
+
+        if resp then
+            for i=1, #resp do
+                local char = resp[i]
+
+                local finalResults = {
+                    identifier = char.identifier,
+                    firstName = char.firstName,
+                    lastName = char.lastName,
+                    dob = char.dob,
+                    sex = char.sex,
+                    state_id = char.state_id,
+                    photoId = '',
+                    contact = {
+                        phone = '',
+                        address = '',
+                        relatedTo = {}
+                    },
+                    notes = '',
+                }
+
+                resp[i] = finalResults
+            end
+        end
+
+        return resp or {}
     else
         return false
     end
