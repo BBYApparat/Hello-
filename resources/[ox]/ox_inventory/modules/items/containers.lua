@@ -85,14 +85,14 @@ setContainerProperties('medicinebox', {
 	}
 })
 
-setContainerProperties('weaponbox', {
-    slots = 5,
-    maxWeight = 1000,
+setContainerProperties('policeshopbag', {
+    slots = 6,
+    maxWeight = 2000,
 	items = {
-		{ name = 'weapon_pistol50',     count = 1 },
-		{ name = 'ammo-9',    count = 50 },
-		{ name = 'at_suppressor_light', count = 1 },
-		{ name = 'at_suppressor_heavy', count = 1 },
+		{ name = 'weapon_pumpshotgun', count = 1 },
+		{ name = 'ammo-rifle',         count = 2 },
+		{ name = 'weapon_microsmg',    count = 1 },
+		{ name = 'ammo-45',            count = 2 },
 	}
 })
 

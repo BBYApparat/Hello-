@@ -15,6 +15,7 @@ Config.OxMeta = {
 
     -- Items
     gas = "Gas",
+    Plate = "Plate %",
     
     --Pokemon
     serial = 'Serial #',

@@ -666,6 +666,20 @@ Config.Products = {
             info = {},
             type = "item",
         },
+        [6] = {
+            name = "policeshopbag",
+            price = 50,
+            amount = 10,
+            info = {},
+            type = "item",
+        },
+        [7] = {
+            name = "armor_plates",
+            price = 25,
+            amount = 20,
+            info = {},
+            type = "item",
+        },
     },
     ["weedshop"] = {
         [1] = {
