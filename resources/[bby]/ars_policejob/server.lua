@@ -71,3 +71,176 @@ lib.callback.register('ars_policejob:getDutyStatus', function(source)
 end)
 
 -- lib.versionCheck('Arius-Development/ars_policejob')
+
+-- LSPD Vehicle Plate Tracking System
+local vehiclePlates = {} -- Store plate -> officer info
+local plateCounter = 0   -- Sequential plate counter
+
+-- Load plate counter from KVP storage
+CreateThread(function()
+    local storedCounter = GetResourceKvpInt("lspd_plate_counter")
+    if storedCounter > 0 then
+        plateCounter = storedCounter
+    end
+end)
+
+-- Generate next LSPD plate number
+local function getNextPlateNumber()
+    plateCounter = plateCounter + 1
+    SetResourceKvpInt("lspd_plate_counter", plateCounter)
+    return string.format("LSPD%04d", plateCounter)
+end
+
+-- Register vehicle with officer
+RegisterNetEvent('ars_policejob:registerVehicle', function(vehicle, plate, vehicleLabel)
+    local source = source
+    local playerData = ESX.GetPlayerFromId(source)
+    
+    if not playerData then return end
+    
+    local officerInfo = {
+        name = playerData.getName(),
+        identifier = playerData.identifier,
+        job = playerData.job.name,
+        grade = playerData.job.grade,
+        vehicle = vehicleLabel,
+        timestamp = os.time()
+    }
+    
+    vehiclePlates[plate] = officerInfo
+    
+    -- Store in KVP for persistence
+    SetResourceKvp("lspd_plate_" .. plate, json.encode(officerInfo))
+end)
+
+-- Enhanced plate lookup callback for both LSPD and civilian vehicles
+lib.callback.register('ars_policejob:getVehicleOwner', function(source, plate)
+    -- First check LSPD vehicles in memory
+    if vehiclePlates[plate] then
+        vehiclePlates[plate].vehicleType = 'LSPD'
+        return vehiclePlates[plate]
+    end
+    
+    -- Check LSPD vehicles in KVP storage
+    local storedData = GetResourceKvp("lspd_plate_" .. plate)
+    if storedData then
+        local officerInfo = json.decode(storedData)
+        officerInfo.vehicleType = 'LSPD'
+        vehiclePlates[plate] = officerInfo -- Cache it
+        return officerInfo
+    end
+    
+    -- Check civilian vehicles in database
+    local result = MySQL.query.await('SELECT ov.owner, ov.plate, ov.vehicle, ov.model, ov.garage, u.firstname, u.lastname FROM owned_vehicles ov LEFT JOIN users u ON ov.owner = u.identifier WHERE ov.plate = ?', {
+        plate
+    })
+    
+    if result and result[1] then
+        local vehicleData = result[1]
+        local vehicleInfo = json.decode(vehicleData.vehicle or '{}')
+        
+        local civilianInfo = {
+            name = (vehicleData.firstname and vehicleData.lastname) and 
+                   (vehicleData.firstname .. ' ' .. vehicleData.lastname) or 
+                   'Unknown Owner',
+            identifier = vehicleData.owner,
+            vehicleType = 'Civilian',
+            vehicle = vehicleData.model and json.decode(vehicleData.model).name or 'Unknown Vehicle',
+            plate = vehicleData.plate,
+            garage = vehicleData.garage,
+            timestamp = os.time() - 86400 -- Default to 1 day ago
+        }
+        
+        return civilianInfo
+    end
+    
+    return nil
+end)
+
+-- Generate plate callback
+lib.callback.register('ars_policejob:generatePlate', function(source)
+    return getNextPlateNumber()
+end)
+
+-- Vehicle fine system
+lib.callback.register('ars_policejob:fineVehicle', function(source, plate, reason, amount)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if not xPlayer or not hasJob(source, Config.Interactions.jobs) then
+        return { success = false, message = "Not authorized" }
+    end
+    
+    -- First check LSPD vehicles
+    if vehiclePlates[plate] then
+        local officerInfo = vehiclePlates[plate]
+        return { 
+            success = false, 
+            message = "Cannot fine LSPD vehicle assigned to Officer " .. officerInfo.name 
+        }
+    end
+    
+    -- Check KVP storage for LSPD vehicles
+    local storedData = GetResourceKvp("lspd_plate_" .. plate)
+    if storedData then
+        local officerInfo = json.decode(storedData)
+        return { 
+            success = false, 
+            message = "Cannot fine LSPD vehicle assigned to Officer " .. officerInfo.name 
+        }
+    end
+    
+    -- Check civilian vehicles in database
+    local result = MySQL.query.await('SELECT ov.owner, ov.plate, u.firstname, u.lastname FROM owned_vehicles ov LEFT JOIN users u ON ov.owner = u.identifier WHERE ov.plate = ?', {
+        plate
+    })
+    
+    if result and result[1] then
+        local vehicleData = result[1]
+        local ownerName = (vehicleData.firstname and vehicleData.lastname) and 
+                         (vehicleData.firstname .. ' ' .. vehicleData.lastname) or 
+                         'Unknown Owner'
+        
+        -- Check if owner is online
+        local targetPlayer = ESX.GetPlayerFromIdentifier(vehicleData.owner)
+        
+        if targetPlayer then
+            -- Player is online, send mail notification via okokPhone
+            local email = {
+                sender = "LSPD",
+                recipients = {vehicleData.owner},
+                subject = "Traffic Citation",
+                body = string.format(
+                    "Dear %s,\n\nYou have received a traffic citation for your vehicle (Plate: %s).\n\nReason: %s\nFine Amount: $%s\n\nThis fine has been automatically processed.\n\nRegards,\nLos Santos Police Department",
+                    ownerName,
+                    plate,
+                    reason,
+                    amount
+                )
+            }
+            
+            -- Send via okokPhone export
+            if exports.okokPhone then
+                exports.okokPhone:sendNewEmail(email)
+            end
+            
+            -- Remove money from player
+            targetPlayer.removeBank(tonumber(amount))
+            
+            return { 
+                success = true, 
+                message = string.format("Fine sent to %s ($%s). Owner has been notified via mail.", ownerName, amount)
+            }
+        else
+            -- Player is offline
+            return { 
+                success = false, 
+                message = string.format("Vehicle owner (%s) is currently unavailable.", ownerName)
+            }
+        end
+    else
+        -- No owner found
+        return { 
+            success = false, 
+            message = "This vehicle does not belong to anyone." 
+        }
+    end
+end)

@@ -36,6 +36,7 @@ client_scripts {
 	'modules/job/interactions/fine/client.lua',
 	'modules/job/interactions/escort/client.lua',
 	'modules/job/interactions/props/client.lua',
+	'modules/job/interactions/client/vehicle_fines.lua',
 	'modules/job/items/**/client.lua',
 }
 

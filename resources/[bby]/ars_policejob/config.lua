@@ -103,17 +103,77 @@ Config.PoliceStations = {
 
 				vehicles = {
 					{
-						label = 'Police',
-						spawn_code = 'police',
+						label = 'Police Bike',
+						spawn_code = 'zpbikepd',
 						min_grade = 0,
-						modifications = {} -- es. {color1 = {255, 12, 25}}
+						modifications = {}
 					},
 					{
-						label = 'Police 2',
-						spawn_code = 'police2',
+						label = 'Police Cruiser',
+						spawn_code = 'zpcruiser',
+						min_grade = 0,
+						modifications = {}
+					},
+					{
+						label = 'Police Scout',
+						spawn_code = 'zpscout2020',
+						min_grade = 1,
+						modifications = {}
+					},
+					{
+						label = 'Police Bison',
+						spawn_code = 'zpbison',
+						min_grade = 1,
+						modifications = {}
+					},
+					{
+						label = 'Police Granger',
+						spawn_code = 'zpgranger2',
 						min_grade = 2,
 						modifications = {}
 					},
+					{
+						label = 'Police Interceptor (STX)',
+						spawn_code = 'zpstx',
+						min_grade = 2,
+						modifications = {}
+					},
+					{
+						label = 'Police Interceptor (Hellcat)',
+						spawn_code = 'zphellstx',
+						min_grade = 3,
+						modifications = {}
+					},
+					{
+						label = 'Police Corvette',
+						spawn_code = 'zpcoquette4',
+						min_grade = 3,
+						modifications = {}
+					},
+					{
+						label = 'Police Sentinel',
+						spawn_code = 'zpsent',
+						min_grade = 2,
+						modifications = {}
+					},
+					{
+						label = 'Police Vestra',
+						spawn_code = 'zpvstr',
+						min_grade = 4,
+						modifications = {}
+					},
+					{
+						label = 'Police Helicopter',
+						spawn_code = 'zpheli',
+						min_grade = 4,
+						modifications = {}
+					},
+					{
+						label = 'Police Dinghy',
+						spawn_code = 'zpdinghy4',
+						min_grade = 2,
+						modifications = {}
+					}
 				}
 			}
 		},
