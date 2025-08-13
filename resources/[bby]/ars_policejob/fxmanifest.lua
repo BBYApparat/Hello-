@@ -17,10 +17,6 @@ client_scripts {
 
 	"modules/compatibility/frameworks/**/client.lua",
 
-	'modules/job/menu/client/main.lua',
-	'modules/job/menu/client/menus.lua',
-
-
 	'modules/job/actions/client/clothing.lua',
 	'modules/job/actions/client/armory.lua',
 	'modules/job/actions/client/garage.lua',
@@ -29,6 +25,7 @@ client_scripts {
 	'modules/job/actions/client/cameras.lua',
 	'modules/job/actions/client/bossmenu.lua',
 	'modules/job/actions/client/duty.lua',
+	'modules/job/actions/client/personnel_blips.lua',
 
 	'modules/job/interactions/client.lua',
 	'modules/job/interactions/drag/client.lua',
@@ -42,7 +39,6 @@ client_scripts {
 
 server_scripts {
 	'server.lua',
-	'modules/job/menu/server.lua',
 	'modules/job/interactions/**/server.lua',
 	"modules/compatibility/frameworks/**/server.lua",
 }

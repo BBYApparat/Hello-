@@ -9,9 +9,7 @@ Config.PrisonSystem = 'pickle_prisons'        -- 'pickle_prisons', 'esx-qalle-ja
 Config.ItemCuffs = "handcuffs"                -- name of the item cuffs
 Config.CanBreakCuffs = true                   -- to use this function follow the installation
 Config.UseInternalDuty = false
-Config.AccessToMenu = { "police" }
-Config.OpenMenuKey = ""
-Config.MettingMenuGrade = 3
+-- Menu system removed - using blips instead
 
 Config.Interactions = {
 	enable = true,

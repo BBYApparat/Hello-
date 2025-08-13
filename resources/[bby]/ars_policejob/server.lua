@@ -162,6 +162,131 @@ lib.callback.register('ars_policejob:generatePlate', function(source)
     return getNextPlateNumber()
 end)
 
+-- Personnel blips system - get all on duty emergency personnel
+lib.callback.register('ars_policejob:getOnDutyPersonnel', function(source)
+    local emergencyJobs = {'police', 'sheriff', 'leo', 'ambulance', 'fire', 'ems'}
+    local personnel = {}
+    
+    local xPlayers = ESX.GetExtendedPlayers()
+    
+    for _, xPlayer in pairs(xPlayers) do
+        if xPlayer and xPlayer.job and table.contains(emergencyJobs, xPlayer.job.name) then
+            -- Check if player is on duty
+            local playerIdentifier = GetPlayerIdentifierByType(xPlayer.source, "license")
+            local dutyStatus = GetResourceKvpInt("policejob_duty:" .. playerIdentifier)
+            
+            if dutyStatus == 1 then  -- On duty
+                -- Get callsign
+                local callsign = GetResourceKvp("callsign_" .. playerIdentifier) or "UNASSIGNED"
+                
+                personnel[tostring(xPlayer.source)] = {
+                    name = xPlayer.getName(),
+                    job = xPlayer.job.name,
+                    grade = xPlayer.job.grade,
+                    source = xPlayer.source,
+                    callsign = callsign
+                }
+            end
+        end
+    end
+    
+    return personnel
+end)
+
+-- Callsign management system
+RegisterNetEvent('ars_policejob:setCallsign', function(callsign)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if not xPlayer then return end
+    
+    -- Check if player is emergency personnel
+    local emergencyJobs = {'police', 'sheriff', 'leo', 'ambulance', 'fire', 'ems'}
+    if not table.contains(emergencyJobs, xPlayer.job.name) then
+        TriggerClientEvent('ox_lib:notify', source, {
+            title = 'Callsign',
+            description = 'Only emergency personnel can set callsigns.',
+            type = 'error'
+        })
+        return
+    end
+    
+    -- Check if on duty
+    local playerIdentifier = GetPlayerIdentifierByType(source, "license")
+    local dutyStatus = GetResourceKvpInt("policejob_duty:" .. playerIdentifier)
+    
+    if dutyStatus ~= 1 then
+        TriggerClientEvent('ox_lib:notify', source, {
+            title = 'Callsign',
+            description = 'You must be on duty to set a callsign.',
+            type = 'error'
+        })
+        return
+    end
+    
+    -- Validate callsign format based on job
+    local validFormat = false
+    local jobType = xPlayer.job.name
+    
+    if jobType == 'ambulance' or jobType == 'ems' or jobType == 'fire' then
+        -- Format: C-01, Chief-01, M-01, etc.
+        validFormat = string.match(callsign, "^[A-Za-z]+-[0-9][0-9]$") or string.match(callsign, "^[A-Za-z][A-Za-z][A-Za-z][A-Za-z]+-[0-9][0-9]$")
+    elseif jobType == 'police' or jobType == 'sheriff' or jobType == 'leo' then
+        -- Format: 4-Adam-29, 1-Boy-12, etc.
+        validFormat = string.match(callsign, "^[0-9]-[A-Za-z]+-[0-9][0-9]$")
+    end
+    
+    if not validFormat then
+        local formatExample = ""
+        if jobType == 'ambulance' or jobType == 'ems' or jobType == 'fire' then
+            formatExample = "Examples: C-01, Chief-01, M-12"
+        else
+            formatExample = "Examples: 4-Adam-29, 1-Boy-12"
+        end
+        
+        TriggerClientEvent('ox_lib:notify', source, {
+            title = 'Callsign',
+            description = 'Invalid callsign format. ' .. formatExample,
+            type = 'error'
+        })
+        return
+    end
+    
+    -- Check if callsign is already taken
+    local allPlayers = ESX.GetExtendedPlayers()
+    for _, otherPlayer in pairs(allPlayers) do
+        if otherPlayer.source ~= source then
+            local otherIdentifier = GetPlayerIdentifierByType(otherPlayer.source, "license")
+            local otherCallsign = GetResourceKvp("callsign_" .. otherIdentifier)
+            if otherCallsign == callsign then
+                TriggerClientEvent('ox_lib:notify', source, {
+                    title = 'Callsign',
+                    description = 'This callsign is already in use.',
+                    type = 'error'
+                })
+                return
+            end
+        end
+    end
+    
+    -- Save callsign
+    SetResourceKvp("callsign_" .. playerIdentifier, callsign)
+    
+    TriggerClientEvent('ox_lib:notify', source, {
+        title = 'Callsign',
+        description = 'Callsign set to: ' .. callsign,
+        type = 'success'
+    })
+end)
+
+-- Utility function to check if value exists in table
+function table.contains(table, element)
+    for _, value in pairs(table) do
+        if value == element then
+            return true
+        end
+    end
+    return false
+end
+
 -- Vehicle fine system
 lib.callback.register('ars_policejob:fineVehicle', function(source, plate, reason, amount)
     local xPlayer = ESX.GetPlayerFromId(source)
