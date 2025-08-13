@@ -4,6 +4,39 @@ Config = {}
 Config.AFKIdleTime = 60000    -- Time in milliseconds before idle animations start (60 seconds)
 Config.AFKIdleCheck = 2000    -- How often to check for idle state in milliseconds (2 seconds)
 
+-- Police Badge System Settings
+Config.PoliceBadge = {
+    -- Jobs that can use police badge
+    PoliceJobs = {
+        'police',
+        'sheriff',
+        'leo',
+        'trooper'
+    },
+    
+    -- Badge display settings
+    ShowKey = 168,                    -- F7 key to show badge
+    ShowDuration = 8000,              -- How long badge is shown (8 seconds)
+    ShowDistance = 10.0,              -- Distance others can see badge
+    NotificationDuration = 6000,      -- How long badge info notification shows
+    
+    -- Item requirement
+    RequireItem = true,               -- Require police_badge item to show badge
+    
+    -- Animation settings
+    PropModel = 'prop_fib_badge',     -- Badge prop model
+    AnimDict = 'paper_1_rcm_alt1-9',  -- Animation dictionary
+    AnimName = 'player_one_dual-9',   -- Animation name
+    
+    -- Messages
+    Messages = {
+        NotPolice = 'You are not a police officer',
+        NoBadge = 'You do not have a police badge',
+        CannotShowBadge = 'You cannot show your badge right now',
+        BadgeShow = '%s %s\n%s\n%s\nBadge #%s'  -- firstname, lastname, rank, department, badgeNumber
+    }
+}
+
 -- Idle camera setting (used by ignore.lua)
 Config.IdleCamera = true
 

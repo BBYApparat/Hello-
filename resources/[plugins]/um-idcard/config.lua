@@ -29,4 +29,13 @@ Config.Licenses = {
       background = '#f9c491',
       prop = 'prop_cs_r_business_card'
    },
+   ['police_badge'] = {
+      header = 'Police Badge',
+      background = '#1e3a8a',
+      prop = 'prop_fib_badge',
+      badge = {
+         img = 'police_badge',
+         grade = 'job_grade'
+      }
+   },
 }
