@@ -8,7 +8,15 @@
       "Bash(pnpm run:*)",
       "Bash(npm run build:*)",
       "Bash(npx vite:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(npm install)",
+      "Bash(set NODE_OPTIONS=--openssl-legacy-provider)",
+      "Bash(dir)",
+      "Bash(npm install:*)",
+      "Bash(git reset:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
