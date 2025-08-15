@@ -60,5 +60,16 @@
 	"knockout_message": "You have been knocked out! Wait for help or recover automatically in 30 seconds.",
 	"recovered_knockout": "You have recovered from being knocked out.",
 	"helped_player": "You helped the knocked out player.",
-	"got_helped": "Someone helped you get back up."
+	"got_helped": "Someone helped you get back up.",
+	"sample_blood": "Sample Blood",
+	"sampling_blood": "Taking Blood Sample",
+	"need_syringe_tube": "You need a syringe and test tube to sample blood",
+	"target_too_far": "Target is too far away",
+	"blood_sample_taken": "Blood sample taken from %s (Type: %s)",
+	"blood_sampling_cancelled": "Blood sampling was cancelled",
+	"blood_sampling_cooldown": "This person was recently sampled. Wait %s minutes and %s seconds",
+	"blood_sampling_faint": "You feel dizzy from the blood loss and faint...",
+	"blood_sampling_recover": "You slowly recover from fainting",
+	"blood_sampling_weakness": "You feel slightly weak from the blood loss",
+	"vein_not_found": "Failed to find a suitable vein. Try again!"
 }

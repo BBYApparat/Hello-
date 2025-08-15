@@ -34,6 +34,7 @@ client_scripts {
 	"client/knockout.lua",
 	"client/stretcher.lua",
 	"client/paramedic.lua",
+	"client/blood_sampling.lua",
 
 	"client/job/job.lua",
 	"client/job/garage.lua",
@@ -52,6 +53,7 @@ server_scripts {
 	"server/main.lua",
 	"server/commands.lua",
 	"server/txadmin.lua",
+	"server/blood_sampling.lua",
 }
 
 files {

@@ -125,6 +125,8 @@ Config.Hospitals = {
 					{ name = 'burncream',     price = 10 },
 					{ name = 'suturekit',     price = 10 },
 					{ name = 'icepack',       price = 10 },
+					{ name = 'syringe',       price = 5 },
+					{ name = 'test_tube',     price = 3 },
 				}
 			},
 			["ems_shop_2"] = {

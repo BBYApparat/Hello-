@@ -62,3 +62,24 @@
         export = 'ars_ambulancejob.openDistressCalls'
     }
 },
+
+['syringe'] = {
+    label = 'Syringe',
+    weight = 50,
+    stack = true,
+    description = "A medical syringe used for drawing blood samples and administering medications.",
+},
+
+['test_tube'] = {
+    label = 'Test Tube',
+    weight = 25,
+    stack = true,
+    description = "A sterile glass test tube for collecting and storing blood samples.",
+},
+
+['blood_sample'] = {
+    label = 'Blood Sample',
+    weight = 75,
+    stack = false,
+    description = "A labeled blood sample containing patient information and blood type data.",
+},
