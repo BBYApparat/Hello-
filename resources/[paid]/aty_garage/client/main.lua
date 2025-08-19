@@ -60,67 +60,53 @@ CreateThread(function()
         SetEntityInvincible(ped, true)
         SetBlockingOfNonTemporaryEvents(ped, true)
         table.insert(Peds, ped)
+        
+        -- Add ox_target interaction for garage NPC
+        exports.ox_target:addLocalEntity(ped, {
+            {
+                name = "garage_access_" .. k,
+                icon = "fas fa-car",
+                label = "Access " .. v.label,
+                canInteract = function()
+                    return not IsPedInAnyVehicle(PlayerPedId(), false) and (Job == v.job or v.job == "all")
+                end,
+                onSelect = function()
+                    OpenGarage(v)
+                end
+            }
+        })
     end
 
     debugPrint("Peds created")
-end)
-
---- ### Closest garage loop ### --
-CreateThread(function()
-    local sleep = 500
-
-    while true do
-        Wait(sleep)
-
-        local ped = PlayerPedId()
-        local pedCoords = GetEntityCoords(ped)
-        local closestGarage = GetClosestGarage(pedCoords)
-        local inRange = false
-        local inVehicle = nil
-
-        if closestGarage and not UIActive then
-            local distance = 1000.0
-            local inVehicle = IsPedInAnyVehicle(ped, false)
-            local coords = inVehicle and closestGarage.vehicleCoords or vector3(closestGarage.pedCoords.x, closestGarage.pedCoords.y, closestGarage.pedCoords.z)
-
-            distance = #(pedCoords - coords)
-
-            if inVehicle and distance < 25.0 then
-                inRange = true
-            elseif distance <= 5.0 then
-                inRange = true
-            elseif distance > 5.0 then
-                inRange = false
-            end
-
-            if inRange then
-                sleep = 0
-
-                if inVehicle then
-                    DrawMarker(1, coords.x, coords.y, coords.z - 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 5.0, 5.0, 1.0, 255, 255, 255, 100, false, true, 2, false, false, false, false)
-                end
-
-                if distance < 2.0 then
-                    if inVehicle then
-                        DrawText3D(coords.x, coords.y, coords.z + 1.0, "Press [E] to store your vehicle")
-
-                        if IsControlJustReleased(0, 38) then
-                            StoreVehicle(closestGarage, GetVehiclePedIsIn(ped, false))
-                        end
-                    elseif not inVehicle then
-                        DrawText3D(coords.x, coords.y, coords.z, "Press [E] to access the garage")
-
-                        if IsControlJustReleased(0, 38) then
-                            OpenGarage(closestGarage)
+    
+    -- Add ox_target zones for vehicle storage
+    for k, v in pairs(garages) do
+        exports.ox_target:addSphereZone({
+            coords = v.vehicleCoords,
+            radius = 5.0,
+            options = {
+                {
+                    name = "garage_store_" .. k,
+                    icon = "fas fa-parking",
+                    label = "Store Vehicle in " .. v.label,
+                    canInteract = function()
+                        return IsPedInAnyVehicle(PlayerPedId(), false) and (Job == v.job or v.job == "all")
+                    end,
+                    onSelect = function()
+                        local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+                        if vehicle then
+                            StoreVehicle(v, vehicle)
                         end
                     end
-                end
-            else
-                sleep = 500
-            end
-        end
+                }
+            }
+        })
     end
+    
+    debugPrint("Vehicle storage zones created")
 end)
+
+-- Removed E key interaction loop - now using ox_target
 
 function StoreVehicle(garage, vehicle)
     local isVehicleOwned = TriggerCallback("isVehicleOwned", GetVehicleNumberPlateText(vehicle))

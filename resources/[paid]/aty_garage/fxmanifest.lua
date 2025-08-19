@@ -5,6 +5,10 @@ description 'Script made by atiysu'
 version '1.0.0'
 lua54 'yes'
 
+dependencies {
+    'ox_target'
+}
+
 shared_scripts {
     'shared/*.lua',
 }
