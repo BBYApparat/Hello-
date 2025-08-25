@@ -3,8 +3,6 @@ db/*
 /imgui.ini
 /[backup]
 /bkp.zip
-/resources/\[maps\]/
-/resources/\[eup\]/
 /resources/\[cars\]/
 resources/\[bby\]/ars_ambulancejob
 [backup]
