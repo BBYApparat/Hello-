@@ -1,0 +1,127 @@
+endpoint_add_tcp "0.0.0.0:30120"
+endpoint_add_udp "0.0.0.0:30120"
+
+##################################################################################
+sv_maxclients 8   # Allow access to features usually locked behind a FiveM patreon key
+sv_licenseKey "cfxk_1eGQqRZwOl6yw4jy9JYkl_r8hBb"
+sv_hostname "Second Life Test"
+sets Developer "SecondLifeDeveloper"
+sets discord "https://discord.gg/second-life"
+sv_master1 ""
+
+
+##################################################################################
+
+##################################################################################
+set sv_enforceGameBuild 3258
+set onesync_population true
+set steam_webApiKey "5F04BCFB3D68077BB98ADD8DAAAE0D79"
+set mysql_connection_string "server=127.0.0.1;database=esx_legacy_v3;userid=root;password=root;"
+set mysql_slow_query_warning 3000
+set mysql_debug false
+sv_scriptHookAllowed 1
+##################################################################################
+
+##################################################################################
+load_server_icon logo.png
+sets banner_detail "https://cdn.discordapp.com/attachments/1239515885937491978/1266063072657674360/detail.png?ex=66a3c89e&is=66a2771e&hm=daf0ac23bbc519ed0ebc4ed06a768dcc19b57f5b789f7f149e2bf0772e6fc623&"
+sets banner_connecting "https://cdn.discordapp.com/attachments/1239515885937491978/1266063072271929466/banner.png?ex=66a3c89e&is=66a2771e&hm=a42132eda741f328f727a66c351610b417017ca4cd5f1b5c4b2c9dc81f9e63f1&"
+# sets Discord "https://discord.gg/xxxxxxxxxx"
+sets tags "esx, esx legacy, legacy, roleplay, rp, police, ems, mechanic, drugs"
+sets sv_projectName "Second Life RP Project"
+sets locale "el_GR" 
+
+
+##################################################################################
+
+##################################################################################
+## Add system admins
+add_ace group.superadmin command allow # allow all commands
+add_ace group.superadmin command.quit deny # but don't allow quit
+add_ace resource.es_extended command.add_ace allow
+add_ace resource.es_extended command.add_principal allow
+add_ace resource.es_extended command.remove_principal allow
+add_ace resource.es_extended command.stop allow
+
+add_ace resource.guidebook command.add_ace allow
+add_ace resource.guidebook command.remove_ace allow
+add_ace resource.guidebook command.add_principal allow
+add_ace resource.guidebook command.remove_principal allow
+
+add_principal group.mod group.user
+add_principal group.admin group.mod
+add_principal group.superadmin group.admin
+
+add_principal identifier.steam:110000155e9138b group.superadmin #Bakos
+add_principal identifier.steam:110000155e9138b group.superadmin #Bakos
+
+
+
+add_ace identifier.steam:110000155e9138b jobcreator allow # Add permission to 'Big Arvas dropland.net' Steam account
+add_ace identifier.steam:11000014bc87a97 jobcreator allow # Add permission to 'Big Arvas dropland.net' Steam account
+add_ace identifier.steam:1100001413ee43d jobcreator allow # Add permission to 'Big Arvas dropland.net' Steam account
+add_ace identifier.steam:11000013c08e889 jobcreator allow # Add permission to 'Big Arvas dropland.net' Steam account
+add_ace identifier.steam:110000138e79adc jobcreator allow # Add permission to 'Big Arvas dropland.net' Steam account
+add_ace identifier.steam:11000010c22f4c5 jobcreator allow # Add permission to 'Big Arvas dropland.net' Steam account
+add_ace identifier.steam:110000138e79adc jobcreator allow
+add_ace identifier.steam:11000010620a20a jobcreator allow
+add_ace identifier.steam:110000144d9b503 jobcreator allow
+
+
+
+add_principal identifier.steam:1100001413ee43d group.superadmin #Baba
+
+
+##################################################################################
+
+## pma-voice config ###############################################################
+setr voice_useNativeAudio true
+setr voice_use3dAudio true
+setr voice_useSendingRangeOnly true
+setr voice_defaultCycle "GRAVE"
+setr voice_enableRadioAnim 1
+setr voice_enableSubmix 1
+setr voice_defaultRadio "CAPITAL"
+add_ace group.superadmin command.muteply allow
+###################################################################################
+
+
+
+## Default & Standalone resources #################################################
+ensure [cfx-default]
+# ensure oxmysql
+# ensure PolyZone
+# ###################################################################################
+
+# ## ESX Legacy #####################################################################
+ensure es_extended
+# # ensure ak47_lib3
+ensure [esx]
+ensure [ox]
+ensure [pa]
+ensure [ak47]
+ensure [jobs]
+ensure [heist]
+ensure spray-props
+ensure [plugins]
+ensure [salty]
+ensure [ui]
+ensure [discord]
+ensure [bby]
+ensure [maps]
+ensure [eup]
+ensure [nopixel4]
+ensure [wasabi]
+start [ak4y]
+ensure [voice]
+start cardealership
+start sd_lib
+start sd-oxyrun
+
+
+exec C:\Users\Administrator\Desktop\GTASecondLife\ak47base\resources\vMenu\config/permissions.cfg
+
+start vMenu
+stop vMenu
+###################################################################################
+stop basic-gamemode #remove this if you dont want to use multicharacter
