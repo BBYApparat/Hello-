@@ -10024,4 +10024,115 @@ return {
 			notification = 'You drank an XXL soda'
 		}
 	},
+
+		['cbell_sodadrink_01'] = {
+		label = 'Small Soda',
+		weight = 350,
+		client = {
+			status = { thirst = 200000 },
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle', flag = 49  },
+			prop = { model = `npds_drink_cb_small`, bone = 18905, pos = vec3(0.11, 0.0, 0.03), rot = vec3(-122.0, -82.0, 0.0) },
+			usetime = 2500,
+			notification = 'You dronk a small soda'
+		}
+	},
+	['cbell_sodadrink_02'] = {
+		label = 'Medium Soda',
+		weight = 350,
+		client = {
+			status = { thirst = 200000 },
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle', flag = 49  },
+			prop = { model = `npds_drink_cb_med`, bone = 18905, pos = vec3(0.09, -0.01, 0.03), rot = vec3(-122.0, -82.0, 0.0) },
+			usetime = 3500,
+			notification = 'You dronk a Medium soda'
+		}
+	},
+	['cbell_sodadrink_03'] = {
+		label = 'XXL Soda',
+		weight = 4500,
+		client = {
+			status = { thirst = 200000 },
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle', flag = 49  },
+			prop = { model = `npds_drink_cb_xxl`, bone = 18905, pos = vec3(0.09, -0.04, 0.04), rot = vec3(-120.0, -80.0, 0.0 ) },
+			usetime = 2500,
+			notification = 'You dronk a XXl soda'
+		}
+	},
+	['cbell_ring'] = {
+		label = 'Chickenrings',
+		weight = 350,
+		client = {
+			status = { thirst = 100000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger_fp' },
+			prop = { model = `npds_cbrings`, bone = 18905, pos = vec3( 0.15, 0.06, 0.02), rot = vec3(1.0, -196.0, 0.0) },
+			usetime = 2500,
+			notification = 'You ate chickenring'
+		}
+	},
+	['cbell_ball'] = {
+		label = 'Chickenballs',
+		weight = 350,
+		client = {
+			status = { thirst = 100000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger_fp' },
+			prop = { model = `npds_cbbites`, bone = 18905, pos = vec3(0.15, 0.06, 0.02), rot = vec3(0.0, 0.0, 0.0) },
+			usetime = 2500,
+			notification = 'You ate a chickenball'
+		}
+	},
+	['cbell_nugget'] = {
+		label = 'ChickenNugget',
+		weight = 350,
+		client = {
+			status = { thirst = 100000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger_fp' },
+			prop = { model = `npds_chickennugget`, bone = 18905, pos = vec3( 0.15, 0.06, 0.02), rot = vec3(1.0, -196.0, 0.0) },
+			usetime = 2500,
+			notification = 'You ate a chicken nugget'
+		}
+	},
+	['cbell_chickenwing'] = {
+		label = 'ChickenWing',
+		weight = 350,
+		client = {
+			status = { thirst = 100000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger_fp' },
+			prop = { model = `npds_chickenwing`, bone = 18905, pos = vec3( 0.15, 0.06, 0.02), rot = vec3(1.0, -196.0, 0.0) },
+			usetime = 2500,
+			notification = 'You ate a chicken Wing'
+		}
+	},
+	['cbell_chickenburger'] = {
+		label = 'Fow Burger',
+		weight = 350,
+		client = {
+			status = { thirst = 200000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger_fp' },
+			prop = { model = `npds_cbburger_01`, bone = 18905, pos = vec3( 0.15, 0.06, 0.02), rot = vec3(1.0, -196.0, 0.0) },
+			usetime = 2500,
+			notification = 'You ate a fowburger'
+		}
+	},
+	['cbell_friedchicken'] = {
+		label = 'Fried Chicken',
+		weight = 350,
+		client = {
+			status = { thirst = 200000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = `npds_friedchicken`, bone = 18905, pos = vec3( 0.13, 0.05, 0.0), rot = vec3(70.0, 0.0, 0.0) },
+			usetime = 2500,
+			notification = 'You ate some fried chicken'
+		}
+	},
+	['cbell_friedchickenleg'] = {
+		label = 'Fried Chickenleg',
+		weight = 350,
+		client = {
+			status = { thirst = 200000 },
+			anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+			prop = { model = `npds_friedchickenleg`, bone = 18905, pos = vec3( 0.14, 0.01, 0.02), rot = vec3(-110.0, 10.0, -10.0) },
+			usetime = 2500,
+			notification = 'You ate some fried chicken'
+		}
+	},
 }

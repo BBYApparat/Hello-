@@ -5,6 +5,9 @@ node_modules/
 # Build artifacts
 dist/
 build/
+[backup]
+/backup
+/[backup]
 
 # Cache directories
 .cache/
