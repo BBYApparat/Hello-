@@ -34,30 +34,15 @@ Config.ScrapAnimation = {
 -- Progress bar settings
 Config.ProgressTime = 10000 -- 10 seconds per stage
 
--- Scrap stages and rewards
-Config.ScrapStages = {
-    [1] = {
-        label = 'Scrapping 1/3',
-        items = {
-            {name = 'scrap', count = math.random(2, 4)},
-            {name = 'plastic', count = math.random(1, 3)}
-        }
-    },
-    [2] = {
-        label = 'Scrapping 2/3', 
-        items = {
-            {name = 'scrapelectronics', count = math.random(1, 3)},
-            {name = 'rubber', count = math.random(2, 4)},
-            {name = 'iron_nugget', count = math.random(1, 2)}
-        }
-    },
-    [3] = {
-        label = 'Scrapping 3/3',
-        items = {
-            {name = 'steel', count = math.random(1, 3)},
-            {name = 'copper_nugget', count = math.random(2, 4)},
-            {name = 'iron_nugget', count = math.random(2, 3)}
-        }
+-- Scrap rewards (single scrapping per vehicle)
+Config.ScrapRewards = {
+    label = 'Scrapping Vehicle',
+    items = {
+        {name = 'scrap', count = math.random(3, 6)},
+        {name = 'plastic', count = math.random(2, 4)},
+        {name = 'steel', count = math.random(1, 3)},
+        {name = 'copper_nugget', count = math.random(1, 3)},
+        {name = 'iron_nugget', count = math.random(2, 4)}
     }
 }
 

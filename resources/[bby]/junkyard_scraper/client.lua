@@ -57,45 +57,22 @@ end
 -- Start scrap process
 function startScrapProcess(entity)
     local entityId = NetworkGetNetworkIdFromEntity(entity)
-    local currentStage = scrapProgress[entityId] or 0
     
-    -- Check if vehicle already fully scraped (one vehicle can only be scraped once through all 3 stages)
-    if currentStage >= 3 then
+    -- Check if vehicle already scraped
+    if scrapProgress[entityId] then
         lib.notify({
             title = 'Junkyard Scraper',
-            description = 'This vehicle has already been fully scraped!',
-            type = 'error'
-        })
-        return
-    end
-    
-    -- Check if vehicle was already started by this player
-    if currentStage > 0 and not scrapedVehicles[entityId] then
-        lib.notify({
-            title = 'Junkyard Scraper',
-            description = 'Someone else is working on this vehicle!',
+            description = 'This vehicle has already been scraped!',
             type = 'error'
         })
         return
     end
     
     -- Check if player has reached vehicle limit for current job
-    if currentStage == 0 and vehiclesScraped >= Config.MaxVehiclesPerJob then
+    if vehiclesScraped >= Config.MaxVehiclesPerJob then
         lib.notify({
             title = 'Junkyard Scraper',
             description = string.format('Job complete! You\'ve scraped %d vehicles. Return to the boss for your next job.', Config.MaxVehiclesPerJob),
-            type = 'error'
-        })
-        return
-    end
-    
-    local nextStage = currentStage + 1
-    local stageConfig = Config.ScrapStages[nextStage]
-    
-    if not stageConfig then
-        lib.notify({
-            title = 'Junkyard Scraper',
-            description = 'No more stages available!',
             type = 'error'
         })
         return
@@ -108,7 +85,7 @@ function startScrapProcess(entity)
     -- Show progress bar
     if lib.progressBar({
         duration = Config.ProgressTime,
-        label = stageConfig.label,
+        label = Config.ScrapRewards.label,
         useWhileDead = false,
         canCancel = true,
         disable = {
@@ -120,23 +97,18 @@ function startScrapProcess(entity)
         -- Progress completed successfully
         ClearPedTasksImmediately(PlayerPedId())
         
-        -- Update progress
-        scrapProgress[entityId] = nextStage
-        
-        -- Mark vehicle as owned by this player if starting
-        if nextStage == 1 then
-            scrapedVehicles[entityId] = true
-            vehiclesScraped = vehiclesScraped + 1
-        end
+        -- Mark vehicle as scraped
+        scrapProgress[entityId] = true
+        vehiclesScraped = vehiclesScraped + 1
         
         -- Give rewards to server
-        TriggerServerEvent('junkyard_scraper:giveRewards', stageConfig.items, nextStage)
+        TriggerServerEvent('junkyard_scraper:giveRewards', Config.ScrapRewards.items, 1)
         
         -- Notify player
         local remainingVehicles = Config.MaxVehiclesPerJob - vehiclesScraped
         lib.notify({
             title = 'Junkyard Scraper',
-            description = string.format('Completed %s! Vehicles remaining: %d', stageConfig.label, remainingVehicles),
+            description = string.format('Vehicle scraped! Vehicles remaining: %d', remainingVehicles),
             type = 'success'
         })
         
@@ -150,7 +122,7 @@ function startScrapProcess(entity)
         end
         
         if Config.Debug then
-            print(string.format('[Junkyard Scraper] Entity %d progress: %d/3, Vehicles scraped: %d', entityId, nextStage, vehiclesScraped))
+            print(string.format('[Junkyard Scraper] Entity %d scraped, Vehicles scraped: %d', entityId, vehiclesScraped))
         end
     else
         -- Progress cancelled
@@ -207,7 +179,7 @@ function startJunkyardJob()
     
     if not hasActiveJob then
         -- First time talking or no active job
-        dialogContent = 'Hey there! I run this junkyard operation. You can scrap the old cars and machinery around here for materials.\n\nEach vehicle can be scraped 3 times (1/3, 2/3, 3/3) - you\'ll get better materials as you go deeper. I\'ll give you 3 vehicles to work on at a time.\n\nReady to start?'
+        dialogContent = 'Hey there! I run this junkyard operation. You can scrap the old cars and machinery around here for materials.\n\nEach vehicle can be scraped ONCE and you\'ll get good materials from it. I\'ll give you 3 vehicles to work on at a time.\n\nReady to start?'
         buttonLabel = 'Start Job'
     else
         -- Job completed, offering new job
@@ -228,7 +200,7 @@ function startJunkyardJob()
     -- Reset job variables
     hasActiveJob = true
     vehiclesScraped = 0
-    scrapedVehicles = {}
+    scrapProgress = {} -- Reset all scraped vehicles
     
     lib.notify({
         title = 'Junkyard Boss',
