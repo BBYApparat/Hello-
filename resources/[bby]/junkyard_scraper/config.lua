@@ -49,5 +49,10 @@ Config.ScrapRewards = {
 -- Job system settings
 Config.MaxVehiclesPerJob = 3 -- Maximum vehicles that can be scraped per job
 
+-- XP system settings
+Config.XPPerVehicle = 5 -- XP gained per vehicle scraped
+Config.XPFor5Vehicles = 50 -- XP needed to unlock 5-vehicle jobs
+Config.MaxVehiclesWithBonus = 5 -- Max vehicles when you have 50+ XP
+
 -- Debug mode
 Config.Debug = true

@@ -1,10 +1,12 @@
 local ox_inventory = exports.ox_inventory
 local isInJunkyard = false
-local scrapProgress = {}
+local scrapProgress = {} -- Global tracker for all scraped vehicles
+local currentJobVehicles = {} -- Vehicles scraped in current job only
 local junkyardBotPed = nil
 local hasActiveJob = false
 local vehiclesScraped = 0
-local scrapedVehicles = {}
+local currentJobXP = 0 -- XP earned in current job
+local totalXP = 0 -- Total XP (will be loaded from server)
 
 -- Check if player is in junkyard zone
 local function isPlayerInJunkyard()
@@ -58,21 +60,24 @@ end
 function startScrapProcess(entity)
     local entityId = NetworkGetNetworkIdFromEntity(entity)
     
-    -- Check if vehicle already scraped
-    if scrapProgress[entityId] then
+    -- Check if vehicle already scraped by THIS player in current job
+    if currentJobVehicles[entityId] then
         lib.notify({
             title = 'Junkyard Scraper',
-            description = 'This vehicle has already been scraped!',
+            description = 'You already scraped this vehicle in your current job!',
             type = 'error'
         })
         return
     end
     
+    -- Get max vehicles for current XP level
+    local maxVehicles = totalXP >= Config.XPFor5Vehicles and Config.MaxVehiclesWithBonus or Config.MaxVehiclesPerJob
+    
     -- Check if player has reached vehicle limit for current job
-    if vehiclesScraped >= Config.MaxVehiclesPerJob then
+    if vehiclesScraped >= maxVehicles then
         lib.notify({
             title = 'Junkyard Scraper',
-            description = string.format('Job complete! You\'ve scraped %d vehicles. Return to the boss for your next job.', Config.MaxVehiclesPerJob),
+            description = string.format('Job complete! You\'ve scraped %d vehicles. Return to the boss for your next job.', maxVehicles),
             type = 'error'
         })
         return
@@ -97,26 +102,30 @@ function startScrapProcess(entity)
         -- Progress completed successfully
         ClearPedTasksImmediately(PlayerPedId())
         
-        -- Mark vehicle as scraped
-        scrapProgress[entityId] = true
+        -- Mark vehicle as scraped in current job
+        currentJobVehicles[entityId] = true
         vehiclesScraped = vehiclesScraped + 1
+        currentJobXP = currentJobXP + Config.XPPerVehicle
         
         -- Give rewards to server
         TriggerServerEvent('junkyard_scraper:giveRewards', Config.ScrapRewards.items, 1)
         
-        -- Notify player
-        local remainingVehicles = Config.MaxVehiclesPerJob - vehiclesScraped
+        -- Get max vehicles for current XP level
+        local maxVehicles = totalXP >= Config.XPFor5Vehicles and Config.MaxVehiclesWithBonus or Config.MaxVehiclesPerJob
+        
+        -- Notify player with XP
+        local remainingVehicles = maxVehicles - vehiclesScraped
         lib.notify({
             title = 'Junkyard Scraper',
-            description = string.format('Vehicle scraped! Vehicles remaining: %d', remainingVehicles),
+            description = string.format('Vehicle scraped! +%d XP | Vehicles remaining: %d', Config.XPPerVehicle, remainingVehicles),
             type = 'success'
         })
         
         -- Check if job is complete
-        if vehiclesScraped >= Config.MaxVehiclesPerJob then
+        if vehiclesScraped >= maxVehicles then
             lib.notify({
                 title = 'Junkyard Scraper',
-                description = 'Job complete! Return to the boss for your next job.',
+                description = string.format('Job complete! +%d XP earned this job. Return to the boss!', currentJobXP),
                 type = 'inform'
             })
         end
@@ -151,7 +160,7 @@ local function spawnJunkyardBot()
             icon = 'fas fa-tools',
             label = 'Talk to Junkyard Boss',
             onSelect = function()
-                startJunkyardJob()
+                openBossMenu()
             end,
             distance = 3.0
         }
@@ -162,55 +171,127 @@ local function spawnJunkyardBot()
     end
 end
 
--- Start junkyard job dialogue
-function startJunkyardJob()
-    if hasActiveJob and vehiclesScraped < Config.MaxVehiclesPerJob then
-        local remainingVehicles = Config.MaxVehiclesPerJob - vehiclesScraped
-        lib.notify({
-            title = 'Junkyard Boss',
-            description = string.format('You still have %d vehicles left to scrap in your current job!', remainingVehicles),
-            type = 'inform'
-        })
-        return
-    end
+-- Open boss menu
+function openBossMenu()
+    -- Load player XP from server first
+    TriggerServerEvent('junkyard_scraper:getPlayerXP')
+end
+
+-- Handle XP data from server
+RegisterNetEvent('junkyard_scraper:receivePlayerXP')
+AddEventHandler('junkyard_scraper:receivePlayerXP', function(xp)
+    totalXP = xp
+    showBossMenu()
+end)
+
+-- Show boss menu
+function showBossMenu()
+    local maxVehicles = totalXP >= Config.XPFor5Vehicles and Config.MaxVehiclesWithBonus or Config.MaxVehiclesPerJob
+    local xpToNext = totalXP >= Config.XPFor5Vehicles and "MAX LEVEL" or string.format("%d/%d XP", totalXP, Config.XPFor5Vehicles)
     
-    local dialogContent
-    local buttonLabel
+    local options = {}
     
     if not hasActiveJob then
-        -- First time talking or no active job
-        dialogContent = 'Hey there! I run this junkyard operation. You can scrap the old cars and machinery around here for materials.\n\nEach vehicle can be scraped ONCE and you\'ll get good materials from it. I\'ll give you 3 vehicles to work on at a time.\n\nReady to start?'
-        buttonLabel = 'Start Job'
+        -- No active job
+        table.insert(options, {
+            title = 'Start New Job',
+            description = string.format('Start scrapping %d vehicles (+%d XP each)', maxVehicles, Config.XPPerVehicle),
+            onSelect = startJunkyardJob
+        })
     else
-        -- Job completed, offering new job
-        dialogContent = 'Good work! You completed your last batch of 3 vehicles. Ready for another round?'
-        buttonLabel = 'Start New Job'
+        -- Has active job
+        local remainingVehicles = maxVehicles - vehiclesScraped
+        if remainingVehicles > 0 then
+            table.insert(options, {
+                title = 'Continue Current Job',
+                description = string.format('You have %d vehicles left to scrap', remainingVehicles),
+                disabled = true
+            })
+            table.insert(options, {
+                title = 'Cancel Current Job',
+                description = string.format('⚠️ You will lose %d XP from this job!', currentJobXP),
+                onSelect = cancelCurrentJob
+            })
+        else
+            table.insert(options, {
+                title = 'Complete Job',
+                description = string.format('Finish your job to earn %d XP!', currentJobXP),
+                onSelect = completeJob
+            })
+        end
     end
     
-    local alert = lib.alertDialog({
-        header = 'Junkyard Boss',
-        content = dialogContent,
-        centered = true,
-        cancel = false,
-        labels = {
-            confirm = buttonLabel
-        }
+    table.insert(options, {
+        title = 'Check Stats',
+        description = string.format('Total XP: %d | Progress: %s', totalXP, xpToNext),
+        disabled = true
     })
+    
+    lib.registerMenu({
+        id = 'junkyard_boss_menu',
+        title = 'Junkyard Boss',
+        position = 'top-right',
+        options = options
+    })
+    
+    lib.showMenu('junkyard_boss_menu')
+end
+
+-- Start junkyard job
+function startJunkyardJob()
+    local maxVehicles = totalXP >= Config.XPFor5Vehicles and Config.MaxVehiclesWithBonus or Config.MaxVehiclesPerJob
     
     -- Reset job variables
     hasActiveJob = true
     vehiclesScraped = 0
-    scrapProgress = {} -- Reset all scraped vehicles
+    currentJobXP = 0
+    currentJobVehicles = {} -- Reset only current job vehicles
     
     lib.notify({
         title = 'Junkyard Boss',
-        description = string.format('Job started! You can now scrap %d vehicles around the yard.', Config.MaxVehiclesPerJob),
+        description = string.format('Job started! Scrap %d vehicles (+%d XP each)', maxVehicles, Config.XPPerVehicle),
         type = 'success'
     })
     
     if Config.Debug then
         print('[Junkyard Scraper] New job started')
     end
+end
+
+-- Cancel current job
+function cancelCurrentJob()
+    hasActiveJob = false
+    vehiclesScraped = 0
+    currentJobXP = 0
+    currentJobVehicles = {}
+    
+    lib.notify({
+        title = 'Junkyard Boss',
+        description = 'Job cancelled! You lost the XP from this run.',
+        type = 'error'
+    })
+    
+    if Config.Debug then
+        print('[Junkyard Scraper] Job cancelled')
+    end
+end
+
+-- Complete job
+function completeJob()
+    if currentJobXP > 0 then
+        TriggerServerEvent('junkyard_scraper:completeJob', currentJobXP)
+    end
+    
+    hasActiveJob = false
+    vehiclesScraped = 0
+    currentJobXP = 0
+    currentJobVehicles = {}
+    
+    lib.notify({
+        title = 'Junkyard Boss',
+        description = 'Job completed! XP has been saved.',
+        type = 'success'
+    })
 end
 
 -- Initialize when resource starts
