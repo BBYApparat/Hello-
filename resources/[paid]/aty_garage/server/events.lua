@@ -16,3 +16,13 @@ RegisterNetEvent("aty_garage:takeOutVehicle", function(plate, netId)
         end
     end
 end)
+
+-- Handle vehicle key assignment for SimpleCarlock
+RegisterNetEvent("aty_garage:giveVehicleKeys", function(plate)
+    local src = source
+    
+    -- Check if SimpleCarlock is running and give keys
+    if GetResourceState('SimpleCarlock') == 'started' then
+        exports['SimpleCarlock']:giveKeys(src, plate)
+    end
+end)

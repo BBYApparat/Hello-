@@ -339,7 +339,7 @@ function SpawnVehicle(props, coords)
         
         -- Auto-assign vehicle keys for SimpleCarlock (ESX integration)
         if GetResourceState('SimpleCarlock') == 'started' then
-          exports['SimpleCarlock']:giveKeys(GetPlayerServerId(PlayerId()), props.plate)
+          TriggerServerEvent('aty_garage:giveVehicleKeys', props.plate)
         end
     end)
   elseif Utils.Framework == "qb-core" then
