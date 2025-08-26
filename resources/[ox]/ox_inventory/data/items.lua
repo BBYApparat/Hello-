@@ -6458,13 +6458,6 @@ return {
 		description = "A tactical bag containing police equipment and weapons."
 	},
 
-	["armor_plates"] = {
-		label = "Armor Plates",
-		weight = 1500,
-		stack = true,
-		close = true,
-		description = "Ceramic plates used to repair bulletproof vests."
-	},
 
 	["mediterranean_veggie"] = {
 		label = "Mediterranean Veggie",
