@@ -5,9 +5,12 @@ local scrapProgress = {}
 -- Check if player is in junkyard zone
 local function isPlayerInJunkyard()
     local playerCoords = GetEntityCoords(PlayerPedId())
-    return lib.zones.poly({
-        points = Config.JunkyardZone
-    }):contains(playerCoords)
+    
+    -- Simple distance check from center of junkyard
+    local center = vector3(2382.0, 3094.0, 47.5) -- Approximate center of your zone
+    local distance = #(playerCoords - center)
+    
+    return distance <= 150.0 -- 150m radius should cover your junkyard area
 end
 
 -- Initialize ox_target for scrapable objects
