@@ -253,7 +253,10 @@ function showBossMenu()
     })
     
     if Config.Debug then
-        print('[Junkyard Scraper] Menu options:', json.encode(options))
+        print('[Junkyard Scraper] Menu has', #options, 'options')
+        for i, option in ipairs(options) do
+            print('  Option', i, ':', option.title, '-', option.description)
+        end
     end
 
     lib.registerMenu({
