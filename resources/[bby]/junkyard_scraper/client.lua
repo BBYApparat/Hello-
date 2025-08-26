@@ -160,7 +160,9 @@ local function spawnJunkyardBot()
             icon = 'fas fa-tools',
             label = 'Talk to Junkyard Boss',
             onSelect = function()
-                openBossMenu()
+                -- Simple test - direct menu show
+                totalXP = 0
+                showBossMenu()
             end,
             distance = 3.0
         }
@@ -173,13 +175,32 @@ end
 
 -- Open boss menu
 function openBossMenu()
+    if Config.Debug then
+        print('[Junkyard Scraper] Opening boss menu, requesting XP data')
+    end
+    
     -- Load player XP from server first
     TriggerServerEvent('junkyard_scraper:getPlayerXP')
+    
+    -- Fallback timeout in case server doesn't respond
+    SetTimeout(3000, function()
+        if not totalXP then
+            if Config.Debug then
+                print('[Junkyard Scraper] Server timeout, using default XP (0)')
+            end
+            totalXP = 0
+            showBossMenu()
+        end
+    end)
 end
 
 -- Handle XP data from server
 RegisterNetEvent('junkyard_scraper:receivePlayerXP')
 AddEventHandler('junkyard_scraper:receivePlayerXP', function(xp)
+    if Config.Debug then
+        print('[Junkyard Scraper] Received XP data:', xp)
+    end
+    
     totalXP = xp
     showBossMenu()
 end)
@@ -188,6 +209,10 @@ end)
 function showBossMenu()
     local maxVehicles = totalXP >= Config.XPFor5Vehicles and Config.MaxVehiclesWithBonus or Config.MaxVehiclesPerJob
     local xpToNext = totalXP >= Config.XPFor5Vehicles and "MAX LEVEL" or string.format("%d/%d XP", totalXP, Config.XPFor5Vehicles)
+    
+    if Config.Debug then
+        print('[Junkyard Scraper] Showing boss menu - Total XP:', totalXP, 'Has Active Job:', hasActiveJob)
+    end
     
     local options = {}
     
@@ -227,6 +252,10 @@ function showBossMenu()
         disabled = true
     })
     
+    if Config.Debug then
+        print('[Junkyard Scraper] Menu options:', json.encode(options))
+    end
+
     lib.registerMenu({
         id = 'junkyard_boss_menu',
         title = 'Junkyard Boss',
@@ -235,6 +264,10 @@ function showBossMenu()
     })
     
     lib.showMenu('junkyard_boss_menu')
+    
+    if Config.Debug then
+        print('[Junkyard Scraper] Menu should be displayed now')
+    end
 end
 
 -- Start junkyard job
