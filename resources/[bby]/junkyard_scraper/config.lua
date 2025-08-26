@@ -2,6 +2,8 @@ Config = {}
 
 -- Bot position
 Config.BotPosition = vector3(2367.917, 3156.318, 48.209)
+Config.BotHeading = 180.0
+Config.BotModel = `s_m_y_construct_01` -- Construction worker NPC
 
 -- Junkyard zone boundaries (polygon points)
 Config.JunkyardZone = {
@@ -35,25 +37,26 @@ Config.ProgressTime = 10000 -- 10 seconds per stage
 -- Scrap stages and rewards
 Config.ScrapStages = {
     [1] = {
-        label = 'Stage 1/3 - Initial Scrapping',
+        label = 'Scrapping 1/3',
         items = {
-            {name = 'scrap', count = math.random(1, 3)},
-            {name = 'plastic', count = math.random(1, 2)}
+            {name = 'scrap', count = math.random(2, 4)},
+            {name = 'plastic', count = math.random(1, 3)}
         }
     },
     [2] = {
-        label = 'Stage 2/3 - Deep Scrapping', 
+        label = 'Scrapping 2/3', 
         items = {
-            {name = 'scrapelectronics', count = math.random(1, 2)},
-            {name = 'rubber', count = math.random(1, 3)}
+            {name = 'scrapelectronics', count = math.random(1, 3)},
+            {name = 'rubber', count = math.random(2, 4)},
+            {name = 'iron_nugget', count = math.random(1, 2)}
         }
     },
     [3] = {
-        label = 'Stage 3/3 - Final Scrapping',
+        label = 'Scrapping 3/3',
         items = {
-            {name = 'copper_nugget', count = math.random(1, 2)},
-            {name = 'iron_nugget', count = math.random(1, 2)},
-            {name = 'glass', count = math.random(1, 3)}
+            {name = 'steel', count = math.random(1, 3)},
+            {name = 'copper_nugget', count = math.random(2, 4)},
+            {name = 'iron_nugget', count = math.random(2, 3)}
         }
     }
 }

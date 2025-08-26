@@ -1,6 +1,7 @@
 local ox_inventory = exports.ox_inventory
 local isInJunkyard = false
 local scrapProgress = {}
+local junkyardBotPed = nil
 
 -- Check if player is in junkyard zone
 local function isPlayerInJunkyard()
@@ -113,10 +114,51 @@ function startScrapProcess(entity)
     end
 end
 
+-- Spawn junkyard bot NPC
+local function spawnJunkyardBot()
+    lib.requestModel(Config.BotModel, 10000)
+    
+    junkyardBotPed = CreatePed(4, Config.BotModel, Config.BotPosition.x, Config.BotPosition.y, Config.BotPosition.z - 1.0, Config.BotHeading, false, false)
+    
+    SetEntityInvincible(junkyardBotPed, true)
+    FreezeEntityPosition(junkyardBotPed, true)
+    SetBlockingOfNonTemporaryEvents(junkyardBotPed, true)
+    
+    -- Add ox_target interaction for the bot
+    exports.ox_target:addLocalEntity(junkyardBotPed, {
+        {
+            icon = 'fas fa-tools',
+            label = 'Talk to Junkyard Boss',
+            onSelect = function()
+                startJunkyardJob()
+            end,
+            distance = 3.0
+        }
+    })
+    
+    if Config.Debug then
+        print('[Junkyard Scraper] Bot spawned at', Config.BotPosition)
+    end
+end
+
+-- Start junkyard job dialogue
+function startJunkyardJob()
+    local alert = lib.alertDialog({
+        header = 'Junkyard Boss',
+        content = 'Hey there! I run this junkyard operation. You can scrap the old cars and machinery around here for materials. Each object can be scraped 3 times - you\'ll get better materials as you go deeper.\n\nJust use your hands on any of the scrap objects around the yard. Good luck!',
+        centered = true,
+        cancel = false,
+        labels = {
+            confirm = 'Got it, boss!'
+        }
+    })
+end
+
 -- Initialize when resource starts
 CreateThread(function()
     Wait(1000) -- Wait for dependencies to load
     setupTargets()
+    spawnJunkyardBot()
     
     if Config.Debug then
         print('[Junkyard Scraper] Client initialized')
