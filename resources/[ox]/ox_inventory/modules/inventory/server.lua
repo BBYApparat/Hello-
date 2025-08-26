@@ -759,7 +759,7 @@ local function randomLoot(loot)
     ---@type RandomLoot[]
     local items = {}
     local size = #loot
-    local itemCount = math.random(0, 3)
+    local itemCount = math.random(1, 3)
 
     for _ = 1, itemCount do
         if #items >= size then break end

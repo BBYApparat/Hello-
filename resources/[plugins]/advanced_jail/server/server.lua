@@ -1650,10 +1650,11 @@ AddEventHandler('advanced_jail:LoadedIn', function()
     MySQL.Async.fetchAll('SELECT jail_data FROM users WHERE identifier = @identifier', {
         ['@identifier'] = xPlayer.identifier
         }, function(result)
-        local newData = nil
-        newData = json.decode(result[1].jail_data)
-        if newData.jailtime > 0 then
-            TriggerEvent('advanced_jail:ReJail', _source, newData)
+        if result and result[1] and result[1].jail_data then
+            local newData = json.decode(result[1].jail_data)
+            if newData and newData.jailtime and newData.jailtime > 0 then
+                TriggerEvent('advanced_jail:ReJail', _source, newData)
+            end
         end
     end)
 end)

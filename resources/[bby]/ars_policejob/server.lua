@@ -1,3 +1,6 @@
+-- Initialize ESX
+local ESX = exports['es_extended']:getSharedObject()
+
 -- temp fix
 local function convertGroupsToStashFormat(groupsArray, minGrade)
     local stashGroups = {}
