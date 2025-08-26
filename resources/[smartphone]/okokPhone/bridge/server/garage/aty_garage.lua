@@ -1,6 +1,14 @@
 --- aty_garage Bridge for okokPhone
 -- Load aty_garage config for garage coordinates
-local env = { vector3 = vector3, vector4 = vector4, vec3 = vec3, vec4 = vec4 }
+local env = { 
+    vector3 = vector3, 
+    vector4 = vector4, 
+    vec3 = vec3, 
+    vec4 = vec4,
+    CreateThread = function() end, -- Stub CreateThread to prevent errors
+    Wait = function() end,        -- Stub Wait to prevent errors
+    GetResourceState = function() return "started" end  -- Stub GetResourceState
+}
 Ok.require("@aty_garage.shared.config", env)
 local atyConfig = env.Config
 
