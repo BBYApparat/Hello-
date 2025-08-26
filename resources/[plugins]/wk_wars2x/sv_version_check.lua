@@ -30,7 +30,7 @@
 
 ---------------------------------------------------------------------------------------]]--
 
--- Branding!
+-- Branding disabled
 local label = ''
 
 -- Returns the current version set in fxmanifest.lua
@@ -38,6 +38,8 @@ function GetCurrentVersion()
 	return GetResourceMetadata( GetCurrentResourceName(), "version" )
 end
 
+-- Version check and branding disabled
+--[[
 -- Grabs the latest version number from the web GitHub
 PerformHttpRequest( "https://wolfknight98.github.io/wk_wars2x_web/version.txt", function( err, text, headers )
 	-- Wait to reduce spam
@@ -71,3 +73,4 @@ PerformHttpRequest( "https://wolfknight98.github.io/wk_wars2x_web/version.txt", 
 		print( "^1ERROR: Resource name is not wk_wars2x, expect there to be issues with the resource. To ensure there are no issues, please leave the resource name as wk_wars2x^0\n\n" )
 	end
 end )
+--]]
