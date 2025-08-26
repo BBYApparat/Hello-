@@ -61,5 +61,8 @@ Config.ScrapStages = {
     }
 }
 
+-- Job system settings
+Config.MaxVehiclesPerJob = 3 -- Maximum vehicles that can be scraped per job
+
 -- Debug mode
 Config.Debug = true
