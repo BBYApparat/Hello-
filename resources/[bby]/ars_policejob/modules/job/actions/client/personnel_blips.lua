@@ -1,4 +1,5 @@
 -- Optimized Personnel Blips System for Police & Ambulance
+local ESX = exports['es_extended']:getSharedObject()
 local playerBlips = {}  -- Store all player blips
 local lastUpdateTime = 0
 local updateInterval = 2000  -- Update every 2 seconds for performance
@@ -33,7 +34,8 @@ local jobConfig = {
 
 -- Check if player should have blips visible
 local function shouldShowBlips()
-    if not player.inDuty() then return false end
+    if not ESX then return false end
+    if not player or not player.inDuty or not player.inDuty() then return false end
     
     local playerData = ESX.GetPlayerData()
     if not playerData or not playerData.job then return false end

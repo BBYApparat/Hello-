@@ -301,15 +301,5 @@ ESX.RegisterServerCallback('okokBusinessApp:getUserRating', function(source, cb,
     end)
 end)
 
--- Handle triggering server events from NUI
-RegisterNUICallback('triggerServerEvent', function(data, cb)
-    local eventName = data.eventName
-    local args = data.args or {}
-    
-    if eventName then
-        TriggerServerEvent(eventName, table.unpack(args))
-        cb({success = true})
-    else
-        cb({success = false, message = "Event name required"})
-    end
-end)
+-- Note: NUI callbacks should be in client scripts, not server scripts
+-- The triggerServerEvent functionality should be handled client-side

@@ -1,3 +1,6 @@
+-- Declare the function first
+local openFineDialog
+
 local function initVehicleFines()
     -- Add ox_target to all vehicles for police officers
     exports.ox_target:addGlobalVehicle({
@@ -24,7 +27,8 @@ local function initVehicleFines()
     })
 end
 
-local function openFineDialog(plate, vehicleModel)
+-- Define the function
+openFineDialog = function(plate, vehicleModel)
     -- Create input dialog for fine reason
     local reasonInput = lib.inputDialog('Vehicle Fine - ' .. plate, {
         {

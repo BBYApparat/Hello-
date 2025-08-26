@@ -58,7 +58,7 @@ RegisterNetEvent('esx:playerLoaded', function(xPlayer)
 end)
 
 AddEventHandler('esx:setPlayerData', function(key, metadata, oldMetadata)
-    if key == "metadata" then
+    if key == "metadata" and PlayerData then
         PlayerData.metadata = metadata
     end
 end)

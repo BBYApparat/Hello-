@@ -350,6 +350,41 @@ local Animations = lib.load('data.animations')
 local Items = require 'modules.items.client'
 local usingItem = false
 
+-- Calculate dynamic eating/drinking time based on hunger/thirst levels
+-- Full = 8 seconds, Little = 3 seconds
+local function calculateDynamicTime(item, baseUsetime)
+	if not item or not item.status then return baseUsetime end
+	
+	local dynamicTime = baseUsetime
+	
+	-- Check if item affects hunger or thirst
+	if item.status.hunger then
+		-- Hunger levels: 0-20% = very hungry (3s), 80-100% = very full (8s)
+		if currentHunger <= 20 then
+			dynamicTime = 3000 -- Very hungry, eat quickly
+		elseif currentHunger >= 80 then
+			dynamicTime = 8000 -- Very full, eat slowly
+		else
+			-- Linear interpolation between 3s and 8s based on hunger level
+			local hungerRatio = (currentHunger - 20) / 60 -- 0 to 1 range
+			dynamicTime = 3000 + (hungerRatio * 5000) -- 3000 to 8000ms
+		end
+	elseif item.status.thirst then
+		-- Thirst levels: 0-20% = very thirsty (3s), 80-100% = very full (8s)
+		if currentThirst <= 20 then
+			dynamicTime = 3000 -- Very thirsty, drink quickly
+		elseif currentThirst >= 80 then
+			dynamicTime = 8000 -- Very full, drink slowly
+		else
+			-- Linear interpolation between 3s and 8s based on thirst level
+			local thirstRatio = (currentThirst - 20) / 60 -- 0 to 1 range
+			dynamicTime = 3000 + (thirstRatio * 5000) -- 3000 to 8000ms
+		end
+	end
+	
+	return math.floor(dynamicTime)
+end
+
 ---@param data { name: string, label: string, count: number, slot: number, metadata: table<string, any>, weight: number }
 lib.callback.register('ox_inventory:usingItem', function(data, noAnim)
 	local item = Items[data.name]
@@ -1129,40 +1164,6 @@ AddEventHandler('esx_status:onTick', function(data)
 	end
 end)
 
--- Calculate dynamic eating/drinking time based on hunger/thirst levels
--- Full = 8 seconds, Little = 3 seconds
-local function calculateDynamicTime(item, baseUsetime)
-	if not item or not item.status then return baseUsetime end
-	
-	local dynamicTime = baseUsetime
-	
-	-- Check if item affects hunger or thirst
-	if item.status.hunger then
-		-- Hunger levels: 0-20% = very hungry (3s), 80-100% = very full (8s)
-		if currentHunger <= 20 then
-			dynamicTime = 3000 -- Very hungry, eat quickly
-		elseif currentHunger >= 80 then
-			dynamicTime = 8000 -- Very full, eat slowly
-		else
-			-- Linear interpolation between 3s and 8s based on hunger level
-			local hungerRatio = (currentHunger - 20) / 60 -- 0 to 1 range
-			dynamicTime = 3000 + (hungerRatio * 5000) -- 3000 to 8000ms
-		end
-	elseif item.status.thirst then
-		-- Thirst levels: 0-20% = very thirsty (3s), 80-100% = very full (8s)
-		if currentThirst <= 20 then
-			dynamicTime = 3000 -- Very thirsty, drink quickly
-		elseif currentThirst >= 80 then
-			dynamicTime = 8000 -- Very full, drink slowly
-		else
-			-- Linear interpolation between 3s and 8s based on thirst level
-			local thirstRatio = (currentThirst - 20) / 60 -- 0 to 1 range
-			dynamicTime = 3000 + (thirstRatio * 5000) -- 3000 to 8000ms
-		end
-	end
-	
-	return math.floor(dynamicTime)
-end
 
 ---@type function?
 local function setStateBagHandler(stateId)

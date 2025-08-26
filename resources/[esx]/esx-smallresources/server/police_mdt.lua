@@ -8,9 +8,9 @@ CreateThread(function()
 end)
 
 -- Database initialization
-MySQL.ready(function()
+exports.oxmysql:ready(function()
     -- Create citizen notes table
-    MySQL.Sync.execute([[
+    exports.oxmysql:execute([[
         CREATE TABLE IF NOT EXISTS `police_mdt_notes` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `citizen_id` varchar(60) NOT NULL,
@@ -24,7 +24,7 @@ MySQL.ready(function()
     ]])
     
     -- Create citizen violations table
-    MySQL.Sync.execute([[
+    exports.oxmysql:execute([[
         CREATE TABLE IF NOT EXISTS `police_mdt_violations` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `citizen_id` varchar(60) NOT NULL,
@@ -38,7 +38,7 @@ MySQL.ready(function()
     ]])
     
     -- Create crimes table (for current crimes)
-    MySQL.Sync.execute([[
+    exports.oxmysql:execute([[
         CREATE TABLE IF NOT EXISTS `police_mdt_crimes` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `type` varchar(100) NOT NULL,
@@ -52,7 +52,7 @@ MySQL.ready(function()
     ]])
     
     -- Create police records table
-    MySQL.Sync.execute([[
+    exports.oxmysql:execute([[
         CREATE TABLE IF NOT EXISTS `police_mdt_records` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `citizen_id` varchar(60) NOT NULL,
@@ -73,8 +73,8 @@ end)
 ESX.RegisterServerCallback('police_mdt:searchCitizenByName', function(source, cb, name)
     local searchName = '%' .. name .. '%'
     
-    MySQL.Async.fetchAll('SELECT * FROM users WHERE CONCAT(firstname, " ", lastname) LIKE @name LIMIT 10', {
-        ['@name'] = searchName
+    exports.oxmysql:execute('SELECT * FROM users WHERE CONCAT(firstname, " ", lastname) LIKE ? LIMIT 10', {
+        searchName
     }, function(result)
         if result and #result > 0 then
             -- If multiple results, return the first one for now
@@ -87,8 +87,8 @@ end)
 
 -- Search citizen by State ID
 ESX.RegisterServerCallback('police_mdt:searchCitizenByStateId', function(source, cb, stateId)
-    MySQL.Async.fetchAll('SELECT * FROM users WHERE state_id = @state_id LIMIT 1', {
-        ['@state_id'] = stateId
+    exports.oxmysql:execute('SELECT * FROM users WHERE state_id = ? LIMIT 1', {
+        stateId
     }, function(result)
         if result and #result > 0 then
             cb(result[1])
@@ -107,11 +107,11 @@ AddEventHandler('police_mdt:addNote', function(citizenId, note)
     
     local officerName = xPlayer.getName()
     
-    MySQL.Async.execute('INSERT INTO police_mdt_notes (citizen_id, officer_id, officer_name, note) VALUES (@citizen_id, @officer_id, @officer_name, @note)', {
-        ['@citizen_id'] = citizenId,
-        ['@officer_id'] = xPlayer.identifier,
-        ['@officer_name'] = officerName,
-        ['@note'] = note
+    exports.oxmysql:execute('INSERT INTO police_mdt_notes (citizen_id, officer_id, officer_name, note) VALUES (?, ?, ?, ?)', {
+        citizenId,
+        xPlayer.identifier,
+        officerName,
+        note
     })
 end)
 
@@ -124,27 +124,27 @@ AddEventHandler('police_mdt:addViolation', function(citizenId, violation)
     
     local officerName = xPlayer.getName()
     
-    MySQL.Async.execute('INSERT INTO police_mdt_violations (citizen_id, officer_id, officer_name, violation) VALUES (@citizen_id, @officer_id, @officer_name, @violation)', {
-        ['@citizen_id'] = citizenId,
-        ['@officer_id'] = xPlayer.identifier,
-        ['@officer_name'] = officerName,
-        ['@violation'] = violation
+    exports.oxmysql:execute('INSERT INTO police_mdt_violations (citizen_id, officer_id, officer_name, violation) VALUES (?, ?, ?, ?)', {
+        citizenId,
+        xPlayer.identifier,
+        officerName,
+        violation
     })
     
     -- Also add to police records
-    MySQL.Async.execute('INSERT INTO police_mdt_records (citizen_id, officer_id, officer_name, type, description) VALUES (@citizen_id, @officer_id, @officer_name, @type, @description)', {
-        ['@citizen_id'] = citizenId,
-        ['@officer_id'] = xPlayer.identifier,
-        ['@officer_name'] = officerName,
-        ['@type'] = 'Violation',
-        ['@description'] = violation
+    exports.oxmysql:execute('INSERT INTO police_mdt_records (citizen_id, officer_id, officer_name, type, description) VALUES (?, ?, ?, ?, ?)', {
+        citizenId,
+        xPlayer.identifier,
+        officerName,
+        'Violation',
+        violation
     })
 end)
 
 -- Get notes for citizen
 ESX.RegisterServerCallback('police_mdt:getNotes', function(source, cb, citizenId)
-    MySQL.Async.fetchAll('SELECT * FROM police_mdt_notes WHERE citizen_id = @citizen_id ORDER BY date DESC', {
-        ['@citizen_id'] = citizenId
+    exports.oxmysql:execute('SELECT * FROM police_mdt_notes WHERE citizen_id = ? ORDER BY date DESC', {
+        citizenId
     }, function(result)
         local notes = {}
         
@@ -163,8 +163,8 @@ end)
 
 -- Get violations for citizen
 ESX.RegisterServerCallback('police_mdt:getViolations', function(source, cb, citizenId)
-    MySQL.Async.fetchAll('SELECT * FROM police_mdt_violations WHERE citizen_id = @citizen_id ORDER BY date DESC', {
-        ['@citizen_id'] = citizenId
+    exports.oxmysql:execute('SELECT * FROM police_mdt_violations WHERE citizen_id = ? ORDER BY date DESC', {
+        citizenId
     }, function(result)
         local violations = {}
         
@@ -183,8 +183,8 @@ end)
 
 -- Get current crimes
 ESX.RegisterServerCallback('police_mdt:getCurrentCrimes', function(source, cb)
-    MySQL.Async.fetchAll('SELECT * FROM police_mdt_crimes WHERE status = @status ORDER BY date DESC LIMIT 20', {
-        ['@status'] = 'active'
+    exports.oxmysql:execute('SELECT * FROM police_mdt_crimes WHERE status = ? ORDER BY date DESC LIMIT 20', {
+        'active'
     }, function(result)
         local crimes = {}
         
@@ -207,15 +207,15 @@ ESX.RegisterServerCallback('police_mdt:searchRecordsByName', function(source, cb
     local searchName = '%' .. name .. '%'
     
     -- First get citizen ID from users table
-    MySQL.Async.fetchAll('SELECT identifier FROM users WHERE CONCAT(firstname, " ", lastname) LIKE @name LIMIT 1', {
-        ['@name'] = searchName
+    exports.oxmysql:execute('SELECT identifier FROM users WHERE CONCAT(firstname, " ", lastname) LIKE ? LIMIT 1', {
+        searchName
     }, function(userResult)
         if userResult and #userResult > 0 then
             local citizenId = userResult[1].identifier
             
             -- Get all records for this citizen
-            MySQL.Async.fetchAll('SELECT * FROM police_mdt_records WHERE citizen_id = @citizen_id ORDER BY date DESC', {
-                ['@citizen_id'] = citizenId
+            exports.oxmysql:execute('SELECT * FROM police_mdt_records WHERE citizen_id = ? ORDER BY date DESC', {
+                citizenId
             }, function(recordResult)
                 local records = {}
                 
@@ -240,15 +240,15 @@ end)
 -- Search police records by State ID
 ESX.RegisterServerCallback('police_mdt:searchRecordsByStateId', function(source, cb, stateId)
     -- First get citizen ID from users table using state_id
-    MySQL.Async.fetchAll('SELECT identifier FROM users WHERE state_id = @state_id LIMIT 1', {
-        ['@state_id'] = stateId
+    exports.oxmysql:execute('SELECT identifier FROM users WHERE state_id = ? LIMIT 1', {
+        stateId
     }, function(userResult)
         if userResult and #userResult > 0 then
             local citizenId = userResult[1].identifier
             
             -- Get all records for this citizen
-            MySQL.Async.fetchAll('SELECT * FROM police_mdt_records WHERE citizen_id = @citizen_id ORDER BY date DESC', {
-                ['@citizen_id'] = citizenId
+            exports.oxmysql:execute('SELECT * FROM police_mdt_records WHERE citizen_id = ? ORDER BY date DESC', {
+                citizenId
             }, function(recordResult)
                 local records = {}
                 
@@ -309,11 +309,11 @@ end)
 
 -- Utility function to add a crime (can be used by other scripts)
 function AddCrime(crimeType, location, description, reportedBy)
-    MySQL.Async.execute('INSERT INTO police_mdt_crimes (type, location, description, reported_by) VALUES (@type, @location, @description, @reported_by)', {
-        ['@type'] = crimeType,
-        ['@location'] = location,
-        ['@description'] = description or '',
-        ['@reported_by'] = reportedBy or 'System'
+    exports.oxmysql:execute('INSERT INTO police_mdt_crimes (type, location, description, reported_by) VALUES (?, ?, ?, ?)', {
+        crimeType,
+        location,
+        description or '',
+        reportedBy or 'System'
     })
 end
 

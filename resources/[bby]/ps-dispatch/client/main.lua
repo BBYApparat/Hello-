@@ -104,13 +104,13 @@ local function setupDispatch()
         identifier = playerInfo.identifier,
         citizenid = playerInfo.identifier, -- ESX compatibility
         job = {
-            type = playerInfo.job.name,
-            name = playerInfo.job.name,
-            label = playerInfo.job.label,
-            grade = playerInfo.job.grade,
-            grade_name = playerInfo.job.grade_name,
-            grade_label = playerInfo.job.grade_label,
-            duty = playerInfo.job.duty
+            type = playerInfo.job and playerInfo.job.name or "unemployed",
+            name = playerInfo.job and playerInfo.job.name or "unemployed",
+            label = playerInfo.job and playerInfo.job.label or "Unemployed",
+            grade = playerInfo.job and playerInfo.job.grade or 0,
+            grade_name = playerInfo.job and playerInfo.job.grade_name or "unemployed",
+            grade_label = playerInfo.job and playerInfo.job.grade_label or "Unemployed",
+            duty = playerInfo.job and playerInfo.job.duty or false
         },
     }
 

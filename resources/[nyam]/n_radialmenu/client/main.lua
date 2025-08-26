@@ -16,7 +16,7 @@ local IsDown = false
 
 RegisterNetEvent("esx:playerLoaded", function(xPlayer)
     ESX.PlayerData = xPlayer
-    if metaData.isTaxiDriver and metadata.isTaxiDriver == 1 then
+    if xPlayer.metadata and xPlayer.metadata.isTaxiDriver and xPlayer.metadata.isTaxiDriver == 1 then
         ESX.PlayerData.job.name = "taxi"
     end
 end)

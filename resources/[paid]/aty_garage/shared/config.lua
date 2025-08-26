@@ -194,6 +194,7 @@ Config = {
 }
 
 CreateThread(function()
+    local timeOut = 0
     while GetResourceState("qb-core") == "starting" or GetResourceState("es_extended") == "starting" do  
         Wait(100)
 
