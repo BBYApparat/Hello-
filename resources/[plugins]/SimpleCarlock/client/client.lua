@@ -73,6 +73,29 @@ AddEventHandler('carLock:updateLockStatus', function(netId, locked)
     local veh = NetToVeh(netId)
     if DoesEntityExist(veh) then
         SetVehicleDoorsLocked(veh, locked and 2 or 1) -- 2 = Locked, 1 = Unlocked
+        
+        -- Play lock/unlock emote for nearby players
+        local playerPed = PlayerPedId()
+        local playerPos = GetEntityCoords(playerPed)
+        local vehiclePos = GetEntityCoords(veh)
+        local distance = #(playerPos - vehiclePos)
+        
+        -- Only play emote if player is near the vehicle (within 10 meters)
+        if distance <= 10.0 then
+            -- Load animation dictionary
+            RequestAnimDict("anim@mp_player_intmenu@key_fob@")
+            while not HasAnimDictLoaded("anim@mp_player_intmenu@key_fob@") do
+                Wait(1)
+            end
+            
+            -- Play key fob animation
+            TaskPlayAnim(playerPed, "anim@mp_player_intmenu@key_fob@", "fob_click", 8.0, -8.0, 1000, 48, 0, false, false, false)
+            
+            -- Clean up animation dictionary after use
+            Wait(1000)
+            RemoveAnimDict("anim@mp_player_intmenu@key_fob@")
+        end
+        
         if nuiReady then
             local soundName = locked and "lock" or "unlock"
             SendNuiMessage(json.encode({action = 'playSound', sound = soundName, volume = Config.Settings.soundVolume}))
