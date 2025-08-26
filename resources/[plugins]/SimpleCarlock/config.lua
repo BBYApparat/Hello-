@@ -17,7 +17,7 @@ Config.Settings = {
 }
 
 Config.VersionChecker = {
-    Enabled = true, -- Set to true to enable version checking on server start.
+    Enabled = false, -- Set to true to enable version checking on server start.
 
     -- Do not touch these lines
     CurrentVersion = '1.0', -- Current script version.
