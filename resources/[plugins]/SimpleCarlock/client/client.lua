@@ -12,9 +12,8 @@ local shownHelpForVehicle = {} -- Tracks if help message has been shown for a ve
 
 -- ========== LOCAL FUNCTIONS ==========
 function ShowNotification(msg)
-    SetNotificationTextEntry("STRING")
-    AddTextComponentString(msg)
-    DrawNotification(false, true)
+    -- Use ESX notification instead of GTA native notification
+    ESX.ShowNotification(msg)
 end
 
 -- Finds the closest vehicle to a given position.
