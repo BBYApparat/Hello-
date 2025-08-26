@@ -6,8 +6,7 @@ local scrapProgress = {}
 local function isPlayerInJunkyard()
     local playerCoords = GetEntityCoords(PlayerPedId())
     return lib.zones.poly({
-        points = Config.JunkyardZone,
-        thickness = 50.0
+        points = Config.JunkyardZone
     }):contains(playerCoords)
 end
 

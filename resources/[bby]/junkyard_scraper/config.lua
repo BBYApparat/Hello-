@@ -5,12 +5,12 @@ Config.BotPosition = vector3(2367.917, 3156.318, 48.209)
 
 -- Junkyard zone boundaries (polygon points)
 Config.JunkyardZone = {
-    vector2(2398.807, 3162.263),
-    vector2(2436.059, 3162.058),
-    vector2(2437.565, 3025.928),
-    vector2(2326.401, 3024.34),
-    vector2(2327.113, 3079.724),
-    vector2(2342.438, 3169.86)
+    vector3(2398.807, 3162.263, 46.915),
+    vector3(2436.059, 3162.058, 48.431),
+    vector3(2437.565, 3025.928, 48.024),
+    vector3(2326.401, 3024.34, 48.04),
+    vector3(2327.113, 3079.724, 47.978),
+    vector3(2342.438, 3169.86, 46.332)
 }
 
 -- Junkyard object models that can be scraped
