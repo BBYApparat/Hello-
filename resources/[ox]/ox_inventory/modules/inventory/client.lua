@@ -28,6 +28,26 @@ if shared.networkdumpsters then
 end
 
 function Inventory.OpenDumpster(entity)
+    -- Add progress bar with ox_lib
+    local success = lib.progressBar({
+        duration = 3000, -- 3 seconds
+        label = locale('search_dumpster'),
+        useWhileDead = false,
+        canCancel = true,
+        disable = {
+            car = true,
+            move = true,
+            combat = true,
+        },
+        anim = {
+            dict = 'amb@prop_human_bum_bin@idle_b',
+            clip = 'idle_d'
+        },
+    })
+
+    -- If progress was cancelled or failed, don't open inventory
+    if not success then return end
+
     if shared.networkdumpsters then
         local coords = GetEntityCoords(entity)
         client.openInventory('dumpster', coords)

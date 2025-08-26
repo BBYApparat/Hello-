@@ -1,5 +1,5 @@
 Config = Config or {}
-Config.Debug = true
+Config.Debug = false
 Config.EnableCommands = false
 
 Config.Locale = TranslationsEN -- This must match one of the variables in your locales/x.lua
