@@ -16,7 +16,11 @@
       "Bash(npm install:*)",
       "Bash(git reset:*)",
       "Bash(git add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Read(/F:\\SecondLife\\GTASecondLife\\ak47base/**)",
+      "Read(/F:\\SecondLife\\GTASecondLife\\ak47base/**)",
+      "Read(/F:\\SecondLife\\GTASecondLife\\ak47base/**)",
+      "Read(/F:\\SecondLife\\GTASecondLife\\ak47base/**)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"
