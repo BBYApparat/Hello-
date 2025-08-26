@@ -160,9 +160,7 @@ local function spawnJunkyardBot()
             icon = 'fas fa-tools',
             label = 'Talk to Junkyard Boss',
             onSelect = function()
-                -- Simple test - direct menu show
-                totalXP = 0
-                showBossMenu()
+                openBossDialogue()
             end,
             distance = 3.0
         }
@@ -173,25 +171,14 @@ local function spawnJunkyardBot()
     end
 end
 
--- Open boss menu
-function openBossMenu()
+-- Open boss dialogue
+function openBossDialogue()
     if Config.Debug then
-        print('[Junkyard Scraper] Opening boss menu, requesting XP data')
+        print('[Junkyard Scraper] Opening boss dialogue, requesting XP data')
     end
     
     -- Load player XP from server first
     TriggerServerEvent('junkyard_scraper:getPlayerXP')
-    
-    -- Fallback timeout in case server doesn't respond
-    SetTimeout(3000, function()
-        if not totalXP then
-            if Config.Debug then
-                print('[Junkyard Scraper] Server timeout, using default XP (0)')
-            end
-            totalXP = 0
-            showBossMenu()
-        end
-    end)
 end
 
 -- Handle XP data from server
@@ -202,74 +189,94 @@ AddEventHandler('junkyard_scraper:receivePlayerXP', function(xp)
     end
     
     totalXP = xp
-    showBossMenu()
+    showBossDialogue()
 end)
 
--- Show boss menu
-function showBossMenu()
+-- Show boss dialogue
+function showBossDialogue()
     local maxVehicles = totalXP >= Config.XPFor5Vehicles and Config.MaxVehiclesWithBonus or Config.MaxVehiclesPerJob
     local xpToNext = totalXP >= Config.XPFor5Vehicles and "MAX LEVEL" or string.format("%d/%d XP", totalXP, Config.XPFor5Vehicles)
     
-    if Config.Debug then
-        print('[Junkyard Scraper] Showing boss menu - Total XP:', totalXP, 'Has Active Job:', hasActiveJob)
-    end
-    
-    local options = {}
+    local dialogContent
+    local buttons = {}
     
     if not hasActiveJob then
-        -- No active job
-        table.insert(options, {
-            title = 'Start New Job',
-            description = string.format('Start scrapping %d vehicles (+%d XP each)', maxVehicles, Config.XPPerVehicle),
-            onSelect = startJunkyardJob
+        -- No active job - offer to start
+        dialogContent = string.format('Hey there! I\'m the junkyard manager. You can scrap old vehicles around here for materials and XP.\n\nCurrent Stats:\n• Total XP: %d\n• Progress: %s\n• Vehicles per job: %d\n• XP per vehicle: %d\n\nEach vehicle can only be scraped ONCE. Ready to start?', totalXP, xpToNext, maxVehicles, Config.XPPerVehicle)
+        
+        table.insert(buttons, {
+            label = 'Start Job',
+            action = 'start_job'
         })
     else
         -- Has active job
         local remainingVehicles = maxVehicles - vehiclesScraped
         if remainingVehicles > 0 then
-            table.insert(options, {
-                title = 'Continue Current Job',
-                description = string.format('You have %d vehicles left to scrap', remainingVehicles),
-                disabled = true
+            dialogContent = string.format('You currently have an active job!\n\n• Vehicles remaining: %d\n• XP earned this job: %d\n• Total XP: %d\n\nYou can continue scrapping or cancel your current job (you\'ll lose the XP from this run).', remainingVehicles, currentJobXP, totalXP)
+            
+            table.insert(buttons, {
+                label = 'Continue Job',
+                action = 'continue'
             })
-            table.insert(options, {
-                title = 'Cancel Current Job',
-                description = string.format('⚠️ You will lose %d XP from this job!', currentJobXP),
-                onSelect = cancelCurrentJob
+            table.insert(buttons, {
+                label = 'Cancel Job',
+                action = 'cancel_job'
             })
         else
-            table.insert(options, {
-                title = 'Complete Job',
-                description = string.format('Finish your job to earn %d XP!', currentJobXP),
-                onSelect = completeJob
+            dialogContent = string.format('Great work! You\'ve completed all %d vehicles in your job.\n\n• XP earned: %d\n• Total XP: %d\n\nReady for another round?', maxVehicles, currentJobXP, totalXP)
+            
+            table.insert(buttons, {
+                label = 'Complete Job',
+                action = 'complete_job'
             })
         end
     end
     
-    table.insert(options, {
-        title = 'Check Stats',
-        description = string.format('Total XP: %d | Progress: %s', totalXP, xpToNext),
-        disabled = true
+    table.insert(buttons, {
+        label = 'Check Stats Only',
+        action = 'check_stats'
     })
     
-    if Config.Debug then
-        print('[Junkyard Scraper] Menu has', #options, 'options')
-        for i, option in ipairs(options) do
-            print('  Option', i, ':', option.title, '-', option.description)
-        end
+    -- Show the dialogue
+    local input = lib.alertDialog({
+        header = 'Junkyard Manager',
+        content = dialogContent,
+        centered = true,
+        cancel = true,
+        size = 'md',
+        labels = {
+            cancel = 'Leave'
+        }
+    })
+    
+    -- Handle the response
+    if input == 'confirm' then
+        -- For now just notify - we'll handle button actions separately
+        handleBossAction(buttons[1].action)
     end
+end
 
-    lib.registerMenu({
-        id = 'junkyard_boss_menu',
-        title = 'Junkyard Boss',
-        position = 'top-right',
-        options = options
-    })
-    
-    lib.showMenu('junkyard_boss_menu')
-    
-    if Config.Debug then
-        print('[Junkyard Scraper] Menu should be displayed now')
+-- Handle boss dialogue actions
+function handleBossAction(action)
+    if action == 'start_job' then
+        startJunkyardJob()
+    elseif action == 'cancel_job' then
+        cancelCurrentJob()
+    elseif action == 'complete_job' then
+        completeJob()
+    elseif action == 'check_stats' then
+        local xpToNext = totalXP >= Config.XPFor5Vehicles and "MAX LEVEL" or string.format("%d/%d XP", totalXP, Config.XPFor5Vehicles)
+        lib.notify({
+            title = 'Junkyard Stats',
+            description = string.format('Total XP: %d\nProgress: %s', totalXP, xpToNext),
+            type = 'inform'
+        })
+    elseif action == 'continue' then
+        lib.notify({
+            title = 'Junkyard Manager',
+            description = 'Keep scrapping those vehicles!',
+            type = 'inform'
+        })
     end
 end
 
