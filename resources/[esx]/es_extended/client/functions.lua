@@ -58,10 +58,20 @@ function ESX.Progressbar(message, length, Options)
 end
 
 function ESX.ShowNotification(message, type, length)
-    if GetResourceState("notifications") ~= "missing" then
-        exports['notifications']:sendnotify(message, type, length)
+    if GetResourceState('jester-notify') ~= 'missing' then
+        if type == 'error' then
+            exports['jester-notify']:Alert("Fout", message, 5000, 'error')
+        elseif type == 'inform' then
+            exports['jester-notify']:Alert("Info", message, 5000, 'inform')
+        elseif type == 'success' then
+            exports['jester-notify']:Alert("Succes", message, 5000, 'success')
+        elseif type == 'warning' then
+            exports['jester-notify']:Alert("Waarschuwing", message, 5000, 'warning')
+        else
+            exports['jester-notify']:Alert("Info", message, 5000, 'inform')
+        end
     else
-        print("[^1ERROR^7] ^5NOTIFICATIONS^7 is Missing!")
+        print('[jester-notify]: Resource niet gevonden of niet gestart!')
     end
 end
 

@@ -1,0 +1,233 @@
+body {
+   margin: 0;
+   padding: 0;
+   overflow: hidden;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   height: 100vh;
+}
+
+#notifications {
+   position: absolute;
+   top: 5%;
+   right: 2%;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end;
+   gap: 12px;
+   z-index: 9999;
+   max-width: 400px;
+}
+
+.notify {
+   color: white;
+   padding: 12px 20px;
+   border-radius: 4px;
+   font-weight: 500;
+   font-size: 14px;
+   white-space: normal; /* Changed from nowrap to normal for text wrapping */
+   word-wrap: break-word; /* Added for better text breaking */
+   word-break: break-word; /* Added for better word breaking */
+   line-height: 1.4; /* Added for better line spacing */
+   max-width: 350px; /* Added max-width for better text wrapping */
+   animation: slideInRight 0.4s ease-out;
+   z-index: 10000;
+   position: relative;
+   background: rgba(0, 0, 0, 0.8);
+   transform: rotate(-2deg);
+}
+
+/* Fade out animation class */
+.notify.fade-out {
+   animation: fadeOutRight 0.5s ease-in forwards;
+}
+
+/* 4 hoeken met elk 2 lijnjes - dichter bij de notify */
+.notify::before {
+   content: '';
+   position: absolute;
+   inset: 1px;
+   pointer-events: none;
+}
+
+/* Slide-in animatie */
+@keyframes slideInRight {
+   from {
+       transform: translateX(150%) rotate(-2deg);
+       opacity: 0;
+   }
+   to {
+       transform: translateX(0%) rotate(-2deg);
+       opacity: 1;
+   }
+}
+
+/* Fade-out animatie */
+@keyframes fadeOutRight {
+   from {
+       transform: translateX(0%) rotate(-2deg);
+       opacity: 1;
+   }
+   to {
+       transform: translateX(150%) rotate(-2deg);
+       opacity: 0;
+   }
+}
+
+/* Kleurenvarianten - originele kleuren met witte tekst */
+.blue {
+   background-color: #2f4e75;
+   color: white;
+}
+
+.blue::before {
+   background: 
+       linear-gradient(#5fa8ff, #5fa8ff) top left / 12px 2px no-repeat,
+       linear-gradient(#5fa8ff, #5fa8ff) top left / 2px 12px no-repeat,
+       linear-gradient(#5fa8ff, #5fa8ff) top right / 12px 2px no-repeat,
+       linear-gradient(#5fa8ff, #5fa8ff) top right / 2px 12px no-repeat,
+       linear-gradient(#5fa8ff, #5fa8ff) bottom left / 12px 2px no-repeat,
+       linear-gradient(#5fa8ff, #5fa8ff) bottom left / 2px 12px no-repeat,
+       linear-gradient(#5fa8ff, #5fa8ff) bottom right / 12px 2px no-repeat,
+       linear-gradient(#5fa8ff, #5fa8ff) bottom right / 2px 12px no-repeat;
+}
+
+.green {
+   background-color: #3d6930;
+   color: white;
+}
+
+.green::before {
+   background: 
+       linear-gradient(#8aff66, #8aff66) top left / 12px 2px no-repeat,
+       linear-gradient(#8aff66, #8aff66) top left / 2px 12px no-repeat,
+       linear-gradient(#8aff66, #8aff66) top right / 12px 2px no-repeat,
+       linear-gradient(#8aff66, #8aff66) top right / 2px 12px no-repeat,
+       linear-gradient(#8aff66, #8aff66) bottom left / 12px 2px no-repeat,
+       linear-gradient(#8aff66, #8aff66) bottom left / 2px 12px no-repeat,
+       linear-gradient(#8aff66, #8aff66) bottom right / 12px 2px no-repeat,
+       linear-gradient(#8aff66, #8aff66) bottom right / 2px 12px no-repeat;
+}
+
+.red {
+   background-color: #742f2f;
+   color: white;
+}
+
+.red::before {
+   background: 
+       linear-gradient(#ff5f5f, #ff5f5f) top left / 12px 2px no-repeat,
+       linear-gradient(#ff5f5f, #ff5f5f) top left / 2px 12px no-repeat,
+       linear-gradient(#ff5f5f, #ff5f5f) top right / 12px 2px no-repeat,
+       linear-gradient(#ff5f5f, #ff5f5f) top right / 2px 12px no-repeat,
+       linear-gradient(#ff5f5f, #ff5f5f) bottom left / 12px 2px no-repeat,
+       linear-gradient(#ff5f5f, #ff5f5f) bottom left / 2px 12px no-repeat,
+       linear-gradient(#ff5f5f, #ff5f5f) bottom right / 12px 2px no-repeat,
+       linear-gradient(#ff5f5f, #ff5f5f) bottom right / 2px 12px no-repeat;
+}
+
+.yellow {
+   background-color: #756b2f;
+   color: white;
+}
+
+.yellow::before {
+   background: 
+       linear-gradient(#ffe45f, #ffe45f) top left / 12px 2px no-repeat,
+       linear-gradient(#ffe45f, #ffe45f) top left / 2px 12px no-repeat,
+       linear-gradient(#ffe45f, #ffe45f) top right / 12px 2px no-repeat,
+       linear-gradient(#ffe45f, #ffe45f) top right / 2px 12px no-repeat,
+       linear-gradient(#ffe45f, #ffe45f) bottom left / 12px 2px no-repeat,
+       linear-gradient(#ffe45f, #ffe45f) bottom left / 2px 12px no-repeat,
+       linear-gradient(#ffe45f, #ffe45f) bottom right / 12px 2px no-repeat,
+       linear-gradient(#ffe45f, #ffe45f) bottom right / 2px 12px no-repeat;
+}
+
+.orange {
+   background-color: #80502f;
+   color: white;
+}
+
+.orange::before {
+   background: 
+       linear-gradient(#ffae5f, #ffae5f) top left / 12px 2px no-repeat,
+       linear-gradient(#ffae5f, #ffae5f) top left / 2px 12px no-repeat,
+       linear-gradient(#ffae5f, #ffae5f) top right / 12px 2px no-repeat,
+       linear-gradient(#ffae5f, #ffae5f) top right / 2px 12px no-repeat,
+       linear-gradient(#ffae5f, #ffae5f) bottom left / 12px 2px no-repeat,
+       linear-gradient(#ffae5f, #ffae5f) bottom left / 2px 12px no-repeat,
+       linear-gradient(#ffae5f, #ffae5f) bottom right / 12px 2px no-repeat,
+       linear-gradient(#ffae5f, #ffae5f) bottom right / 2px 12px no-repeat;
+}
+
+.purple {
+   background-color: #5e2f75;
+   color: white;
+}
+
+.purple::before {
+   background: 
+       linear-gradient(#d25fff, #d25fff) top left / 12px 2px no-repeat,
+       linear-gradient(#d25fff, #d25fff) top left / 2px 12px no-repeat,
+       linear-gradient(#d25fff, #d25fff) top right / 12px 2px no-repeat,
+       linear-gradient(#d25fff, #d25fff) top right / 2px 12px no-repeat,
+       linear-gradient(#d25fff, #d25fff) bottom left / 12px 2px no-repeat,
+       linear-gradient(#d25fff, #d25fff) bottom left / 2px 12px no-repeat,
+       linear-gradient(#d25fff, #d25fff) bottom right / 12px 2px no-repeat,
+       linear-gradient(#d25fff, #d25fff) bottom right / 2px 12px no-repeat;
+}
+
+.teal {
+   background-color: #2f756d;
+   color: white;
+}
+
+.teal::before {
+   background: 
+       linear-gradient(#5fffdc, #5fffdc) top left / 12px 2px no-repeat,
+       linear-gradient(#5fffdc, #5fffdc) top left / 2px 12px no-repeat,
+       linear-gradient(#5fffdc, #5fffdc) top right / 12px 2px no-repeat,
+       linear-gradient(#5fffdc, #5fffdc) top right / 2px 12px no-repeat,
+       linear-gradient(#5fffdc, #5fffdc) bottom left / 12px 2px no-repeat,
+       linear-gradient(#5fffdc, #5fffdc) bottom left / 2px 12px no-repeat,
+       linear-gradient(#5fffdc, #5fffdc) bottom right / 12px 2px no-repeat,
+       linear-gradient(#5fffdc, #5fffdc) bottom right / 2px 12px no-repeat;
+}
+
+.pink {
+   background-color: #752f5e;
+   color: white;
+}
+
+.pink::before {
+   background: 
+       linear-gradient(#ff5fb7, #ff5fb7) top left / 12px 2px no-repeat,
+       linear-gradient(#ff5fb7, #ff5fb7) top left / 2px 12px no-repeat,
+       linear-gradient(#ff5fb7, #ff5fb7) top right / 12px 2px no-repeat,
+       linear-gradient(#ff5fb7, #ff5fb7) top right / 2px 12px no-repeat,
+       linear-gradient(#ff5fb7, #ff5fb7) bottom left / 12px 2px no-repeat,
+       linear-gradient(#ff5fb7, #ff5fb7) bottom left / 2px 12px no-repeat,
+       linear-gradient(#ff5fb7, #ff5fb7) bottom right / 12px 2px no-repeat,
+       linear-gradient(#ff5fb7, #ff5fb7) bottom right / 2px 12px no-repeat;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+   #notifications {
+       right: 1%;
+       left: 1%;
+       align-items: stretch;
+       max-width: none;
+   }
+   .notify {
+       font-size: 13px;
+       padding: 14px 20px;
+       max-width: none; /* Remove max-width constraint on mobile */
+   }
+}
+
+@media (max-width: 480px) {
+   .notify {
+       font-size: 12px;
+       padding: 12px 16px;
+   }
+}
