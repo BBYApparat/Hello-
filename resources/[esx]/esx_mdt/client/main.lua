@@ -69,7 +69,7 @@ function OpenMDT(playerData)
     SetNuiFocus(true, true)
     
     local messageData = {
-        action = 'openMDT',
+        type = 'APP_SHOW',
         playerData = playerData,
         config = {
             departments = Config.PoliceDepartments,
@@ -100,13 +100,19 @@ end
 
 -- Close MDT
 function CloseMDT()
-    if not mdtOpen then return end
+    print('[ESX_MDT CLIENT] CloseMDT function called')
     
+    if not mdtOpen then 
+        print('[ESX_MDT CLIENT] MDT not open, returning')
+        return 
+    end
+    
+    print('[ESX_MDT CLIENT] Closing MDT - setting focus and sending message')
     mdtOpen = false
     SetNuiFocus(false, false)
     
     SendNUIMessage({
-        action = 'closeMDT'
+        type = 'APP_HIDE'
     })
 end
 

@@ -14,6 +14,10 @@ export const store = configureStore(initialState);
 const MOUNT_NODE = document.getElementById('app');
 
 const render = () => {
+	console.log('[ESX_MDT NUI] Starting React app render');
+	console.log('[ESX_MDT NUI] Mount node:', MOUNT_NODE);
+	console.log('[ESX_MDT NUI] Store:', store);
+	
 	ReactDOM.render(
 		<Provider store={store}>
 			<KeyListener>
@@ -24,6 +28,8 @@ const render = () => {
 		</Provider>,
 		MOUNT_NODE,
 	);
+	
+	console.log('[ESX_MDT NUI] React app rendered successfully');
 };
 
 if (module.hot) {
