@@ -43,3 +43,18 @@ RegisterCommand("testvoiceoff", function()
 		voiceRange = 2
 	})
 end, false)
+
+RegisterCommand("debugvoice", function()
+	local playerId = PlayerId()
+	local isTalking = NetworkIsPlayerTalking(playerId) == 1
+	local onRadio = LocalPlayer.state['radioChannel'] and LocalPlayer.state['radioChannel'] > 0 or false
+	local onPhone = LocalPlayer.state['callChannel'] and LocalPlayer.state['callChannel'] > 0 or false
+	
+	print("=== VOICE DEBUG ===")
+	print("isTalking:", isTalking)
+	print("talkingOnRadio:", _G.talkingOnRadio or false)
+	print("onRadio:", onRadio)
+	print("onPhone:", onPhone)
+	print("voiceRange:", _G.voiceRange or 2)
+	print("==================")
+end, false)
