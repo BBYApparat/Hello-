@@ -55,6 +55,6 @@ end)
 RegisterNetEvent("n_snippts:adminKey", function(_)
     if _ then
         local veh = GetVehiclePedIsIn(cache.ped)
-        exports.wasabi_carlock:GiveKey(Framework.Math.Trim(GetVehicleNumberPlateText(veh)))
+        exports.SimpleCarlock:GiveKey(Framework.Math.Trim(GetVehicleNumberPlateText(veh)))
     end
 end)

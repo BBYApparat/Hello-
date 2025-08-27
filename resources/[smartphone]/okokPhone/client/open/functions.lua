@@ -33,7 +33,7 @@ function cUtils:GiveVehicleKeys(vehicle, plate, model)
             { name = "qs-vehiclekeys",  event = 'GetKey',                                   args = { plate },        type = "export" },
             { name = "cd_garage",       event = 'cd_garage:AddKeys',                        args = { plate },        type = "client" },
             { name = "gflp10-carkeys",  event = 'LuxuModules:Server:GiveKeyItem',           args = { model, plate }, type = "server" },
-            { name = "wasabi_carlock",  event = 'GiveKey',                                  args = { plate, false }, type = "export" }
+            { name = "SimpleCarlock",   event = 'GiveKey',                                  args = { plate },        type = "export" }
       }
 
       for _, resource in ipairs(resources) do

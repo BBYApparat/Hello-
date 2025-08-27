@@ -465,7 +465,7 @@ RegisterNetEvent('n_garbagejob:client:RequestRoute', function()
                             amountOfBags = totalBags
                             SetGarbageRoute()
                             -- TriggerEvent("vehiclekeys:client:SetOwner", ESX.Math.Trim(GetVehicleNumberPlateText(veh)))
-                            -- exports.wasabi_carlock:GiveKey(ESX.Math.Trim(GetVehicleNumberPlateText(veh)))
+                            exports.SimpleCarlock:GiveKey(ESX.Math.Trim(GetVehicleNumberPlateText(veh)))
                             Core.Notify(Lang("info.deposit_paid", { value = Config.TruckPrice }), "info", 3500)
                             Core.Notify(Lang("info.started"), "info", 3500)
                             TriggerServerEvent("n_garbagejob:server:payDeposit")

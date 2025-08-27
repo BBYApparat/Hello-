@@ -359,6 +359,22 @@ exports('hasVehicleKeys', function(plate)
     return playerKeys[plate] ~= nil
 end)
 
+-- Export to give keys for a specific vehicle (wasabi_carlock compatibility)
+exports('GiveKey', function(plate)
+    if not plate then return false end
+    playerKeys[plate] = true
+    ShowNotification("~g~Keys received for vehicle: " .. plate)
+    return true
+end)
+
+-- Export to remove keys for a specific vehicle
+exports('RemoveKey', function(plate)
+    if not plate then return false end
+    playerKeys[plate] = nil
+    ShowNotification("~r~Keys removed for vehicle: " .. plate)
+    return true
+end)
+
 -- ========== GARAGE INTEGRATION EVENTS ==========
 
 -- Event for automatic key assignment when vehicle is spawned (for garage systems)

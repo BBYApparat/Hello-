@@ -7,8 +7,7 @@ description 'Advanced car lock script for fivem!'
 version '1.0'
 
 dependencies {
-    'es_extended',
-    'boii_minigames'
+    'es_extended'
 }
 
 shared_script '@es_extended/imports.lua'
