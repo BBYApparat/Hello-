@@ -157,8 +157,8 @@ AddEventHandler('carLock:startLockpickMinigame', function(netId)
             style = 'default',
             score_limit = 10, -- 10 letters to drop
             miss_limit = 1, -- Only 1 miss allowed before fail
-            fall_delay = 3000,
-            new_letter_delay = 4000
+            fall_delay = 2000,
+            new_letter_delay = 2000
         }, function(success)
             HandleLockpickResult(success)
         end)
