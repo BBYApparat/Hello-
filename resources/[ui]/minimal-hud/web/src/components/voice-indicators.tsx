@@ -36,7 +36,7 @@ export default function VoiceIndicators() {
   }
 
   return (
-    <div className="fixed bottom-5 left-5 z-50 font-inter">
+    <div className="fixed bottom-5 right-5 z-50 font-inter">
       {/* Phone/Radio Icons */}
       {(voiceData.onPhone || voiceData.onRadio) && (
         <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center">
