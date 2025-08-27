@@ -75,18 +75,48 @@ function ESX.ShowNotification(message, type, length)
     end
 end
 
-function ESX.TextUI(message, notifyType)
-    if GetResourceState("j-textui") ~= "missing" then
-        return exports["j-textui"]:displayTextUI(message, notifyType)
+function ESX.TextUI(message, notifyType, key, icon, id)
+    if GetResourceState("ls_textui") ~= "missing" then
+        local data = {
+            id = id or 'esx_textui',
+            message = message
+        }
+        
+        -- Add key or icon based on parameters
+        if key then
+            data.key = key
+        elseif icon then
+            data.icon = icon
+        else
+            data.key = 'E'  -- Default key
+        end
+        
+        return exports["ls_textui"]:showTextUI({data})
     end
-    print("[^1ERROR^7] ^5j-textui^7 is Missing!")
+    print("[^1ERROR^7] ^5ls_textui^7 is Missing!")
 end
 
-function ESX.HideUI()
-    if GetResourceState("j-textui") ~= "missing" then
-        return exports["j-textui"]:hideTextUI()
+function ESX.HideUI(id)
+    if GetResourceState("ls_textui") ~= "missing" then
+        return exports["ls_textui"]:hideTextUI(id or 'esx_textui')
     end
-    print("[^1ERROR^7] ^5j-textui^7 is Missing!")
+    print("[^1ERROR^7] ^5ls_textui^7 is Missing!")
+end
+
+-- Helper functions for easier usage
+function ESX.ShowTextUI(message, key, id)
+    return ESX.TextUI(message, nil, key, nil, id)
+end
+
+function ESX.ShowTextUIWithIcon(message, icon, id)
+    return ESX.TextUI(message, nil, nil, icon, id)
+end
+
+function ESX.HideAllTextUI(ids)
+    if GetResourceState("ls_textui") ~= "missing" then
+        return exports["ls_textui"]:hideTextUI(ids)
+    end
+    print("[^1ERROR^7] ^5ls_textui^7 is Missing!")
 end
 
 function ESX.ShowAdvancedNotification(sender, subject, msg, textureDict, iconType, flash, saveToBrief, hudColorIndex)
