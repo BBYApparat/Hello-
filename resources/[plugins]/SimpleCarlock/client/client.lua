@@ -12,6 +12,10 @@ local canAutolock = true -- Flag to temporarily disable autolocking.
 local helpMenuOpen = false
 local shownHelpForVehicle = {} -- Tracks if help message has been shown for a vehicle.
 
+-- Debug: Print when client loads
+print("[SimpleCarlock] Client script loaded successfully!")
+print("[SimpleCarlock] Registering exports...")
+
 -- ========== LOCAL FUNCTIONS ==========
 function ShowNotification(msg)
     -- Use ESX notification instead of GTA native notification
@@ -401,5 +405,22 @@ AddEventHandler('carLock:autoGiveKeys', function(plate)
     if plate then
         playerKeys[plate] = true
         ShowNotification("~g~Keys received for vehicle: " .. plate)
+    end
+end)
+
+-- Debug: Confirm exports are available
+CreateThread(function()
+    Wait(1000) -- Wait for everything to load
+    print("[SimpleCarlock] All exports registered successfully!")
+    print("[SimpleCarlock] Available exports: getVehicleKeys, hasVehicleKeys, GiveKey, RemoveKey")
+    
+    -- Test self-call
+    local success, result = pcall(function()
+        return exports['SimpleCarlock']:hasVehicleKeys('TEST123')
+    end)
+    if success then
+        print("[SimpleCarlock] Self-test export call successful: " .. tostring(result))
+    else
+        print("[SimpleCarlock] Self-test export call failed: " .. tostring(result))
     end
 end)

@@ -2,6 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
 
+name 'SimpleCarlock'
 author 'SimpleDevelopments'
 description 'Advanced car lock script for fivem!'
 version '1.0'

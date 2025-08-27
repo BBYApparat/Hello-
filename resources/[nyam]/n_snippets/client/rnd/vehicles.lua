@@ -55,6 +55,25 @@ end)
 RegisterNetEvent("n_snippts:adminKey", function(_)
     if _ then
         local veh = GetVehiclePedIsIn(cache.ped)
-        exports['SimpleCarlock']:GiveKey(Framework.Math.Trim(GetVehicleNumberPlateText(veh)))
+        local plate = Framework.Math.Trim(GetVehicleNumberPlateText(veh))
+        
+        -- Check if SimpleCarlock resource exists and is running
+        if GetResourceState('SimpleCarlock') == 'started' then
+            print("[n_snippets] Calling SimpleCarlock:GiveKey for plate: " .. plate)
+            local success, result = pcall(function()
+                return exports['SimpleCarlock']:GiveKey(plate)
+            end)
+            if not success then
+                print("[n_snippets] Error calling SimpleCarlock:GiveKey - " .. tostring(result))
+            else
+                print("[n_snippets] SimpleCarlock:GiveKey returned: " .. tostring(result))
+            end
+        else
+            print("[n_snippets] SimpleCarlock resource not found or not started. State: " .. GetResourceState('SimpleCarlock'))
+            -- Try alternative carlock systems
+            if GetResourceState('wasabi_carlock') == 'started' then
+                exports['wasabi_carlock']:GiveKey(plate, false)
+            end
+        end
     end
 end)
