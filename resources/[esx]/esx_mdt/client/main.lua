@@ -23,17 +23,32 @@ end)
 
 -- Toggle MDT
 RegisterNetEvent('esx_mdt:client:toggle', function()
-    if not isLoggedIn then return end
+    print('[ESX_MDT CLIENT] Toggle MDT called')
+    print('[ESX_MDT CLIENT] isLoggedIn:', isLoggedIn)
     
+    if not isLoggedIn then 
+        print('[ESX_MDT CLIENT] Player not logged in, returning')
+        return 
+    end
+    
+    print('[ESX_MDT CLIENT] Calling server callback: esx_mdt:getPlayerData')
     ESX.TriggerServerCallback('esx_mdt:getPlayerData', function(playerData)
+        print('[ESX_MDT CLIENT] Server callback response:', json.encode(playerData))
+        
         if not playerData then
+            print('[ESX_MDT CLIENT] No player data received - access denied')
             ESX.ShowNotification('You do not have access to the MDT')
             return
         end
         
+        print('[ESX_MDT CLIENT] Player data received successfully')
+        print('[ESX_MDT CLIENT] mdtOpen state:', mdtOpen)
+        
         if mdtOpen then
+            print('[ESX_MDT CLIENT] Closing MDT')
             CloseMDT()
         else
+            print('[ESX_MDT CLIENT] Opening MDT with data:', json.encode(playerData))
             OpenMDT(playerData)
         end
     end)
@@ -41,19 +56,29 @@ end)
 
 -- Open MDT
 function OpenMDT(playerData)
-    if mdtOpen then return end
+    print('[ESX_MDT CLIENT] OpenMDT function called')
+    print('[ESX_MDT CLIENT] mdtOpen state:', mdtOpen)
     
+    if mdtOpen then 
+        print('[ESX_MDT CLIENT] MDT already open, returning')
+        return 
+    end
+    
+    print('[ESX_MDT CLIENT] Setting MDT open state and NUI focus')
     mdtOpen = true
     SetNuiFocus(true, true)
     
-    SendNUIMessage({
+    local messageData = {
         action = 'openMDT',
         playerData = playerData,
         config = {
             departments = Config.PoliceDepartments,
             permissions = playerData.permissions
         }
-    })
+    }
+    
+    print('[ESX_MDT CLIENT] Sending NUI message:', json.encode(messageData))
+    SendNUIMessage(messageData)
     
     -- Disable controls while MDT is open
     CreateThread(function()

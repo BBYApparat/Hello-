@@ -152,18 +152,34 @@ function GetESXPlayer(source)
 end
 
 function HasMDTAccess(xPlayer)
-    if not xPlayer then return false end
+    print('[ESX_MDT SERVER] HasMDTAccess called')
+    
+    if not xPlayer then 
+        print('[ESX_MDT SERVER] HasMDTAccess: xPlayer is nil')
+        return false 
+    end
     
     local job = xPlayer.getJob()
-    if not job then return false end
+    print('[ESX_MDT SERVER] HasMDTAccess: job =', json.encode(job))
+    
+    if not job then 
+        print('[ESX_MDT SERVER] HasMDTAccess: job is nil')
+        return false 
+    end
+    
+    print('[ESX_MDT SERVER] HasMDTAccess: Checking job.name =', job.name)
+    print('[ESX_MDT SERVER] HasMDTAccess: AllowedJobs =', json.encode(Config.AllowedJobs))
     
     -- Check if job is allowed
     for _, allowedJobName in ipairs(Config.AllowedJobs) do
+        print('[ESX_MDT SERVER] HasMDTAccess: Comparing', job.name, 'with', allowedJobName)
         if job.name == allowedJobName then
+            print('[ESX_MDT SERVER] HasMDTAccess: MATCH FOUND - returning true')
             return true
         end
     end
     
+    print('[ESX_MDT SERVER] HasMDTAccess: NO MATCH - returning false')
     return false
 end
 

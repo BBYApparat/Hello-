@@ -2,16 +2,36 @@
 
 -- Get player data for MDT
 ESX.RegisterServerCallback('esx_mdt:getPlayerData', function(source, cb)
+    print('[ESX_MDT SERVER] getPlayerData callback called for source:', source)
+    
     local xPlayer = GetESXPlayer(source)
+    print('[ESX_MDT SERVER] xPlayer:', xPlayer and 'found' or 'nil')
+    
     if not xPlayer then 
+        print('[ESX_MDT SERVER] No xPlayer found, returning false')
         cb(false)
         return 
     end
     
     local job = xPlayer.getJob()
-    local callsignData = MySQL.single.await('SELECT callsign FROM mdt_callsigns WHERE identifier = ?', {xPlayer.identifier})
+    print('[ESX_MDT SERVER] Player job:', json.encode(job))
     
-    cb({
+    local hasMDTAccess = HasMDTAccess(xPlayer)
+    print('[ESX_MDT SERVER] HasMDTAccess result:', hasMDTAccess)
+    
+    if not hasMDTAccess then
+        print('[ESX_MDT SERVER] Player does not have MDT access, returning false')
+        cb(false)
+        return
+    end
+    
+    local callsignData = MySQL.single.await('SELECT callsign FROM mdt_callsigns WHERE identifier = ?', {xPlayer.identifier})
+    print('[ESX_MDT SERVER] Callsign data:', callsignData and callsignData.callsign or 'none')
+    
+    local permissions = Config.Permissions[job.name] and Config.Permissions[job.name][job.grade] or {}
+    print('[ESX_MDT SERVER] Permissions:', json.encode(permissions))
+    
+    local playerData = {
         source = source,
         identifier = xPlayer.identifier,
         name = xPlayer.getName(),
@@ -20,8 +40,11 @@ ESX.RegisterServerCallback('esx_mdt:getPlayerData', function(source, cb)
         grade = job.grade,
         gradeLabel = job.grade_label,
         callsign = callsignData and callsignData.callsign or nil,
-        permissions = HasMDTAccess(xPlayer) and Config.Permissions[job.name] and Config.Permissions[job.name][job.grade] or {}
-    })
+        permissions = permissions
+    }
+    
+    print('[ESX_MDT SERVER] Returning player data:', json.encode(playerData))
+    cb(playerData)
 end)
 
 -- Search people
