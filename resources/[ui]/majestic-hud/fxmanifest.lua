@@ -20,9 +20,9 @@ server_scripts {
 client_script 'client.lua'
 
 files {
-    'locales/*.json',
-    'build/**',
     'frameworks/*.lua',
+    'frameworks/server/*.lua',
+    'build/*',
 }
 
 dependency '/assetpacks'

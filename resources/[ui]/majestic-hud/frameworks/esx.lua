@@ -46,10 +46,7 @@ function Framework:getStats()
 end
 
 function Framework:isPlayerLoaded()
-    if Config.framework == 'esx' then
-        return ESX.IsPlayerLoaded()
-    end
-    return self.playerData and next(self.playerData) ~= nil
+    return ESX.IsPlayerLoaded()
 end
 
 function Framework:triggerStressGain(amount)

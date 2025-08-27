@@ -1,6 +1,7 @@
 Config = {}
 
 Config.framework = 'esx' -- 'esx' or 'qb'
+Config.DisableStress = false -- Set to true to disable stress system entirely
 Config.useMPH = true
 Config.minimapWalking = false
 Config.fuel = 'LegacyFuel'
