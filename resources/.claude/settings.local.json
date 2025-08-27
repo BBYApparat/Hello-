@@ -22,9 +22,16 @@
       "Read(/F:\\SecondLife\\GTASecondLife\\ak47base/**)",
       "Read(/F:\\SecondLife\\GTASecondLife\\ak47base/**)",
       "Read(/F:\\/**)",
-      "Bash(sed:*)"
+      "Bash(sed:*)",
+      "Bash(git commit:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Read(/F:\\SecondLife\\GTASecondLife\\ak47base/**)"
     ],
     "deny": [],
-    "defaultMode": "acceptEdits"
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [
+      "C:\\Users\\alexi\\fivem\\server-data\\Hello-"
+    ]
   }
 }
