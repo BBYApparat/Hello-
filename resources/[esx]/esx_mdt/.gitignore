@@ -1,0 +1,19 @@
+# Node modules (if you're developing the UI)
+ui/node_modules/
+ui/.env
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Don't ignore the compiled UI files - these are needed!
+!ui/dist/
+!ui/dist/*
