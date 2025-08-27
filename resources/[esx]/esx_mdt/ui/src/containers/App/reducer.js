@@ -94,10 +94,16 @@ export const initialState = {
 		reduction: 25,
 		license: 12,
 	},
-	drafts:
-		localStorage.getItem('drafts') != null
-			? JSON.parse(localStorage.getItem('drafts'))
-			: Array(),
+	drafts: (() => {
+		try {
+			const drafts = localStorage.getItem('drafts');
+			return drafts != null ? JSON.parse(drafts) : [];
+		} catch (e) {
+			console.error('[ESX_MDT] Failed to parse drafts from localStorage:', e);
+			localStorage.removeItem('drafts'); // Clear corrupted data
+			return [];
+		}
+	})(),
 	user: null,
 	govJob: null,
 	govJobPermissions: null,
