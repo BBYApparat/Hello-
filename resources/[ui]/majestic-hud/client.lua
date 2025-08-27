@@ -1,6 +1,8 @@
 -- Initialize Framework
+print('Majestic HUD: Loading framework: ' .. Config.framework)
 local Framework = require('frameworks.' .. Config.framework)
 local framework = Framework.new()
+print('Majestic HUD: Framework loaded successfully')
 
 local speedMultiplier = Config.useMPH and 2.23694 or 3.6
 local showingHUD = true
@@ -237,7 +239,18 @@ CreateThread(function()
 end)
 
 CreateThread(function()
-    while not framework:isPlayerLoaded() do DisplayRadar(false) Wait(1000) end
+    -- Initialize stats with default values
+    stats = { hunger = 100, thirst = 100, stress = 0 }
+    
+    -- Send initial NUI message to show the UI
+    Wait(2000) -- Wait a bit for NUI to load
+    updateStats()
+    
+    while not framework:isPlayerLoaded() do 
+        DisplayRadar(false) 
+        updateStats() -- Keep updating even before player loads
+        Wait(1000) 
+    end
     loadMap()
     while true do        
         Wait(500)
@@ -320,3 +333,24 @@ RegisterNetEvent('hud:client:ToggleShowSeatbelt', function()
     vehicleStats.beltOn = not vehicleStats.beltOn
     updateVehicleStats()
 end)
+
+-- Debug command to toggle HUD visibility
+RegisterCommand('togglehud', function()
+    showingHUD = not showingHUD
+    print('Majestic HUD visibility: ' .. tostring(showingHUD))
+    updateStats()
+end, false)
+
+-- Debug command to test NUI
+RegisterCommand('testhud', function()
+    print('Testing HUD - sending NUI message')
+    SendNUIMessage({
+        action = 'updateStats',
+        data = {
+            showing = true,
+            health = 75,
+            armor = 50,
+            stats = { hunger = 80, thirst = 70, stress = 25 }
+        }
+    })
+end, false)
