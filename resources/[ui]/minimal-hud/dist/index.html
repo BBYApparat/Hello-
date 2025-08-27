@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Minimal HUD</title>
+      <script type="module" crossorigin src="./assets/index-0ugOak89.js"></script>
+      <link rel="stylesheet" crossorigin href="./assets/index-DHsk4WhC.css">
+    </head>
+    <body>
+        <div id="app"></div>
+        
+        <!-- Voice Indicators (from Majestic HUD) -->
+        <div id="voice-indicators" style="display: none;">
+            <!-- Phone/Radio Icons -->
+            <div id="talking-icon" style="display: none;">
+                <i id="phone-icon" class="fa-regular fa-phone" style="display: none;"></i>
+                <i id="radio-icon" class="fa-regular fa-walkie-talkie" style="display: none;"></i>
+            </div>
+            
+            <!-- Animated Voice Bars -->
+            <div id="voice-bars" style="display: none;">
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+            </div>
+            
+            <!-- Voice Range Indicators -->
+            <div id="voice-range" style="display: none;">
+                <div class="range-bar"></div>
+                <div class="range-bar"></div>
+                <div class="range-bar"></div>
+            </div>
+        </div>
+        
+        <script>
+            // Voice system variables
+            let voiceData = {
+                isTalking: false,
+                talkingOnRadio: false,
+                onRadio: false,
+                onPhone: false,
+                voiceRange: 2
+            };
+            
+            // Listen for voice updates from backend
+            window.addEventListener('message', function(event) {
+                const data = event.data;
+                if (data.action === 'setPlayerState' && data.data) {
+                    updateVoiceIndicators(data.data);
+                }
+            });
+            
+            function updateVoiceIndicators(data) {
+                voiceData = {
+                    isTalking: data.isTalking || false,
+                    talkingOnRadio: data.talkingOnRadio || false,
+                    onRadio: data.onRadio || false,
+                    onPhone: data.onPhone || false,
+                    voiceRange: data.voiceRange || 2
+                };
+                
+                const voiceIndicators = document.getElementById('voice-indicators');
+                const talkingIcon = document.getElementById('talking-icon');
+                const phoneIcon = document.getElementById('phone-icon');
+                const radioIcon = document.getElementById('radio-icon');
+                const voiceBars = document.getElementById('voice-bars');
+                const voiceRange = document.getElementById('voice-range');
+                
+                // Show/hide main container
+                if (voiceData.isTalking || voiceData.onPhone || voiceData.onRadio) {
+                    voiceIndicators.style.display = 'block';
+                } else {
+                    voiceIndicators.style.display = 'none';
+                }
+                
+                // Phone/Radio icons
+                if (voiceData.onPhone) {
+                    talkingIcon.style.display = 'block';
+                    phoneIcon.style.display = 'block';
+                    radioIcon.style.display = 'none';
+                } else if (voiceData.onRadio) {
+                    talkingIcon.style.display = 'block';
+                    phoneIcon.style.display = 'none';
+                    radioIcon.style.display = 'block';
+                } else {
+                    talkingIcon.style.display = 'none';
+                }
+                
+                // Voice bars animation
+                if (voiceData.isTalking) {
+                    voiceBars.style.display = 'flex';
+                    const bars = voiceBars.querySelectorAll('.voice-bar');
+                    bars.forEach((bar, index) => {
+                        bar.className = 'voice-bar ' + (voiceData.talkingOnRadio ? 'radio-active' : 'voice-active');
+                        // Stagger animation delays
+                        bar.style.animationDelay = (index * 0.1) + 's';
+                    });
+                } else {
+                    voiceBars.style.display = 'none';
+                }
+                
+                // Voice range indicators
+                if (voiceData.isTalking || voiceData.onRadio) {
+                    voiceRange.style.display = 'flex';
+                    const rangeBars = voiceRange.querySelectorAll('.range-bar');
+                    rangeBars.forEach((bar, index) => {
+                        if (index < voiceData.voiceRange) {
+                            bar.className = 'range-bar range-active';
+                        } else {
+                            bar.className = 'range-bar';
+                        }
+                    });
+                } else {
+                    voiceRange.style.display = 'none';
+                }
+            }
+        </script>
+    </body>
+</html>
