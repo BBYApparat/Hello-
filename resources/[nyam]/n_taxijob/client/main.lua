@@ -369,7 +369,7 @@ RegisterNetEvent("n_taxijob:TakeVehicle", function(data)
                     closeMenuFull()
                     SetEntityHeading(veh, Config.CabSpawns[SpawnPoint].w)
                     
-                    exports.SimpleCarlock:GiveKey(plate)
+                    exports['SimpleCarlock']:GiveKey(plate)
 
                     TriggerServerEvent('n_taxijob:rentCab', plate)
                     SetVehicleEngineOn(veh, true, true)

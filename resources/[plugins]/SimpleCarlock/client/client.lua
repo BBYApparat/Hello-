@@ -256,6 +256,19 @@ end
 
 RegisterCommand('hotwire', StartHotwire, false)
 
+-- Test command for export debugging
+RegisterCommand('testgivekey', function()
+    local ped = PlayerPedId()
+    if IsPedInAnyVehicle(ped, false) then
+        local veh = GetVehiclePedIsIn(ped, false)
+        local plate = GetVehicleNumberPlateText(veh)
+        print("[SimpleCarlock] Test command: Giving key for plate: " .. plate)
+        exports['SimpleCarlock']:GiveKey(plate)
+    else
+        print("[SimpleCarlock] Test command: Not in vehicle")
+    end
+end, false)
+
 
 
 -- ========== CORE THREADS ==========
@@ -361,9 +374,14 @@ end)
 
 -- Export to give keys for a specific vehicle (wasabi_carlock compatibility)
 exports('GiveKey', function(plate)
-    if not plate then return false end
+    print("[SimpleCarlock] GiveKey export called with plate: " .. tostring(plate))
+    if not plate then 
+        print("[SimpleCarlock] GiveKey: No plate provided")
+        return false 
+    end
     playerKeys[plate] = true
     ShowNotification("~g~Keys received for vehicle: " .. plate)
+    print("[SimpleCarlock] GiveKey: Keys given for plate: " .. plate)
     return true
 end)
 

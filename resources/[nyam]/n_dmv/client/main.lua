@@ -119,7 +119,7 @@ RegisterNUICallback('startPractice', function(data)
         if v.id == license then
             local vehicle = v.vehicle
             ESX.Game.SpawnVehicle(vehicle.model, vehicle.coords, vehicle.heading, function(veh) 
-                exports.SimpleCarlock:GiveKey(ESX.Math.Trim(vehicle.plate))
+                exports['SimpleCarlock']:GiveKey(ESX.Math.Trim(vehicle.plate))
                 SetVehicleNumberPlateText(veh, vehicle.plate)
                 SetPedIntoVehicle(PlayerPedId(), veh, -1)
                 Wait(2500)
