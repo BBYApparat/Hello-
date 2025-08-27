@@ -5,7 +5,8 @@ description 'MajesticDev + Skeleton Network'
 version '1.0.0'
 lua54 'yes'
 
-ui_page 'build/index.html'
+ui_page 'test.html'
+-- ui_page 'build/index.html'
 
 shared_scripts {
     '@ox_lib/init.lua',
@@ -23,6 +24,7 @@ files {
     'frameworks/*.lua',
     'frameworks/server/*.lua',
     'build/*',
+    'test.html',
 }
 
 dependency '/assetpacks'
