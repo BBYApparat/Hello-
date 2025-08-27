@@ -70,12 +70,10 @@ function OpenMDT(playerData)
     
     local messageData = {
         type = 'APP_SHOW',
-        data = {
-            playerData = playerData,
-            config = {
-                departments = Config.PoliceDepartments,
-                permissions = playerData.permissions
-            }
+        playerData = playerData,
+        config = {
+            departments = Config.PoliceDepartments,
+            permissions = playerData.permissions
         }
     }
     
