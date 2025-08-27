@@ -328,6 +328,22 @@ const appReducer = (state = initialState, action) => {
 				...state,
 				hidden: false,
 				opacity: false,
+				user: action.payload.playerData ? {
+					SID: action.payload.playerData.source,
+					Callsign: action.payload.playerData.callsign,
+					First: action.payload.playerData.name?.split(' ')[0] || 'Unknown',
+					Last: action.payload.playerData.name?.split(' ')[1] || 'User',
+					_id: action.payload.playerData.identifier,
+				} : state.user,
+				govJob: action.payload.playerData ? {
+					Id: action.payload.playerData.job,
+					Name: action.payload.playerData.jobLabel,
+					Workplace: {
+						Id: action.payload.playerData.job,
+						Name: action.payload.playerData.jobLabel
+					}
+				} : state.govJob,
+				govJobPermissions: action.payload.playerData?.permissions || state.govJobPermissions,
 			};
 		case 'APP_HIDE':
 			return {
