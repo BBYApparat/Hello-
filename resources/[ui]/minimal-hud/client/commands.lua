@@ -46,7 +46,7 @@ end, false)
 
 RegisterCommand("debugvoice", function()
 	local playerId = PlayerId()
-	local isTalking = NetworkIsPlayerTalking(playerId) == 1
+	local isTalking = MumbleIsPlayerTalking(playerId) == 1
 	local onRadio = LocalPlayer.state['radioChannel'] and LocalPlayer.state['radioChannel'] > 0 or false
 	local onPhone = LocalPlayer.state['callChannel'] and LocalPlayer.state['callChannel'] > 0 or false
 	
