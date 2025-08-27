@@ -5,6 +5,8 @@
 local playerKeys = {} -- Stores plates of vehicles the player has keys for.
 local isLockpicking = false
 local vehicleBeingPicked = nil
+local isHotwiring = false
+local vehicleBeingHotwired = nil
 local nuiReady = false
 local canAutolock = true -- Flag to temporarily disable autolocking.
 local helpMenuOpen = false
@@ -38,12 +40,12 @@ end
 -- ========== NUI CALLBACKS ==========
 RegisterNuiCallback('nuiReady', function(data, cb) nuiReady = true; cb('ok'); end)
 
-RegisterNuiCallback('minigameResult', function(data, cb)
-    SetNuiFocus(false, false)
+-- Lockpick minigame callback (replaced with boii_minigames)
+function HandleLockpickResult(success)
     isLockpicking = false
     ClearPedTasks(PlayerPedId())
     
-    if data.success then
+    if success then
         ShowNotification("~g~Lock successfully picked!")
         if DoesEntityExist(vehicleBeingPicked) then
             SetVehicleDoorsLocked(vehicleBeingPicked, 1) -- 1 = Unlocked but not forced open
@@ -53,8 +55,28 @@ RegisterNuiCallback('minigameResult', function(data, cb)
         ShowNotification("~r~You broke your pick! Lockpicking failed.")
     end
     vehicleBeingPicked = nil
-    cb('ok')
-end)
+end
+
+-- Hotwiring minigame callback
+function HandleHotwireResult(success)
+    isHotwiring = false
+    ClearPedTasks(PlayerPedId())
+    
+    if success then
+        ShowNotification("~g~Vehicle successfully hotwired!")
+        if DoesEntityExist(vehicleBeingHotwired) then
+            SetVehicleEngineOn(vehicleBeingHotwired, true, false, true)
+            ShowNotification("~g~The engine is now running.")
+        end
+    else
+        ShowNotification("~r~Hotwiring failed! You triggered the alarm.")
+        if DoesEntityExist(vehicleBeingHotwired) then
+            SetVehicleAlarm(vehicleBeingHotwired, true)
+            StartVehicleAlarm(vehicleBeingHotwired)
+        end
+    end
+    vehicleBeingHotwired = nil
+end
 
 RegisterNuiCallback('closeHelpMenu', function(data, cb)
     helpMenuOpen = false
@@ -117,7 +139,7 @@ AddEventHandler('carLock:startLockpickMinigame', function(netId)
     
     TaskPlayAnim(ply, anim, "fixing_a_ped", 8.0, -8.0, -1, 49, 0, false, false, false)
 
-    -- Wait before showing the minigame NUI.
+    -- Wait before starting the key drop minigame
     CreateThread(function()
         Wait(Config.Settings.lockpickInitialWait)
         if not isLockpicking or not DoesEntityExist(vehicleBeingPicked) then 
@@ -125,15 +147,25 @@ AddEventHandler('carLock:startLockpickMinigame', function(netId)
             ClearPedTasks(PlayerPedId())
             return
         end
-        SetNuiFocus(true, true)
-        SendNuiMessage(json.encode({action = 'startMinigame', pins = Config.Settings.pinCount, attempts = Config.Settings.pinAttempts}))
+        
+        -- Start boii_minigames key_drop minigame
+        exports['boii_minigames']:key_drop({
+            style = 'default',
+            score_limit = 10, -- 10 letters to drop
+            miss_limit = 1, -- Only 1 miss allowed before fail
+            fall_delay = 1000,
+            new_letter_delay = 2000
+        }, function(success)
+            HandleLockpickResult(success)
+        end)
     end)
 end)
 
 -- ========== COMMANDS ==========
-RegisterCommand('lockpick', function()
-    if isLockpicking then return end
-    if not nuiReady then ShowNotification("~y~Lockpick kit is not ready yet."); return; end
+-- Lockpick item usage event (for ESX item integration)
+RegisterNetEvent('carLock:useLockpick')
+AddEventHandler('carLock:useLockpick', function()
+    if isLockpicking or isHotwiring then return end
     
     local ply = PlayerPedId()
     if IsPedInAnyVehicle(ply, false) then
@@ -147,7 +179,82 @@ RegisterCommand('lockpick', function()
     else
         ShowNotification("~y~No vehicle close enough to lockpick.")
     end
+end)
+
+-- Keep command for testing/admin use
+RegisterCommand('lockpick', function()
+    TriggerEvent('carLock:useLockpick')
 end, false)
+
+-- Hotwire function (called with H key or command)
+function StartHotwire()
+    if isLockpicking or isHotwiring then return end
+    
+    local ply = PlayerPedId()
+    if not IsPedInAnyVehicle(ply, false) then
+        ShowNotification("~r~You must be inside a vehicle to hotwire it.")
+        return
+    end
+
+    local vehicle = GetVehiclePedIsIn(ply, false)
+    local plate = GetVehicleNumberPlateText(vehicle)
+    
+    -- Check if player already has keys
+    if plate and playerKeys[plate] then
+        ShowNotification("~y~You already have keys for this vehicle.")
+        return
+    end
+    
+    -- Check if engine is already on
+    if GetIsVehicleEngineRunning(vehicle) then
+        ShowNotification("~y~The engine is already running.")
+        return
+    end
+
+    isHotwiring = true
+    vehicleBeingHotwired = vehicle
+    
+    ShowNotification("~b~You begin to hotwire the vehicle...")
+    local anim = "mini@repair"
+    RequestAnimDict(anim)
+    while not HasAnimDictLoaded(anim) do Wait(100) end
+    
+    TaskPlayAnim(ply, anim, "fixing_a_ped", 8.0, -8.0, -1, 49, 0, false, false, false)
+
+    -- Show progress bar for 5 seconds
+    CreateThread(function()
+        -- Progress bar here (you can replace with your progress bar system)
+        local progressTime = 5000
+        local startTime = GetGameTimer()
+        
+        while GetGameTimer() - startTime < progressTime and isHotwiring do
+            local progress = (GetGameTimer() - startTime) / progressTime
+            -- Draw progress bar (you can customize this)
+            DrawRect(0.5, 0.9, 0.2, 0.02, 0, 0, 0, 150)
+            DrawRect(0.5, 0.9, 0.2 * progress, 0.02, 0, 255, 0, 255)
+            Wait(0)
+        end
+        
+        if not isHotwiring or not DoesEntityExist(vehicleBeingHotwired) then 
+            isHotwiring = false
+            ClearPedTasks(PlayerPedId())
+            return
+        end
+        
+        -- Start boii_minigames key_drop minigame after progress bar
+        exports['boii_minigames']:key_drop({
+            style = 'default',
+            score_limit = 10, -- 10 letters to drop
+            miss_limit = 1, -- Only 1 miss allowed before fail
+            fall_delay = 1000,
+            new_letter_delay = 2000
+        }, function(success)
+            HandleHotwireResult(success)
+        end)
+    end)
+end
+
+RegisterCommand('hotwire', StartHotwire, false)
 
 
 
@@ -158,7 +265,7 @@ end, false)
 CreateThread(function()
     while true do
         Wait(0) -- Run every game tick for responsiveness.
-        if isLockpicking then goto continue end
+        if isLockpicking or isHotwiring then goto continue end
 
         local ply = PlayerPedId()
         
@@ -171,6 +278,11 @@ CreateThread(function()
                     TriggerServerEvent('carLock:toggleLock', VehToNet(veh))
                 end
             end
+        end
+        
+        -- Hotwire with H key while inside vehicle
+        if IsPedInAnyVehicle(ply, false) and IsControlJustReleased(0, Config.Settings.hotwireKey) then
+            StartHotwire()
         end
         
         -- Auto-unlock just before exiting vehicle.
@@ -193,7 +305,7 @@ CreateThread(function()
     local lastUsedVehicle = 0
     while true do
         Wait(500)
-        if isLockpicking then goto continue end
+        if isLockpicking or isHotwiring then goto continue end
 
         local ply = PlayerPedId()
         local currentVehicle = GetVehiclePedIsIn(ply, false)

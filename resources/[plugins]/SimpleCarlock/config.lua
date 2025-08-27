@@ -6,6 +6,7 @@ Config.Settings = {
     lockKey = 38, -- Keybind to lock your vehicle (Default = 38 (E))
     lockKeyAlt = 303, -- Alternative keybind to lock your vehicle (Default = 303 (U))
     exitKey = 75, -- Keybind to exit your vehicle (Default = 75 (F))
+    hotwireKey = 74, -- Keybind to hotwire vehicle (Default = 74 (H))
     autolockDistance = 25.0, -- How far do you need to be from your vehicle until it auto locks.
     interactionDistance = 7.0, -- How far you can go from the vehicle and be able to lock / unlock.
     soundVolume = 0.4, -- How loud the lock / unlock sound is. 

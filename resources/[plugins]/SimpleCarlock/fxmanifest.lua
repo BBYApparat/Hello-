@@ -6,7 +6,10 @@ author 'SimpleDevelopments'
 description 'Advanced car lock script for fivem!'
 version '1.0'
 
-dependency 'es_extended'
+dependencies {
+    'es_extended',
+    'boii_minigames'
+}
 
 shared_script '@es_extended/imports.lua'
 shared_script 'config.lua'
