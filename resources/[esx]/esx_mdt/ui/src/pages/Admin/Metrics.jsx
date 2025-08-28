@@ -3,8 +3,9 @@ import { Alert, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import 'chart.js/auto';
 import { Pie } from 'react-chartjs-2';
-import AdapterMoment from '@mui/lab/AdapterMoment';
-import { LocalizationProvider, DatePicker } from '@mui/lab';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { throttle } from 'lodash';
 import moment from 'moment';
 
@@ -65,7 +66,12 @@ export default () => {
 						label="Metrics For"
 						value={date}
 						onChange={onChange}
-						renderInput={(params) => <TextField {...params} />}
+						slotProps={{
+							textField: {
+								variant: 'outlined',
+								fullWidth: false
+							}
+						}}
 					/>
 				</LocalizationProvider>
 				{loading ? (

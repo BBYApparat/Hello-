@@ -20,6 +20,7 @@
 		"@mui/lab": "^5.0.0-alpha.76",
 		"@mui/material": "^5.6.0",
 		"@mui/styles": "^5.6.0",
+		"@mui/x-date-pickers": "^5.0.20",
 		"@nosferatu500/react-truncate": "^3.0.1",
 		"chart.js": "^3.5.1",
 		"cross-env": "^7.0.3",
