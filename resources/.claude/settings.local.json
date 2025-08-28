@@ -26,7 +26,9 @@
       "Bash(git commit:*)",
       "WebSearch",
       "WebFetch(domain:github.com)",
-      "Read(/F:\\SecondLife\\GTASecondLife\\ak47base/**)"
+      "Read(/F:\\SecondLife\\GTASecondLife\\ak47base/**)",
+      "Bash(git check-ignore:*)",
+      "Read(F:\\F:\\SecondLife\\GTASecondLife\\ak47base/**)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits",
