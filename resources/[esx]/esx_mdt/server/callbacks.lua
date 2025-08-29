@@ -347,3 +347,111 @@ ESX.RegisterServerCallback('esx_mdt:updateReport', function(source, cb, reportId
     
     cb(success)
 end)
+
+-- Search warrants
+ESX.RegisterServerCallback('esx_mdt:searchWarrants', function(source, cb, searchTerm)
+    print('[ESX_MDT DEBUG] searchWarrants called by source:', source)
+    print('[ESX_MDT DEBUG] Warrant search term:', searchTerm)
+    
+    local xPlayer = GetESXPlayer(source)
+    if not xPlayer or not HasMDTAccess(xPlayer) then
+        print('[ESX_MDT DEBUG] Access denied for searchWarrants')
+        cb(false)
+        return
+    end
+    
+    print('[ESX_MDT DEBUG] Access granted, searching warrants')
+    
+    local query = [[
+        SELECT w.*, u.firstname, u.lastname
+        FROM mdt_warrants w
+        LEFT JOIN users u ON w.suspect_identifier = u.identifier
+        WHERE (w.suspect_name LIKE ? OR w.warrant_id LIKE ? OR u.firstname LIKE ? OR u.lastname LIKE ?)
+        AND w.status = 'active'
+        LIMIT 50
+    ]]
+    
+    local searchPattern = '%' .. searchTerm .. '%'
+    print('[ESX_MDT DEBUG] Warrant search pattern:', searchPattern)
+    
+    local results = MySQL.query.await(query, {searchPattern, searchPattern, searchPattern, searchPattern})
+    print('[ESX_MDT DEBUG] Warrant query executed, found', results and #results or 0, 'results')
+    
+    -- Decode JSON fields
+    for i = 1, #results do
+        if results[i].charges then
+            results[i].charges = json.decode(results[i].charges)
+        end
+    end
+    
+    cb(results)
+end)
+
+-- Search properties
+ESX.RegisterServerCallback('esx_mdt:searchProperties', function(source, cb, searchTerm)
+    print('[ESX_MDT DEBUG] searchProperties called by source:', source)
+    print('[ESX_MDT DEBUG] Property search term:', searchTerm)
+    
+    local xPlayer = GetESXPlayer(source)
+    if not xPlayer or not HasMDTAccess(xPlayer) then
+        print('[ESX_MDT DEBUG] Access denied for searchProperties')
+        cb(false)
+        return
+    end
+    
+    print('[ESX_MDT DEBUG] Access granted, searching properties')
+    
+    -- Assuming you have a properties table
+    local query = [[
+        SELECT p.*, u.firstname, u.lastname
+        FROM properties p
+        LEFT JOIN users u ON p.owner = u.identifier
+        WHERE p.name LIKE ? OR p.label LIKE ? OR u.firstname LIKE ? OR u.lastname LIKE ?
+        LIMIT 50
+    ]]
+    
+    local searchPattern = '%' .. searchTerm .. '%'
+    print('[ESX_MDT DEBUG] Property search pattern:', searchPattern)
+    
+    local results = MySQL.query.await(query, {searchPattern, searchPattern, searchPattern, searchPattern})
+    print('[ESX_MDT DEBUG] Property query executed, found', results and #results or 0, 'results')
+    
+    cb(results)
+end)
+
+-- Search firearms
+ESX.RegisterServerCallback('esx_mdt:searchFirearms', function(source, cb, searchTerm)
+    print('[ESX_MDT DEBUG] searchFirearms called by source:', source)
+    print('[ESX_MDT DEBUG] Firearm search term:', searchTerm)
+    
+    local xPlayer = GetESXPlayer(source)
+    if not xPlayer or not HasMDTAccess(xPlayer) then
+        print('[ESX_MDT DEBUG] Access denied for searchFirearms')
+        cb(false)
+        return
+    end
+    
+    print('[ESX_MDT DEBUG] Access granted, searching firearms')
+    
+    -- This would typically search a firearms registry table if you have one
+    local query = [[
+        SELECT * FROM mdt_firearms
+        WHERE serial_number LIKE ? OR weapon_type LIKE ? OR owner_name LIKE ?
+        LIMIT 50
+    ]]
+    
+    local searchPattern = '%' .. searchTerm .. '%'
+    print('[ESX_MDT DEBUG] Firearm search pattern:', searchPattern)
+    
+    -- Check if table exists first
+    local tableExists = MySQL.scalar.await("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = 'mdt_firearms'")
+    
+    if tableExists and tableExists > 0 then
+        local results = MySQL.query.await(query, {searchPattern, searchPattern, searchPattern})
+        print('[ESX_MDT DEBUG] Firearm query executed, found', results and #results or 0, 'results')
+        cb(results)
+    else
+        print('[ESX_MDT DEBUG] mdt_firearms table does not exist, returning empty results')
+        cb({})
+    end
+end)

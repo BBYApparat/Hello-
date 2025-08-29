@@ -148,23 +148,45 @@ RegisterNUICallback('Search', function(data, cb)
     print('[ESX_MDT CLIENT] Search type:', data.type)
     print('[ESX_MDT CLIENT] Search term:', data.term)
     
+    -- Check for empty search term
+    if not data.term or data.term == '' then
+        print('[ESX_MDT CLIENT] Empty search term, returning empty results')
+        cb({})
+        return
+    end
+    
     if data.type == 'people' then
         ESX.TriggerServerCallback('esx_mdt:searchPeople', function(results)
             print('[ESX_MDT CLIENT] Search people results received:', results and #results or 0, 'entries')
             cb(results or {})
         end, data.term)
-    elseif data.type == 'vehicles' then
+    elseif data.type == 'vehicles' or data.type == 'vehicle' then
         ESX.TriggerServerCallback('esx_mdt:searchVehicles', function(results)
             print('[ESX_MDT CLIENT] Search vehicles results received:', results and #results or 0, 'entries')
             cb(results or {})
         end, data.term)
-    elseif data.type == 'reports' then
+    elseif data.type == 'reports' or data.type == 'report' then
         ESX.TriggerServerCallback('esx_mdt:searchReports', function(results)
             print('[ESX_MDT CLIENT] Search reports results received:', results and #results or 0, 'entries')
             cb(results or {})
         end, {search = data.term})
+    elseif data.type == 'warrants' or data.type == 'warrant' then
+        ESX.TriggerServerCallback('esx_mdt:searchWarrants', function(results)
+            print('[ESX_MDT CLIENT] Search warrants results received:', results and #results or 0, 'entries')
+            cb(results or {})
+        end, data.term)
+    elseif data.type == 'properties' or data.type == 'property' then
+        ESX.TriggerServerCallback('esx_mdt:searchProperties', function(results)
+            print('[ESX_MDT CLIENT] Search properties results received:', results and #results or 0, 'entries')
+            cb(results or {})
+        end, data.term)
+    elseif data.type == 'firearms' or data.type == 'firearm' or data.type == 'weapons' then
+        ESX.TriggerServerCallback('esx_mdt:searchFirearms', function(results)
+            print('[ESX_MDT CLIENT] Search firearms results received:', results and #results or 0, 'entries')
+            cb(results or {})
+        end, data.term)
     else
-        print('[ESX_MDT CLIENT] Unknown search type:', data.type)
+        print('[ESX_MDT CLIENT] Unknown search type:', data.type, '- returning empty results')
         cb({})
     end
 end)
