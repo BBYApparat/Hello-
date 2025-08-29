@@ -142,6 +142,33 @@ RegisterNUICallback('closeMDT', function(data, cb)
     cb('ok')
 end)
 
+-- Generic search callback that routes to specific search types
+RegisterNUICallback('Search', function(data, cb)
+    print('[ESX_MDT CLIENT] NUI Callback: Search')
+    print('[ESX_MDT CLIENT] Search type:', data.type)
+    print('[ESX_MDT CLIENT] Search term:', data.term)
+    
+    if data.type == 'people' then
+        ESX.TriggerServerCallback('esx_mdt:searchPeople', function(results)
+            print('[ESX_MDT CLIENT] Search people results received:', results and #results or 0, 'entries')
+            cb(results or {})
+        end, data.term)
+    elseif data.type == 'vehicles' then
+        ESX.TriggerServerCallback('esx_mdt:searchVehicles', function(results)
+            print('[ESX_MDT CLIENT] Search vehicles results received:', results and #results or 0, 'entries')
+            cb(results or {})
+        end, data.term)
+    elseif data.type == 'reports' then
+        ESX.TriggerServerCallback('esx_mdt:searchReports', function(results)
+            print('[ESX_MDT CLIENT] Search reports results received:', results and #results or 0, 'entries')
+            cb(results or {})
+        end, {search = data.term})
+    else
+        print('[ESX_MDT CLIENT] Unknown search type:', data.type)
+        cb({})
+    end
+end)
+
 RegisterNUICallback('searchPeople', function(data, cb)
     print('[ESX_MDT CLIENT] NUI Callback: searchPeople')
     print('[ESX_MDT CLIENT] Search term:', data.search)

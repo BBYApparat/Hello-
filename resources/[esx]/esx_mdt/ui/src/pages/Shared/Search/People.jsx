@@ -85,17 +85,39 @@ export default (props) => {
 				setLoading(true);
 
 				try {
-					let res = await (
-						await Nui.send('Search', {
-							type: type,
-							term: value,
-						})
-					).json();
-					if (res) setResults(res);
-					else setErr(true);
+					let response = await Nui.send('Search', {
+						type: type,
+						term: value,
+					});
+					
+					// Check if response is ok and has content
+					if (!response.ok) {
+						console.error('[ESX_MDT] Search request failed:', response.status);
+						setErr(true);
+						setLoading(false);
+						return;
+					}
+					
+					const text = await response.text();
+					if (!text || text.trim() === '') {
+						console.error('[ESX_MDT] Empty response from search');
+						setResults([]);
+						setLoading(false);
+						return;
+					}
+					
+					try {
+						const res = JSON.parse(text);
+						if (res) setResults(res);
+						else setErr(true);
+					} catch (parseError) {
+						console.error('[ESX_MDT] Failed to parse search response:', parseError);
+						console.error('[ESX_MDT] Response text was:', text);
+						setErr(true);
+					}
 					setLoading(false);
 				} catch (err) {
-					console.log(err);
+					console.error('[ESX_MDT] Search error:', err);
 					setErr(true);
 					setLoading(false);
 				}
