@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
 	TextField,
@@ -9,6 +9,7 @@ import {
 	Alert,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { throttle } from 'lodash';
 import qs from 'qs';
 import { useNavigate, useLocation } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -80,54 +81,80 @@ export default () => {
 		setPages(Math.ceil(results.length / PER_PAGE));
 	}, [results]);
 
-	const fetch = async (value) => {
-		if (value == '') {
-			let s = qs.parse(location.search.slice(1));
-			delete s.search;
-			delete s.page;
-			history({
-				path: location.pathname,
-				search: qs.stringify(s),
-			});
-			// setResults(_ws);
-		} else {
-			let s = qs.parse(location.search.slice(1));
-			s.search = value;
-			history({
-				path: location.pathname,
-				search: qs.stringify(s),
-			});
-			// let rgx = new RegExp(value, 'i');
-			// setResults(
-			// 	_ws.filter((w) =>
-			// 		Boolean(`${w.suspect.First} ${w.suspect.Last}`.match(rgx)),
-			// 	),
-			// );
-		}
+	const fetch = useMemo(
+		() =>
+			throttle(async (value) => {
+				if (value == '') {
+					let s = qs.parse(location.search.slice(1));
+					delete s.search;
+					delete s.page;
+					history({
+						path: location.pathname,
+						search: qs.stringify(s),
+					});
+					setResults([]);
+					setLoading(false);
+					return;
+				}
 
-		setLoading(true);
-		setPage(1);
-		setErr(false);
+				let s = qs.parse(location.search.slice(1));
+				s.search = value;
+				history({
+					path: location.pathname,
+					search: qs.stringify(s),
+				});
 
-		try {
-			let res = await (
-				await Nui.send('Search', {
-					type: type,
-					term: value,
-				})
-			).json();
-			if (res) {
-				setResults(res);
-			} else throw res;
+				setLoading(true);
+				setPage(1);
+				setErr(false);
 
-			setLoading(false);
-		} catch (err) {
-			console.log(err);
-			setErr(true);
-			setResults([]);
-			setLoading(false);
-		}
-	};
+				try {
+					let response = await Nui.send('Search', {
+						type: type,
+						term: value,
+					});
+					
+					// Check if response is ok and has content
+					if (!response.ok) {
+						console.error('[ESX_MDT] Warrant search request failed:', response.status);
+						setErr(true);
+						setResults([]);
+						setLoading(false);
+						return;
+					}
+					
+					const text = await response.text();
+					if (!text || text.trim() === '') {
+						console.error('[ESX_MDT] Empty response from warrant search');
+						setResults([]);
+						setLoading(false);
+						return;
+					}
+					
+					try {
+						const res = JSON.parse(text);
+						if (res) {
+							setResults(res);
+						} else {
+							setErr(true);
+							setResults([]);
+						}
+					} catch (parseError) {
+						console.error('[ESX_MDT] Failed to parse warrant search response:', parseError);
+						console.error('[ESX_MDT] Response text was:', text);
+						setErr(true);
+						setResults([]);
+					}
+					setLoading(false);
+				} catch (err) {
+					console.error('[ESX_MDT] Warrant search error:', err);
+					setErr(true);
+					setResults([]);
+					setLoading(false);
+				}
+			}, 1000),
+		[],
+	);
 
 	const onSearch = (e) => {
 		e.preventDefault();

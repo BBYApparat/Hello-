@@ -401,19 +401,28 @@ ESX.RegisterServerCallback('esx_mdt:searchProperties', function(source, cb, sear
     
     print('[ESX_MDT DEBUG] Access granted, searching properties')
     
-    -- Assuming you have a properties table
+    -- Check if properties table exists and get correct columns
+    local tableExists = MySQL.scalar.await("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = 'properties'")
+    
+    if not tableExists or tableExists == 0 then
+        print('[ESX_MDT DEBUG] properties table does not exist, returning empty results')
+        cb({})
+        return
+    end
+    
+    -- Most ESX servers use these columns for properties
     local query = [[
-        SELECT p.*, u.firstname, u.lastname
+        SELECT p.id, p.owner, p.label as name, p.price, p.coords, u.firstname, u.lastname
         FROM properties p
         LEFT JOIN users u ON p.owner = u.identifier
-        WHERE p.name LIKE ? OR p.label LIKE ? OR u.firstname LIKE ? OR u.lastname LIKE ?
+        WHERE p.label LIKE ? OR u.firstname LIKE ? OR u.lastname LIKE ?
         LIMIT 50
     ]]
     
     local searchPattern = '%' .. searchTerm .. '%'
     print('[ESX_MDT DEBUG] Property search pattern:', searchPattern)
     
-    local results = MySQL.query.await(query, {searchPattern, searchPattern, searchPattern, searchPattern})
+    local results = MySQL.query.await(query, {searchPattern, searchPattern, searchPattern})
     print('[ESX_MDT DEBUG] Property query executed, found', results and #results or 0, 'results')
     
     cb(results)
