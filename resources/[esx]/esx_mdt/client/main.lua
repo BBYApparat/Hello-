@@ -137,36 +137,61 @@ end)
 
 -- NUI Callbacks
 RegisterNUICallback('closeMDT', function(data, cb)
+    print('[ESX_MDT CLIENT] NUI Callback: closeMDT')
     CloseMDT()
     cb('ok')
 end)
 
 RegisterNUICallback('searchPeople', function(data, cb)
+    print('[ESX_MDT CLIENT] NUI Callback: searchPeople')
+    print('[ESX_MDT CLIENT] Search term:', data.search)
+    
     ESX.TriggerServerCallback('esx_mdt:searchPeople', function(results)
+        print('[ESX_MDT CLIENT] Search people results received:', results and #results or 0, 'entries')
         cb(results)
     end, data.search)
 end)
 
 RegisterNUICallback('getPersonDetails', function(data, cb)
+    print('[ESX_MDT CLIENT] NUI Callback: getPersonDetails')
+    print('[ESX_MDT CLIENT] Identifier:', data.identifier)
+    
     ESX.TriggerServerCallback('esx_mdt:getPersonDetails', function(result)
+        print('[ESX_MDT CLIENT] Person details received:', result and 'found' or 'not found')
+        if result then
+            print('[ESX_MDT CLIENT] Person name:', result.firstname, result.lastname)
+        end
         cb(result)
     end, data.identifier)
 end)
 
 RegisterNUICallback('searchVehicles', function(data, cb)
+    print('[ESX_MDT CLIENT] NUI Callback: searchVehicles')
+    print('[ESX_MDT CLIENT] Search term:', data.search)
+    
     ESX.TriggerServerCallback('esx_mdt:searchVehicles', function(results)
+        print('[ESX_MDT CLIENT] Search vehicles results received:', results and #results or 0, 'entries')
         cb(results)
     end, data.search)
 end)
 
 RegisterNUICallback('searchReports', function(data, cb)
+    print('[ESX_MDT CLIENT] NUI Callback: searchReports')
+    print('[ESX_MDT CLIENT] Search data:', json.encode(data))
+    
     ESX.TriggerServerCallback('esx_mdt:searchReports', function(results)
+        print('[ESX_MDT CLIENT] Search reports results received:', results and #results or 0, 'entries')
         cb(results)
     end, data)
 end)
 
 RegisterNUICallback('createReport', function(data, cb)
+    print('[ESX_MDT CLIENT] NUI Callback: createReport')
+    print('[ESX_MDT CLIENT] Report title:', data.title)
+    print('[ESX_MDT CLIENT] Report type:', data.type)
+    
     ESX.TriggerServerCallback('esx_mdt:createReport', function(success)
+        print('[ESX_MDT CLIENT] Create report response:', success and 'success' or 'failed')
         if success then
             ESX.ShowNotification('Report created successfully')
             cb({success = true, reportId = success})
@@ -178,13 +203,21 @@ RegisterNUICallback('createReport', function(data, cb)
 end)
 
 RegisterNUICallback('getReport', function(data, cb)
+    print('[ESX_MDT CLIENT] NUI Callback: getReport')
+    print('[ESX_MDT CLIENT] Report ID:', data.reportId)
+    
     ESX.TriggerServerCallback('esx_mdt:getReport', function(report)
+        print('[ESX_MDT CLIENT] Report details received:', report and 'found' or 'not found')
         cb(report)
     end, data.reportId)
 end)
 
 RegisterNUICallback('updateReport', function(data, cb)
+    print('[ESX_MDT CLIENT] NUI Callback: updateReport')
+    print('[ESX_MDT CLIENT] Report ID:', data.reportId)
+    
     ESX.TriggerServerCallback('esx_mdt:updateReport', function(success)
+        print('[ESX_MDT CLIENT] Update report response:', success and 'success' or 'failed')
         if success then
             ESX.ShowNotification('Report updated successfully')
         else

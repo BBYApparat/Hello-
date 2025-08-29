@@ -49,11 +49,19 @@ end)
 
 -- Search people
 ESX.RegisterServerCallback('esx_mdt:searchPeople', function(source, cb, searchTerm)
+    print('[ESX_MDT DEBUG] searchPeople called by source:', source)
+    print('[ESX_MDT DEBUG] Search term:', searchTerm)
+    
     local xPlayer = GetESXPlayer(source)
+    print('[ESX_MDT DEBUG] xPlayer found:', xPlayer and 'yes' or 'no')
+    
     if not xPlayer or not HasMDTAccess(xPlayer) then
+        print('[ESX_MDT DEBUG] Access denied - xPlayer:', xPlayer and 'exists' or 'nil', '- HasMDTAccess:', xPlayer and HasMDTAccess(xPlayer) or false)
         cb(false)
         return
     end
+    
+    print('[ESX_MDT DEBUG] Access granted, executing search query')
     
     local query = [[
         SELECT u.identifier, u.firstname, u.lastname, u.dateofbirth, u.sex, u.height, 
@@ -65,25 +73,38 @@ ESX.RegisterServerCallback('esx_mdt:searchPeople', function(source, cb, searchTe
     ]]
     
     local searchPattern = '%' .. searchTerm .. '%'
+    print('[ESX_MDT DEBUG] Search pattern:', searchPattern)
+    
     local results = MySQL.query.await(query, {searchPattern, searchPattern, searchPattern})
+    print('[ESX_MDT DEBUG] Query executed, found', results and #results or 0, 'results')
     
     -- Format results
     for i = 1, #results do
         if results[i].flags then
+            print('[ESX_MDT DEBUG] Decoding flags for result', i)
             results[i].flags = json.decode(results[i].flags)
         end
     end
     
+    print('[ESX_MDT DEBUG] Returning results to client')
     cb(results)
 end)
 
 -- Get person details
 ESX.RegisterServerCallback('esx_mdt:getPersonDetails', function(source, cb, identifier)
+    print('[ESX_MDT DEBUG] getPersonDetails called by source:', source)
+    print('[ESX_MDT DEBUG] Identifier requested:', identifier)
+    
     local xPlayer = GetESXPlayer(source)
+    print('[ESX_MDT DEBUG] xPlayer found:', xPlayer and 'yes' or 'no')
+    
     if not xPlayer or not HasMDTAccess(xPlayer) then
+        print('[ESX_MDT DEBUG] Access denied for getPersonDetails')
         cb(false)
         return
     end
+    
+    print('[ESX_MDT DEBUG] Access granted, fetching person details')
     
     local query = [[
         SELECT u.identifier, u.firstname, u.lastname, u.dateofbirth, u.sex, u.height, u.accounts,
@@ -97,8 +118,10 @@ ESX.RegisterServerCallback('esx_mdt:getPersonDetails', function(source, cb, iden
     ]]
     
     local result = MySQL.single.await(query, {identifier})
+    print('[ESX_MDT DEBUG] Person query result:', result and 'found' or 'not found')
     
     if result then
+        print('[ESX_MDT DEBUG] Processing person data for:', result.firstname, result.lastname)
         if result.flags then
             result.flags = json.decode(result.flags)
         end
@@ -107,11 +130,15 @@ ESX.RegisterServerCallback('esx_mdt:getPersonDetails', function(source, cb, iden
         end
         
         -- Get related reports
+        print('[ESX_MDT DEBUG] Fetching related reports for identifier:', identifier)
         local reports = MySQL.query.await('SELECT * FROM mdt_reports WHERE JSON_CONTAINS(suspects, JSON_OBJECT("identifier", ?)) ORDER BY created_at DESC LIMIT 10', {identifier})
+        print('[ESX_MDT DEBUG] Found', reports and #reports or 0, 'related reports')
         result.reports = reports
         
         -- Get active warrants
+        print('[ESX_MDT DEBUG] Fetching active warrants for identifier:', identifier)
         local warrants = MySQL.query.await('SELECT * FROM mdt_warrants WHERE suspect_identifier = ? AND status = "active"', {identifier})
+        print('[ESX_MDT DEBUG] Found', warrants and #warrants or 0, 'active warrants')
         result.warrants = warrants
     end
     
@@ -120,11 +147,19 @@ end)
 
 -- Search vehicles
 ESX.RegisterServerCallback('esx_mdt:searchVehicles', function(source, cb, searchTerm)
+    print('[ESX_MDT DEBUG] searchVehicles called by source:', source)
+    print('[ESX_MDT DEBUG] Vehicle search term:', searchTerm)
+    
     local xPlayer = GetESXPlayer(source)
+    print('[ESX_MDT DEBUG] xPlayer found:', xPlayer and 'yes' or 'no')
+    
     if not xPlayer or not HasMDTAccess(xPlayer) then
+        print('[ESX_MDT DEBUG] Access denied for searchVehicles')
         cb(false)
         return
     end
+    
+    print('[ESX_MDT DEBUG] Access granted, searching vehicles')
     
     local query = [[
         SELECT ov.plate, ov.vehicle, ov.owner, u.firstname, u.lastname,
@@ -137,7 +172,10 @@ ESX.RegisterServerCallback('esx_mdt:searchVehicles', function(source, cb, search
     ]]
     
     local searchPattern = '%' .. searchTerm .. '%'
+    print('[ESX_MDT DEBUG] Vehicle search pattern:', searchPattern)
+    
     local results = MySQL.query.await(query, {searchPattern, searchPattern})
+    print('[ESX_MDT DEBUG] Vehicle query executed, found', results and #results or 0, 'results')
     
     -- Format results
     for i = 1, #results do
@@ -154,11 +192,19 @@ end)
 
 -- Search reports
 ESX.RegisterServerCallback('esx_mdt:searchReports', function(source, cb, searchData)
+    print('[ESX_MDT DEBUG] searchReports called by source:', source)
+    print('[ESX_MDT DEBUG] Search data:', json.encode(searchData))
+    
     local xPlayer = GetESXPlayer(source)
+    print('[ESX_MDT DEBUG] xPlayer found:', xPlayer and 'yes' or 'no')
+    
     if not xPlayer or not HasMDTAccess(xPlayer) then
+        print('[ESX_MDT DEBUG] Access denied for searchReports')
         cb(false)
         return
     end
+    
+    print('[ESX_MDT DEBUG] Access granted, searching reports')
     
     local query = 'SELECT * FROM mdt_reports WHERE 1=1'
     local params = {}
@@ -183,7 +229,11 @@ ESX.RegisterServerCallback('esx_mdt:searchReports', function(source, cb, searchD
     
     query = query .. ' ORDER BY created_at DESC LIMIT 50'
     
+    print('[ESX_MDT DEBUG] Report search query built with', #params, 'parameters')
+    print('[ESX_MDT DEBUG] Executing report search query')
+    
     local results = MySQL.query.await(query, params)
+    print('[ESX_MDT DEBUG] Report query executed, found', results and #results or 0, 'results')
     
     -- Decode JSON fields
     for i = 1, #results do
@@ -200,17 +250,27 @@ end)
 
 -- Create report
 ESX.RegisterServerCallback('esx_mdt:createReport', function(source, cb, reportData)
+    print('[ESX_MDT DEBUG] createReport called by source:', source)
+    print('[ESX_MDT DEBUG] Report data:', json.encode(reportData))
+    
     local xPlayer = GetESXPlayer(source)
+    print('[ESX_MDT DEBUG] xPlayer found:', xPlayer and 'yes' or 'no')
+    
     if not xPlayer or not HasPermission(xPlayer, 'create_reports') then
+        print('[ESX_MDT DEBUG] Permission denied for createReport')
         cb(false)
         return
     end
+    
+    print('[ESX_MDT DEBUG] Permission granted, creating report')
     
     local job = xPlayer.getJob()
     local callsignData = MySQL.single.await('SELECT callsign FROM mdt_callsigns WHERE identifier = ?', {xPlayer.identifier})
     
     local reportId = GenerateReportId()
+    print('[ESX_MDT DEBUG] Generated report ID:', reportId)
     
+    print('[ESX_MDT DEBUG] Inserting report into database')
     local success = MySQL.insert.await([[
         INSERT INTO mdt_reports (report_id, title, content, type, author_identifier, author_name, 
                                 author_callsign, department, suspects, evidence, location, 
@@ -232,6 +292,10 @@ ESX.RegisterServerCallback('esx_mdt:createReport', function(source, cb, reportDa
         'active'
     })
     
+    print('[ESX_MDT DEBUG] Report creation result:', success and 'success' or 'failed')
+    if success then
+        print('[ESX_MDT DEBUG] Report created with ID:', reportId)
+    end
     cb(success and reportId or false)
 end)
 
