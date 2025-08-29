@@ -97,9 +97,14 @@ export const initialState = {
 	drafts: (() => {
 		try {
 			const drafts = localStorage.getItem('drafts');
-			return drafts != null ? JSON.parse(drafts) : [];
+			// Check for null, undefined, or empty string
+			if (!drafts || drafts.trim() === '') {
+				return [];
+			}
+			return JSON.parse(drafts);
 		} catch (e) {
 			console.error('[ESX_MDT] Failed to parse drafts from localStorage:', e);
+			console.error('[ESX_MDT] Draft data was:', localStorage.getItem('drafts'));
 			localStorage.removeItem('drafts'); // Clear corrupted data
 			return [];
 		}
