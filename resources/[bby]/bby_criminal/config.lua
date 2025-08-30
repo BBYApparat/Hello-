@@ -2,9 +2,16 @@ Config = {}
 
 -- ================== CAR LOOTING SETTINGS ==================
 -- General Settings
-Config.SpawnChance = 1.0 -- 100% chance for ALL parked cars to have suitcases
-Config.MaxSuitcasesTotal = 200 -- Increased limit for more suitcases
-Config.UpdateInterval = 3000 -- Check every 3 seconds for new cars
+Config.SpawnChance = 0.7 -- 70% chance for parked cars to have suitcases (reduced for performance)
+Config.MaxSuitcasesTotal = 100 -- Maximum suitcases at once (reduced for performance)
+Config.UpdateInterval = 10000 -- Check every 10 seconds for new cars (increased for performance)
+Config.MaxScanDistance = 150.0 -- Only scan vehicles within this distance
+Config.DisableInitialSpawn = false -- Set to true to disable initial spawn on resource start
+
+-- Player-specific cooldowns (each player has their own timer)
+Config.CarLootCooldownMin = 300000 -- 5 minutes minimum before same player can loot same car
+Config.CarLootCooldownMax = 900000 -- 15 minutes maximum
+Config.CarLootCooldown = 600000 -- 10 minutes default (fallback)
 
 -- Suitcase Props (randomly selected)
 Config.SuitcaseProps = {
@@ -61,7 +68,51 @@ Config.Animations = {
 }
 
 -- Debug
-Config.Debug = true -- Enable debug prints and markers
+Config.Debug = false -- Enable debug prints and markers (SET TO FALSE FOR PRODUCTION!)
+
+-- ================== PERFORMANCE SETTINGS ==================
+-- Adjust these if experiencing lag
+
+Config.Performance = {
+    -- For low-end servers, set to 'low'
+    -- For high-end servers, set to 'high'
+    Mode = 'balanced', -- 'low', 'balanced', 'high'
+    
+    -- Thread intervals (milliseconds)
+    PostboxNearbyCheck = 1000, -- How often to check for nearby postboxes
+    PostboxRescan = 30000, -- How often to rescan all postboxes
+    PostboxCooldownCheck = 120000, -- How often to check cooldowns
+    
+    CarScanInterval = 10000, -- How often to scan for cars
+    CarCooldownCheck = 30000, -- How often to check car cooldowns
+    CarKeepAliveCheck = 15000, -- How often to prevent car despawn
+    
+    -- Distance settings
+    MaxPostboxDistance = 50.0, -- Max distance to process postboxes
+    MaxCarScanDistance = 150.0, -- Max distance to scan cars
+    MaxCarSpawnDistance = 100.0, -- Max distance to spawn suitcases
+}
+
+-- Apply performance presets
+if Config.Performance.Mode == 'low' then
+    -- Settings for low-end servers
+    Config.Performance.PostboxNearbyCheck = 2000
+    Config.Performance.PostboxRescan = 60000
+    Config.Performance.PostboxCooldownCheck = 300000
+    Config.Performance.CarScanInterval = 20000
+    Config.Performance.CarCooldownCheck = 60000
+    Config.Performance.MaxCarScanDistance = 100.0
+    Config.MaxSuitcasesTotal = 50
+elseif Config.Performance.Mode == 'high' then
+    -- Settings for high-end servers
+    Config.Performance.PostboxNearbyCheck = 500
+    Config.Performance.PostboxRescan = 15000
+    Config.Performance.PostboxCooldownCheck = 60000
+    Config.Performance.CarScanInterval = 5000
+    Config.Performance.CarCooldownCheck = 15000
+    Config.Performance.MaxCarScanDistance = 200.0
+    Config.MaxSuitcasesTotal = 150
+end
 
 -- ================== POSTBOX LOOTING SETTINGS ==================
 

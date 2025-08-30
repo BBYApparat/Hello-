@@ -1,24 +1,29 @@
 local ESX = exports['es_extended']:getSharedObject()
 local lootedPostboxes = {}
-local cachedPostboxes = {} -- Cache all postboxes to avoid constant scanning
-local nearbyPostboxes = {} -- Only track nearby postboxes for ox_target
 local isLooting = false
 local isHandStuck = false
 local currentPostbox = nil
 local currentPostboxAttempts = 0
-local lastPostboxScan = 0
-local scanInterval = 60000 -- Scan for new postboxes every 60 seconds
-
--- Performance settings
-local MAX_POSTBOX_DISTANCE = 50.0 -- Only process postboxes within this distance
-local NEARBY_CHECK_INTERVAL = 1000 -- Check for nearby postboxes every 1 second
-local FAR_CHECK_INTERVAL = 5000 -- Check distant postboxes every 5 seconds
 
 -- Utility functions
 local function DebugPrint(msg)
     if Config.Debug then
         print('^3[bby_criminal:postbox] ^7' .. msg)
     end
+end
+
+-- Find all postboxes in the world
+local function GetAllPostboxes()
+    local postboxes = {}
+    local objects = GetGamePool('CObject')
+    
+    for _, obj in pairs(objects) do
+        if GetEntityModel(obj) == GetHashKey('prop_postbox_01a') then
+            table.insert(postboxes, obj)
+        end
+    end
+    
+    return postboxes
 end
 
 -- Get postbox ID (using coordinates as unique identifier)
@@ -30,31 +35,7 @@ end
 -- Check if postbox has been looted
 local function IsPostboxLooted(postbox)
     local id = GetPostboxId(postbox)
-    return lootedPostboxes[id] ~= nil and lootedPostboxes[id].looted
-end
-
--- Scan for postboxes (optimized with caching)
-local function ScanForPostboxes()
-    local currentTime = GetGameTimer()
-    
-    -- Only scan if enough time has passed
-    if currentTime - lastPostboxScan < scanInterval then
-        return cachedPostboxes
-    end
-    
-    lastPostboxScan = currentTime
-    local postboxes = {}
-    local objects = GetGamePool('CObject')
-    
-    for _, obj in pairs(objects) do
-        if GetEntityModel(obj) == GetHashKey('prop_postbox_01a') then
-            table.insert(postboxes, obj)
-        end
-    end
-    
-    cachedPostboxes = postboxes
-    DebugPrint('Cached ' .. #postboxes .. ' postboxes')
-    return postboxes
+    return lootedPostboxes[id] ~= nil
 end
 
 -- Lockpick postbox
@@ -132,7 +113,7 @@ local function LockpickPostbox(postbox)
     currentPostbox = nil
 end
 
--- Hand stuck mechanic (optimized)
+-- Hand stuck mechanic (now gives reward when freed)
 local function HandleHandStuck()
     isHandStuck = true
     local playerPed = PlayerPedId()
@@ -169,7 +150,7 @@ local function HandleHandStuck()
                     
                     -- Increment attempts and give reward
                     currentPostboxAttempts = currentPostboxAttempts + 1
-                    TriggerServerEvent('bby_criminal:rewardPostboxSingle')
+                    TriggerServerEvent('bby_criminal:rewardPostboxSingle') -- Single envelope reward
                     
                     local id = GetPostboxId(currentPostbox)
                     
@@ -191,7 +172,7 @@ local function HandleHandStuck()
                         -- Reset attempts counter
                         currentPostboxAttempts = 0
                         
-                        -- Refresh target
+                        -- Refresh target to remove interactions
                         exports.ox_target:removeLocalEntity(currentPostbox, {'lockpick_postbox', 'loot_postbox'})
                         AddPostboxTarget(currentPostbox)
                     else
@@ -263,6 +244,7 @@ local function LootPostbox(postbox)
             type = 'error'
         })
         HandleHandStuck()
+        -- Note: HandleHandStuck now manages the rewards and looting status
     else
         -- Cancelled
         ClearPedTasks(playerPed)
@@ -322,84 +304,32 @@ function AddPostboxTarget(postbox)
     end
 end
 
--- Remove ox_target from postbox
-local function RemovePostboxTarget(postbox)
-    exports.ox_target:removeLocalEntity(postbox, {'lockpick_postbox', 'loot_postbox'})
-end
-
--- OPTIMIZED: Process nearby postboxes only
-local function ProcessNearbyPostboxes()
-    local playerPed = PlayerPedId()
-    local playerCoords = GetEntityCoords(playerPed)
-    local processedPostboxes = {}
+-- Initialize postboxes
+local function InitializePostboxes()
+    local postboxes = GetAllPostboxes()
+    DebugPrint('Found ' .. #postboxes .. ' postboxes in the world')
     
-    -- Check cached postboxes
-    for _, postbox in pairs(cachedPostboxes) do
-        if DoesEntityExist(postbox) then
-            local postboxCoords = GetEntityCoords(postbox)
-            local distance = #(playerCoords - postboxCoords)
-            
-            if distance <= MAX_POSTBOX_DISTANCE then
-                local id = GetPostboxId(postbox)
-                processedPostboxes[id] = true
-                
-                -- Add to nearby if not already tracked
-                if not nearbyPostboxes[id] then
-                    nearbyPostboxes[id] = postbox
-                    AddPostboxTarget(postbox)
-                    DebugPrint('Added nearby postbox: ' .. id)
-                end
-            end
-        end
-    end
-    
-    -- Remove postboxes that are no longer nearby
-    for id, postbox in pairs(nearbyPostboxes) do
-        if not processedPostboxes[id] then
-            RemovePostboxTarget(postbox)
-            nearbyPostboxes[id] = nil
-            DebugPrint('Removed distant postbox: ' .. id)
-        end
+    for _, postbox in pairs(postboxes) do
+        AddPostboxTarget(postbox)
     end
 end
 
--- OPTIMIZED: Main proximity thread - runs frequently but does minimal work
-CreateThread(function()
-    Wait(5000) -- Initial wait
-    
-    -- Initial scan
-    ScanForPostboxes()
-    
-    while true do
-        ProcessNearbyPostboxes()
-        Wait(NEARBY_CHECK_INTERVAL)
-    end
-end)
-
--- OPTIMIZED: Postbox refresh thread - runs less frequently
+-- Reset looted postboxes individually based on their own cooldown
 CreateThread(function()
     while true do
-        Wait(30000) -- Every 30 seconds
-        
-        -- Force rescan for new postboxes
-        lastPostboxScan = 0
-        ScanForPostboxes()
-    end
-end)
-
--- OPTIMIZED: Reset cooldowns thread - runs infrequently
-CreateThread(function()
-    while true do
-        Wait(120000) -- Check every 2 minutes (increased from 1 minute)
+        Wait(60000) -- Check every minute
         
         local currentTime = GetGameTimer()
+        local resetCount = 0
         local postboxesToReset = {}
         
         for id, data in pairs(lootedPostboxes) do
             if data.looted then
+                -- Each postbox has its own cooldown time
                 local cooldownTime = data.cooldownTime or Config.PostboxResetTime
                 if (currentTime - data.timestamp) > cooldownTime then
                     postboxesToReset[id] = true
+                    resetCount = resetCount + 1
                 end
             end
         end
@@ -407,16 +337,42 @@ CreateThread(function()
         -- Reset the postboxes that have cooled down
         for id, _ in pairs(postboxesToReset) do
             lootedPostboxes[id] = nil
-            
-            -- Refresh target if nearby
-            if nearbyPostboxes[id] then
-                RemovePostboxTarget(nearbyPostboxes[id])
-                AddPostboxTarget(nearbyPostboxes[id])
-            end
         end
         
-        if next(postboxesToReset) then
-            DebugPrint('Reset ' .. #postboxesToReset .. ' looted postboxes')
+        if resetCount > 0 then
+            DebugPrint('Reset ' .. resetCount .. ' looted postboxes')
+            
+            -- Reinitialize targets for reset postboxes
+            local postboxes = GetAllPostboxes()
+            for _, postbox in pairs(postboxes) do
+                local postboxId = GetPostboxId(postbox)
+                if postboxesToReset[postboxId] then
+                    exports.ox_target:removeLocalEntity(postbox, {'lockpick_postbox', 'loot_postbox'})
+                    AddPostboxTarget(postbox)
+                end
+            end
+        end
+    end
+end)
+
+-- Scan for new postboxes periodically
+CreateThread(function()
+    Wait(5000) -- Initial wait
+    InitializePostboxes()
+    
+    while true do
+        Wait(30000) -- Check every 30 seconds for new postboxes
+        
+        local postboxes = GetAllPostboxes()
+        for _, postbox in pairs(postboxes) do
+            -- Check if this postbox already has targets
+            local id = GetPostboxId(postbox)
+            if not lootedPostboxes[id] or not lootedPostboxes[id].targeted then
+                AddPostboxTarget(postbox)
+                if lootedPostboxes[id] then
+                    lootedPostboxes[id].targeted = true
+                end
+            end
         end
     end
 end)
@@ -425,21 +381,19 @@ end)
 if Config.Debug then
     RegisterCommand('resetpostboxes', function()
         lootedPostboxes = {}
-        for id, postbox in pairs(nearbyPostboxes) do
-            RemovePostboxTarget(postbox)
-            AddPostboxTarget(postbox)
-        end
+        InitializePostboxes()
         print('^2[DEBUG] All postboxes have been reset')
     end, false)
     
     RegisterCommand('checkpostboxes', function()
+        local postboxes = GetAllPostboxes()
         local lootedCount = 0
         for id, data in pairs(lootedPostboxes) do
             if data.looted then
                 lootedCount = lootedCount + 1
             end
         end
-        print('^2[DEBUG] Cached: ' .. #cachedPostboxes .. ', Nearby: ' .. #nearbyPostboxes .. ', Looted: ' .. lootedCount)
+        print('^2[DEBUG] Total postboxes: ' .. #postboxes .. ', Looted: ' .. lootedCount)
     end, false)
 end
 
@@ -448,7 +402,8 @@ AddEventHandler('onResourceStop', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
     
     -- Remove all postbox targets
-    for id, postbox in pairs(nearbyPostboxes) do
-        RemovePostboxTarget(postbox)
+    local postboxes = GetAllPostboxes()
+    for _, postbox in pairs(postboxes) do
+        exports.ox_target:removeLocalEntity(postbox, {'lockpick_postbox', 'loot_postbox'})
     end
 end)

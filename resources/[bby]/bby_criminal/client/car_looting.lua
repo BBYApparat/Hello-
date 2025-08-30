@@ -1,6 +1,7 @@
 local ESX = exports['es_extended']:getSharedObject()
 local spawnedSuitcases = {}
 local vehicleWindows = {} -- Track broken windows
+local playerStolenVehicles = {} -- Track which vehicles THIS player has stolen from
 local isStealingOrSmashing = false
 
 -- Utility functions
@@ -52,16 +53,36 @@ local function HasCrowbar()
 end
 
 -- Spawn suitcase in vehicle
-local function SpawnSuitcaseInVehicle(vehicle)
+local function SpawnSuitcaseInVehicle(vehicle, forceRespawn)
     if not DoesEntityExist(vehicle) then return end
     
     local plate = GetVehiclePlate(vehicle)
     if not plate then return end
     
-    -- Check if suitcase already exists for this vehicle
+    -- Check if THIS PLAYER has already stolen from this vehicle
+    if playerStolenVehicles[plate] and not forceRespawn then
+        -- Check if cooldown has passed for this player
+        if playerStolenVehicles[plate].timestamp then
+            local currentTime = GetGameTimer()
+            local cooldownTime = playerStolenVehicles[plate].cooldownTime or Config.CarLootCooldown
+            
+            if (currentTime - playerStolenVehicles[plate].timestamp) < cooldownTime then
+                -- Still on cooldown for this player, don't spawn
+                return
+            else
+                -- Cooldown passed, remove from stolen list
+                playerStolenVehicles[plate] = nil
+            end
+        end
+    end
+    
+    -- Check if suitcase already exists for this vehicle (for this player's view)
     if spawnedSuitcases[plate] then
-        if DoesEntityExist(spawnedSuitcases[plate].prop) then
+        if DoesEntityExist(spawnedSuitcases[plate].prop) and not forceRespawn then
             return
+        elseif DoesEntityExist(spawnedSuitcases[plate].prop) then
+            -- Remove old prop if forcing respawn
+            DeleteEntity(spawnedSuitcases[plate].prop)
         end
     end
     
@@ -160,8 +181,8 @@ local function SpawnSuitcaseInVehicle(vehicle)
     })
 end
 
--- Remove suitcase from vehicle
-local function RemoveSuitcase(plate)
+-- Remove suitcase from vehicle (only from this player's view)
+local function RemoveSuitcase(plate, keepVehicleTracked)
     if spawnedSuitcases[plate] then
         if DoesEntityExist(spawnedSuitcases[plate].prop) then
             DeleteEntity(spawnedSuitcases[plate].prop)
@@ -172,8 +193,15 @@ local function RemoveSuitcase(plate)
             exports.ox_target:removeLocalEntity(spawnedSuitcases[plate].vehicle, {'steal_suitcase_unlocked', 'smash_window'})
         end
         
-        spawnedSuitcases[plate] = nil
-        DebugPrint('Removed suitcase from vehicle: ' .. plate)
+        -- Keep vehicle reference if needed for respawn later
+        if not keepVehicleTracked then
+            spawnedSuitcases[plate] = nil
+        else
+            spawnedSuitcases[plate].prop = nil
+            spawnedSuitcases[plate].hidden = true
+        end
+        
+        DebugPrint('Removed suitcase from vehicle: ' .. plate .. ' (player-specific)')
     end
 end
 
@@ -279,9 +307,20 @@ function StealSuitcase(vehicle)
     }) then
         -- Success
         ClearPedTasks(playerPed)
-        spawnedSuitcases[plate].stolen = true
+        
+        -- Mark as stolen for THIS PLAYER only with individual cooldown
+        playerStolenVehicles[plate] = {
+            timestamp = GetGameTimer(),
+            cooldownTime = math.random(Config.CarLootCooldownMin, Config.CarLootCooldownMax) -- Random cooldown per player
+        }
+        
+        -- Remove suitcase from this player's view
         RemoveSuitcase(plate)
+        
+        -- Give reward
         TriggerServerEvent('bby_criminal:rewardPlayer')
+        
+        DebugPrint(('Vehicle %s looted by player, cooldown: %d minutes'):format(plate, playerStolenVehicles[plate].cooldownTime / 60000))
         lib.notify({
             title = 'Success',
             description = 'You stole the suitcase!',
@@ -300,10 +339,24 @@ function StealSuitcase(vehicle)
     isStealingOrSmashing = false
 end
 
--- Scan for ALL vehicles in game world and spawn suitcases
+-- OPTIMIZED: Only scan vehicles near player
 local function ScanForParkedVehicles()
-    -- Get ALL vehicles in the game world
-    local vehicles = GetGamePool('CVehicle')
+    local playerPed = PlayerPedId()
+    local playerCoords = GetEntityCoords(playerPed)
+    
+    -- Only get vehicles within reasonable distance
+    local vehicles = {}
+    local allVehicles = GetGamePool('CVehicle')
+    
+    for _, vehicle in pairs(allVehicles) do
+        local vehCoords = GetEntityCoords(vehicle)
+        local distance = #(playerCoords - vehCoords)
+        
+        -- Only process vehicles within 150 meters
+        if distance <= 150.0 then
+            table.insert(vehicles, vehicle)
+        end
+    end
     
     local suitcaseCount = 0
     local validSuitcases = 0
@@ -354,28 +407,42 @@ local function ScanForParkedVehicles()
     DebugPrint(('Checked %d valid vehicles, spawned %d new suitcases'):format(vehiclesChecked, vehiclesWithSuitcase))
 end
 
--- Spawn suitcases immediately on resource start
+-- OPTIMIZED: Limited initial spawn near player only
 local function InitialSpawn()
-    Wait(2000) -- Short wait for game to stabilize
-    DebugPrint('Starting initial suitcase spawn in ALL parked cars...')
+    if Config.DisableInitialSpawn then
+        DebugPrint('Initial spawn disabled')
+        return
+    end
     
+    Wait(5000) -- Wait for game to stabilize
+    DebugPrint('Starting initial suitcase spawn near player...')
+    
+    local playerPed = PlayerPedId()
+    local playerCoords = GetEntityCoords(playerPed)
     local vehicles = GetGamePool('CVehicle')
     local spawnCount = 0
+    local maxInitialSpawn = math.min(30, Config.MaxSuitcasesTotal) -- Limit initial spawn
     
     for _, vehicle in pairs(vehicles) do
         if IsVehicleValid(vehicle) then
-            local plate = GetVehiclePlate(vehicle)
+            local vehCoords = GetEntityCoords(vehicle)
+            local distance = #(playerCoords - vehCoords)
             
-            if plate and plate ~= "" then
-                -- Set as mission entity to prevent despawn
-                SetEntityAsMissionEntity(vehicle, true, false)
+            -- Only spawn in nearby vehicles initially
+            if distance <= 100.0 then
+                local plate = GetVehiclePlate(vehicle)
                 
-                -- Spawn suitcase
-                SpawnSuitcaseInVehicle(vehicle)
-                spawnCount = spawnCount + 1
-                
-                if spawnCount >= Config.MaxSuitcasesTotal then
-                    break
+                if plate and plate ~= "" and math.random() < Config.SpawnChance then
+                    -- Set as mission entity to prevent despawn
+                    SetEntityAsMissionEntity(vehicle, true, false)
+                    
+                    -- Spawn suitcase
+                    SpawnSuitcaseInVehicle(vehicle)
+                    spawnCount = spawnCount + 1
+                    
+                    if spawnCount >= maxInitialSpawn then
+                        break
+                    end
                 end
             end
         end
@@ -406,26 +473,66 @@ CreateThread(function()
     InitialSpawn()
 end)
 
--- Keep vehicles with suitcases from despawning
+-- OPTIMIZED: Only keep nearby vehicles from despawning
 CreateThread(function()
     while true do
-        Wait(5000) -- Check every 5 seconds
+        Wait(15000) -- Check less frequently (15 seconds)
+        
+        local playerPed = PlayerPedId()
+        local playerCoords = GetEntityCoords(playerPed)
+        local vehiclesToProcess = 0
         
         for plate, data in pairs(spawnedSuitcases) do
             if DoesEntityExist(data.vehicle) then
-                -- Keep setting as mission entity to prevent cleanup
-                SetEntityAsMissionEntity(data.vehicle, true, false)
-                
-                -- Also ensure the vehicle doesn't get deleted when far away
-                local playerPed = PlayerPedId()
-                local playerCoords = GetEntityCoords(playerPed)
                 local vehCoords = GetEntityCoords(data.vehicle)
                 local distance = #(playerCoords - vehCoords)
                 
-                -- If vehicle is getting far, make sure it stays
-                if distance > 100.0 then
-                    SetVehicleHasBeenOwnedByPlayer(data.vehicle, false)
+                -- Only process vehicles within reasonable distance
+                if distance <= 200.0 then
+                    vehiclesToProcess = vehiclesToProcess + 1
                     SetEntityAsMissionEntity(data.vehicle, true, false)
+                    
+                    -- Process max 10 vehicles per cycle to avoid lag
+                    if vehiclesToProcess >= 10 then
+                        Wait(0) -- Yield to prevent freezing
+                        vehiclesToProcess = 0
+                    end
+                end
+            end
+        end
+    end
+end)
+
+-- Check player-specific cooldowns and respawn suitcases when ready
+CreateThread(function()
+    while true do
+        Wait(30000) -- Check every 30 seconds
+        
+        local currentTime = GetGameTimer()
+        local respawnList = {}
+        
+        -- Check for expired cooldowns
+        for plate, data in pairs(playerStolenVehicles) do
+            if data.timestamp then
+                local cooldownTime = data.cooldownTime or Config.CarLootCooldown
+                
+                if (currentTime - data.timestamp) > cooldownTime then
+                    -- Cooldown expired for this player
+                    respawnList[plate] = true
+                    playerStolenVehicles[plate] = nil
+                    DebugPrint(('Cooldown expired for vehicle %s, respawning suitcase'):format(plate))
+                end
+            end
+        end
+        
+        -- Respawn suitcases for vehicles that are off cooldown
+        for plate, _ in pairs(respawnList) do
+            -- Find the vehicle
+            local vehicles = GetGamePool('CVehicle')
+            for _, vehicle in pairs(vehicles) do
+                if GetVehiclePlate(vehicle) == plate then
+                    SpawnSuitcaseInVehicle(vehicle, true) -- Force respawn
+                    break
                 end
             end
         end
