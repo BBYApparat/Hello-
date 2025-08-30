@@ -70,21 +70,41 @@ local function SpawnSuitcaseInVehicle(vehicle)
     local model = GetHashKey(randomProp)
     lib.requestModel(model)
     
-    -- Create suitcase prop
-    local suitcase = CreateObject(model, 0.0, 0.0, 0.0, false, false, false)
+    -- Get vehicle coords for prop creation
+    local vehCoords = GetEntityCoords(vehicle)
     
-    -- Attach to passenger seat area
-    AttachEntityToEntity(suitcase, vehicle, GetEntityBoneIndexByName(vehicle, 'seat_pside_f'), 
-        0.0, -0.2, 0.4, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+    -- Create suitcase prop
+    local suitcase = CreateObject(model, vehCoords.x, vehCoords.y, vehCoords.z, false, false, false)
+    
+    -- Make sure prop is visible
+    SetEntityVisible(suitcase, true)
+    SetEntityCollision(suitcase, false, false)
+    
+    -- Try different attachment method - directly to seat position
+    local boneIndex = GetEntityBoneIndexByName(vehicle, 'seat_pside_f')
+    if boneIndex == -1 then
+        -- Fallback if bone doesn't exist, use offset from vehicle
+        AttachEntityToEntity(suitcase, vehicle, 0, 
+            0.5, -0.2, 0.3, -- Position offset (passenger side)
+            0.0, 0.0, 0.0, -- Rotation
+            false, false, false, false, 2, true)
+    else
+        -- Attach to passenger seat bone
+        AttachEntityToEntity(suitcase, vehicle, boneIndex, 
+            0.0, 0.0, 0.3, -- Position offset from bone
+            0.0, 0.0, 0.0, -- Rotation
+            false, false, false, false, 2, true)
+    end
     
     -- Store reference
     spawnedSuitcases[plate] = {
         vehicle = vehicle,
         prop = suitcase,
-        stolen = false
+        stolen = false,
+        propModel = randomProp
     }
     
-    DebugPrint('Spawned suitcase in vehicle: ' .. plate)
+    DebugPrint(('Spawned suitcase (%s) in vehicle: %s (Entity: %d)'):format(randomProp, plate, suitcase))
     
     -- Add ox_target interactions
     exports.ox_target:addLocalEntity(vehicle, {
@@ -282,23 +302,41 @@ local function ScanForParkedVehicles()
     local vehicles = GetGamePool('CVehicle')
     
     local suitcaseCount = 0
-    for plate, _ in pairs(spawnedSuitcases) do
-        if DoesEntityExist(spawnedSuitcases[plate].prop) then
+    local validSuitcases = 0
+    for plate, data in pairs(spawnedSuitcases) do
+        if DoesEntityExist(data.prop) then
             suitcaseCount = suitcaseCount + 1
+            if IsEntityVisible(data.prop) then
+                validSuitcases = validSuitcases + 1
+            end
+        else
+            -- Clean up invalid entry
+            spawnedSuitcases[plate] = nil
         end
     end
     
-    DebugPrint(('Found %d vehicles in world, %d suitcases spawned'):format(#vehicles, suitcaseCount))
+    DebugPrint(('Found %d vehicles in world, %d suitcases spawned (%d visible)'):format(#vehicles, suitcaseCount, validSuitcases))
+    
+    -- Only spawn more if we're below the limit
+    if suitcaseCount >= Config.MaxSuitcasesTotal then
+        DebugPrint('Max total suitcases reached, skipping spawn')
+        return
+    end
+    
+    local vehiclesChecked = 0
+    local vehiclesWithSuitcase = 0
     
     for _, vehicle in pairs(vehicles) do
         if IsVehicleValid(vehicle) then
+            vehiclesChecked = vehiclesChecked + 1
             local plate = GetVehiclePlate(vehicle)
-            if plate and not spawnedSuitcases[plate] then
+            
+            if plate and plate ~= "" and not spawnedSuitcases[plate] then
                 -- Random chance to spawn suitcase
                 if math.random() < Config.SpawnChance then
                     SpawnSuitcaseInVehicle(vehicle)
                     suitcaseCount = suitcaseCount + 1
-                    DebugPrint(('Spawned suitcase %d/%d'):format(suitcaseCount, Config.MaxSuitcasesTotal))
+                    vehiclesWithSuitcase = vehiclesWithSuitcase + 1
                     
                     if suitcaseCount >= Config.MaxSuitcasesTotal then
                         DebugPrint('Max total suitcases reached')
@@ -308,6 +346,8 @@ local function ScanForParkedVehicles()
             end
         end
     end
+    
+    DebugPrint(('Checked %d valid vehicles, spawned %d new suitcases'):format(vehiclesChecked, vehiclesWithSuitcase))
 end
 
 -- Cleanup non-existent vehicles
@@ -357,6 +397,60 @@ CreateThread(function()
         Wait(Config.UpdateInterval)
     end
 end)
+
+-- Debug command to manually spawn suitcase in nearest vehicle
+if Config.Debug then
+    RegisterCommand('testsuitcase', function()
+        local playerPed = PlayerPedId()
+        local playerCoords = GetEntityCoords(playerPed)
+        local nearestVehicle = nil
+        local nearestDistance = 10.0
+        
+        local vehicles = GetGamePool('CVehicle')
+        for _, vehicle in pairs(vehicles) do
+            local vehCoords = GetEntityCoords(vehicle)
+            local distance = #(playerCoords - vehCoords)
+            if distance < nearestDistance then
+                nearestVehicle = vehicle
+                nearestDistance = distance
+            end
+        end
+        
+        if nearestVehicle then
+            local plate = GetVehiclePlate(nearestVehicle)
+            print('^2[DEBUG] Forcing suitcase spawn in nearest vehicle: ' .. tostring(plate))
+            SpawnSuitcaseInVehicle(nearestVehicle)
+        else
+            print('^1[DEBUG] No vehicle found nearby')
+        end
+    end, false)
+    
+    RegisterCommand('clearsuitcases', function()
+        local count = 0
+        for plate, _ in pairs(spawnedSuitcases) do
+            RemoveSuitcase(plate)
+            count = count + 1
+        end
+        print('^2[DEBUG] Cleared ' .. count .. ' suitcases')
+    end, false)
+    
+    RegisterCommand('checksuitcases', function()
+        local count = 0
+        local visible = 0
+        for plate, data in pairs(spawnedSuitcases) do
+            if DoesEntityExist(data.prop) then
+                count = count + 1
+                if IsEntityVisible(data.prop) then
+                    visible = visible + 1
+                end
+                print(('[DEBUG] Plate: %s, Prop: %s, Entity: %d, Visible: %s'):format(
+                    plate, data.propModel, data.prop, tostring(IsEntityVisible(data.prop))
+                ))
+            end
+        end
+        print('^2[DEBUG] Total suitcases: ' .. count .. ' (Visible: ' .. visible .. ')')
+    end, false)
+end
 
 -- Cleanup on resource stop
 AddEventHandler('onResourceStop', function(resourceName)

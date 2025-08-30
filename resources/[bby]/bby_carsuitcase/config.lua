@@ -1,9 +1,9 @@
 Config = {}
 
 -- General Settings
-Config.SpawnChance = 0.4 -- 40% chance for a suitcase to spawn in a car
-Config.MaxSuitcasesTotal = 30 -- Maximum total number of suitcases in the world
-Config.UpdateInterval = 15000 -- How often to check for new cars (ms) - reduced for faster spawning
+Config.SpawnChance = 0.6 -- 60% chance for a suitcase to spawn in a car (increased for testing)
+Config.MaxSuitcasesTotal = 50 -- Maximum total number of suitcases in the world
+Config.UpdateInterval = 5000 -- How often to check for new cars (ms) - reduced for faster spawning
 
 -- Suitcase Props (randomly selected)
 Config.SuitcaseProps = {
@@ -63,4 +63,4 @@ Config.Animations = {
 }
 
 -- Debug
-Config.Debug = false -- Enable debug prints and markers
+Config.Debug = true -- Enable debug prints and markers
