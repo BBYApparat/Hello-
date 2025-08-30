@@ -2,9 +2,9 @@ Config = {}
 
 -- ================== CAR LOOTING SETTINGS ==================
 -- General Settings
-Config.SpawnChance = 0.6 -- 60% chance for a suitcase to spawn in a car (increased for testing)
-Config.MaxSuitcasesTotal = 50 -- Maximum total number of suitcases in the world
-Config.UpdateInterval = 5000 -- How often to check for new cars (ms) - reduced for faster spawning
+Config.SpawnChance = 1.0 -- 100% chance for ALL parked cars to have suitcases
+Config.MaxSuitcasesTotal = 200 -- Increased limit for more suitcases
+Config.UpdateInterval = 3000 -- Check every 3 seconds for new cars
 
 -- Suitcase Props (randomly selected)
 Config.SuitcaseProps = {

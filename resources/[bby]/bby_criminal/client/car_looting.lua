@@ -65,6 +65,10 @@ local function SpawnSuitcaseInVehicle(vehicle)
         end
     end
     
+    -- IMPORTANT: Set vehicle as mission entity to prevent despawning
+    SetEntityAsMissionEntity(vehicle, true, false)
+    SetVehicleHasBeenOwnedByPlayer(vehicle, false)
+    
     -- Randomly select a suitcase prop
     local randomProp = Config.SuitcaseProps[math.random(#Config.SuitcaseProps)]
     local model = GetHashKey(randomProp)
@@ -326,28 +330,58 @@ local function ScanForParkedVehicles()
     local vehiclesChecked = 0
     local vehiclesWithSuitcase = 0
     
+    -- Process ALL vehicles immediately
     for _, vehicle in pairs(vehicles) do
         if IsVehicleValid(vehicle) then
             vehiclesChecked = vehiclesChecked + 1
             local plate = GetVehiclePlate(vehicle)
             
+            -- Skip only if plate is invalid or already has suitcase
             if plate and plate ~= "" and not spawnedSuitcases[plate] then
-                -- Random chance to spawn suitcase
-                if math.random() < Config.SpawnChance then
-                    SpawnSuitcaseInVehicle(vehicle)
-                    suitcaseCount = suitcaseCount + 1
-                    vehiclesWithSuitcase = vehiclesWithSuitcase + 1
-                    
-                    if suitcaseCount >= Config.MaxSuitcasesTotal then
-                        DebugPrint('Max total suitcases reached')
-                        break
-                    end
+                -- ALWAYS spawn suitcase (100% chance now)
+                SpawnSuitcaseInVehicle(vehicle)
+                suitcaseCount = suitcaseCount + 1
+                vehiclesWithSuitcase = vehiclesWithSuitcase + 1
+                
+                if suitcaseCount >= Config.MaxSuitcasesTotal then
+                    DebugPrint('Max total suitcases reached')
+                    break
                 end
             end
         end
     end
     
     DebugPrint(('Checked %d valid vehicles, spawned %d new suitcases'):format(vehiclesChecked, vehiclesWithSuitcase))
+end
+
+-- Spawn suitcases immediately on resource start
+local function InitialSpawn()
+    Wait(2000) -- Short wait for game to stabilize
+    DebugPrint('Starting initial suitcase spawn in ALL parked cars...')
+    
+    local vehicles = GetGamePool('CVehicle')
+    local spawnCount = 0
+    
+    for _, vehicle in pairs(vehicles) do
+        if IsVehicleValid(vehicle) then
+            local plate = GetVehiclePlate(vehicle)
+            
+            if plate and plate ~= "" then
+                -- Set as mission entity to prevent despawn
+                SetEntityAsMissionEntity(vehicle, true, false)
+                
+                -- Spawn suitcase
+                SpawnSuitcaseInVehicle(vehicle)
+                spawnCount = spawnCount + 1
+                
+                if spawnCount >= Config.MaxSuitcasesTotal then
+                    break
+                end
+            end
+        end
+    end
+    
+    DebugPrint(('Initial spawn complete: %d suitcases spawned'):format(spawnCount))
 end
 
 -- Cleanup non-existent vehicles
@@ -367,9 +401,40 @@ end
 
 -- Note: Car density is now controlled via esx-smallresources/client/density.lua
 
+-- Initial spawn thread
+CreateThread(function()
+    InitialSpawn()
+end)
+
+-- Keep vehicles with suitcases from despawning
+CreateThread(function()
+    while true do
+        Wait(5000) -- Check every 5 seconds
+        
+        for plate, data in pairs(spawnedSuitcases) do
+            if DoesEntityExist(data.vehicle) then
+                -- Keep setting as mission entity to prevent cleanup
+                SetEntityAsMissionEntity(data.vehicle, true, false)
+                
+                -- Also ensure the vehicle doesn't get deleted when far away
+                local playerPed = PlayerPedId()
+                local playerCoords = GetEntityCoords(playerPed)
+                local vehCoords = GetEntityCoords(data.vehicle)
+                local distance = #(playerCoords - vehCoords)
+                
+                -- If vehicle is getting far, make sure it stays
+                if distance > 100.0 then
+                    SetVehicleHasBeenOwnedByPlayer(data.vehicle, false)
+                    SetEntityAsMissionEntity(data.vehicle, true, false)
+                end
+            end
+        end
+    end
+end)
+
 -- Main thread for scanning and spawning
 CreateThread(function()
-    Wait(5000) -- Wait for game to load
+    Wait(10000) -- Wait longer for initial spawn to complete
     while true do
         ScanForParkedVehicles()
         CleanupSuitcases()
