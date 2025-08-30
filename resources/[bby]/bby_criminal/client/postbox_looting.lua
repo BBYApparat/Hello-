@@ -179,7 +179,8 @@ local function HandleHandStuck()
                         if lootedPostboxes[id] then
                             lootedPostboxes[id].looted = true
                             lootedPostboxes[id].cooldownTime = math.random(Config.PostboxResetTimeMin, Config.PostboxResetTimeMax)
-                            DebugPrint(('Postbox %s fully looted (3 envelopes), will reset in %d minutes'):format(id, lootedPostboxes[id].cooldownTime / 60000))
+                            local minutes = math.floor(lootedPostboxes[id].cooldownTime / 60000)
+                            DebugPrint(('Postbox %s fully looted (3 envelopes), will reset in %d minutes'):format(id, minutes))
                         end
                         
                         lib.notify({

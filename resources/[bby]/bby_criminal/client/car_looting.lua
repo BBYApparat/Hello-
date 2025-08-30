@@ -320,7 +320,8 @@ function StealSuitcase(vehicle)
         -- Give reward
         TriggerServerEvent('bby_criminal:rewardPlayer')
         
-        DebugPrint(('Vehicle %s looted by player, cooldown: %d minutes'):format(plate, playerStolenVehicles[plate].cooldownTime / 60000))
+        local minutes = math.floor(playerStolenVehicles[plate].cooldownTime / 60000)
+        DebugPrint(('Vehicle %s looted by player, cooldown: %d minutes'):format(plate, minutes))
         lib.notify({
             title = 'Success',
             description = 'You stole the suitcase!',
