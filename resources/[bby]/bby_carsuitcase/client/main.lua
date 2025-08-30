@@ -65,8 +65,9 @@ local function SpawnSuitcaseInVehicle(vehicle)
         end
     end
     
-    -- Load prop model
-    local model = GetHashKey(Config.SuitcaseProp)
+    -- Randomly select a suitcase prop
+    local randomProp = Config.SuitcaseProps[math.random(#Config.SuitcaseProps)]
+    local model = GetHashKey(randomProp)
     lib.requestModel(model)
     
     -- Create suitcase prop

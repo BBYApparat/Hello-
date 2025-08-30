@@ -4,7 +4,13 @@ Config = {}
 Config.SpawnChance = 0.4 -- 40% chance for a suitcase to spawn in a car
 Config.MaxSuitcasesTotal = 30 -- Maximum total number of suitcases in the world
 Config.UpdateInterval = 15000 -- How often to check for new cars (ms) - reduced for faster spawning
-Config.SuitcaseProp = 'prop_ld_suitcase_01' -- Suitcase prop model
+
+-- Suitcase Props (randomly selected)
+Config.SuitcaseProps = {
+    'prop_ld_suitcase_01',
+    'prop_ld_case_01_s',
+    'prop_ld_case_01'
+}
 
 -- Car Density Settings (increase parked cars)
 Config.IncreaseParkedDensity = true -- Enable increased parked car density
