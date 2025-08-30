@@ -150,10 +150,13 @@ local function HandleHandStuck()
                     -- Give envelopes
                     TriggerServerEvent('bby_criminal:rewardPostbox')
                     
-                    -- Mark as fully looted
+                    -- Mark as fully looted with random cooldown
                     local id = GetPostboxId(currentPostbox)
                     if lootedPostboxes[id] then
                         lootedPostboxes[id].looted = true
+                        -- Set random cooldown between min and max
+                        lootedPostboxes[id].cooldownTime = math.random(Config.PostboxResetTimeMin, Config.PostboxResetTimeMax)
+                        DebugPrint(('Postbox %s will reset in %d minutes'):format(id, lootedPostboxes[id].cooldownTime / 60000))
                     end
                     
                     -- Refresh target
@@ -214,10 +217,13 @@ local function LootPostbox(postbox)
             -- Give envelopes
             TriggerServerEvent('bby_criminal:rewardPostbox')
             
-            -- Mark as looted
+            -- Mark as looted with random cooldown
             local id = GetPostboxId(postbox)
             if lootedPostboxes[id] then
                 lootedPostboxes[id].looted = true
+                -- Set random cooldown between min and max
+                lootedPostboxes[id].cooldownTime = math.random(Config.PostboxResetTimeMin, Config.PostboxResetTimeMax)
+                DebugPrint(('Postbox %s will reset in %d minutes'):format(id, lootedPostboxes[id].cooldownTime / 60000))
             end
             
             lib.notify({
@@ -299,19 +305,29 @@ local function InitializePostboxes()
     end
 end
 
--- Reset looted postboxes periodically
+-- Reset looted postboxes individually based on their own cooldown
 CreateThread(function()
     while true do
-        Wait(Config.PostboxResetTime)
+        Wait(60000) -- Check every minute
         
         local currentTime = GetGameTimer()
         local resetCount = 0
+        local postboxesToReset = {}
         
         for id, data in pairs(lootedPostboxes) do
-            if data.looted and (currentTime - data.timestamp) > Config.PostboxResetTime then
-                lootedPostboxes[id] = nil
-                resetCount = resetCount + 1
+            if data.looted then
+                -- Each postbox has its own cooldown time
+                local cooldownTime = data.cooldownTime or Config.PostboxResetTime
+                if (currentTime - data.timestamp) > cooldownTime then
+                    postboxesToReset[id] = true
+                    resetCount = resetCount + 1
+                end
             end
+        end
+        
+        -- Reset the postboxes that have cooled down
+        for id, _ in pairs(postboxesToReset) do
+            lootedPostboxes[id] = nil
         end
         
         if resetCount > 0 then
@@ -321,7 +337,7 @@ CreateThread(function()
             local postboxes = GetAllPostboxes()
             for _, postbox in pairs(postboxes) do
                 local postboxId = GetPostboxId(postbox)
-                if not lootedPostboxes[postboxId] then
+                if postboxesToReset[postboxId] then
                     exports.ox_target:removeLocalEntity(postbox, {'lockpick_postbox', 'loot_postbox'})
                     AddPostboxTarget(postbox)
                 end

@@ -365,17 +365,7 @@ local function CleanupSuitcases()
     end
 end
 
--- Increase parked car density if configured
-if Config.IncreaseParkedDensity then
-    CreateThread(function()
-        while true do
-            SetParkedVehicleDensityMultiplierThisFrame(Config.ParkedDensity)
-            SetVehicleDensityMultiplierThisFrame(Config.VehicleDensity)
-            SetRandomVehicleDensityMultiplierThisFrame(Config.ParkedDensity)
-            Wait(0)
-        end
-    end)
-end
+-- Note: Car density is now controlled via esx-smallresources/client/density.lua
 
 -- Main thread for scanning and spawning
 CreateThread(function()

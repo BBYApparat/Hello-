@@ -7,5 +7,19 @@ return {
         stack = true,
         close = true,
         description = 'A heavy duty crowbar, useful for breaking things'
+    },
+    ['lockpick'] = {
+        label = 'Lockpick',
+        weight = 50,
+        stack = true,
+        close = true,
+        description = 'A set of lockpicking tools'
+    },
+    ['envelope'] = {
+        label = 'Envelope',
+        weight = 10,
+        stack = true,
+        close = true,
+        description = 'A sealed envelope, might contain something valuable'
     }
 }

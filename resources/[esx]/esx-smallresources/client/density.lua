@@ -1,9 +1,9 @@
 local density = {
-    ['parked'] = 0.2,       -- Lower value for fewer parked cars
-    ['vehicle'] = 0.5,      -- Lower value for fewer moving vehicles
-    ['multiplier'] = 0.4,   -- Random vehicle multiplier set lower for fewer cars overall
-    ['peds'] = 0.6,         -- Lower value for fewer walking pedestrians
-    ['scenario'] = 0.1,     -- Lower value for fewer scenario NPCs (e.g., interacting with the environment)
+    ['parked'] = 0.8,       -- Increased for more parked cars (for criminal activities)
+    ['vehicle'] = 0.6,      -- Slightly increased moving vehicles
+    ['multiplier'] = 0.7,   -- Increased random vehicle multiplier
+    ['peds'] = 0.6,         -- Keep pedestrians moderate
+    ['scenario'] = 0.1,     -- Keep scenario NPCs low
 }
 
 CreateThread(function()

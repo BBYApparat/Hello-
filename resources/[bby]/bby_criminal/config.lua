@@ -13,10 +13,7 @@ Config.SuitcaseProps = {
     'prop_ld_case_01'
 }
 
--- Car Density Settings (increase parked cars)
-Config.IncreaseParkedDensity = true -- Enable increased parked car density
-Config.ParkedDensity = 1.0 -- 1.0 = max parked car density (default is 0.2)
-Config.VehicleDensity = 0.5 -- Moving vehicle density
+-- Note: Car density is now controlled via esx-smallresources/client/density.lua
 
 -- Theft Settings
 Config.StealTime = 5000 -- Time to steal suitcase when unlocked (ms)
@@ -73,7 +70,11 @@ Config.PostboxRequireLockpick = true -- Require lockpick item to open postboxes
 Config.PostboxLockpickTime = 5000 -- Time to lockpick postbox (ms)
 Config.PostboxStealTime = 3000 -- Time to reach inside and steal (ms)
 Config.PostboxHandStuckChance = 0.7 -- 70% chance for hand to get stuck
-Config.PostboxResetTime = 1800000 -- 30 minutes in ms (time before postbox can be looted again)
+
+-- Individual postbox cooldowns (random between min and max)
+Config.PostboxResetTimeMin = 900000 -- 15 minutes minimum
+Config.PostboxResetTimeMax = 3600000 -- 60 minutes maximum
+Config.PostboxResetTime = 1800000 -- 30 minutes default (fallback)
 
 -- Postbox Rewards
 Config.PostboxRewards = {
