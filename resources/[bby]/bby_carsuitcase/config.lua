@@ -1,11 +1,15 @@
 Config = {}
 
 -- General Settings
-Config.SpawnChance = 0.3 -- 30% chance for a suitcase to spawn in a parked car
-Config.MaxSuitcasesPerArea = 5 -- Maximum number of suitcases in a given area
-Config.SpawnRadius = 100.0 -- Radius to check for parked cars around player
-Config.UpdateInterval = 30000 -- How often to check for new parked cars (ms)
+Config.SpawnChance = 0.4 -- 40% chance for a suitcase to spawn in a car
+Config.MaxSuitcasesTotal = 30 -- Maximum total number of suitcases in the world
+Config.UpdateInterval = 15000 -- How often to check for new cars (ms) - reduced for faster spawning
 Config.SuitcaseProp = 'prop_ld_suitcase_01' -- Suitcase prop model
+
+-- Car Density Settings (increase parked cars)
+Config.IncreaseParkedDensity = true -- Enable increased parked car density
+Config.ParkedDensity = 1.0 -- 1.0 = max parked car density (default is 0.2)
+Config.VehicleDensity = 0.5 -- Moving vehicle density
 
 -- Theft Settings
 Config.StealTime = 5000 -- Time to steal suitcase when unlocked (ms)
