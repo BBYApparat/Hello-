@@ -223,7 +223,7 @@ function SmashWindow(vehicle)
         -- Alert police if configured
         if Config.AlertPolice and math.random() < Config.AlertChance then
             local coords = GetEntityCoords(vehicle)
-            TriggerServerEvent('bby_carsuitcase:alertPolice', coords)
+            TriggerServerEvent('bby_criminal:alertPolice', coords)
         end
         
         lib.notify({
@@ -277,7 +277,7 @@ function StealSuitcase(vehicle)
         ClearPedTasks(playerPed)
         spawnedSuitcases[plate].stolen = true
         RemoveSuitcase(plate)
-        TriggerServerEvent('bby_carsuitcase:rewardPlayer')
+        TriggerServerEvent('bby_criminal:rewardPlayer')
         lib.notify({
             title = 'Success',
             description = 'You stole the suitcase!',

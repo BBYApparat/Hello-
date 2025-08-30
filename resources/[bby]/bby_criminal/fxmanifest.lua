@@ -2,10 +2,10 @@ fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
 
-name 'bby_carsuitcase'
-description 'Suitcase spawning and theft system for parked cars'
+name 'bby_criminal'
+description 'Criminal activities - car looting and postbox theft system'
 author 'BBY'
-version '1.0.0'
+version '2.0.0'
 
 shared_scripts {
     '@ox_lib/init.lua',

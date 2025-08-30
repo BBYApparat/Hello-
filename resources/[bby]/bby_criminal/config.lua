@@ -1,5 +1,6 @@
 Config = {}
 
+-- ================== CAR LOOTING SETTINGS ==================
 -- General Settings
 Config.SpawnChance = 0.6 -- 60% chance for a suitcase to spawn in a car (increased for testing)
 Config.MaxSuitcasesTotal = 50 -- Maximum total number of suitcases in the world
@@ -64,3 +65,38 @@ Config.Animations = {
 
 -- Debug
 Config.Debug = true -- Enable debug prints and markers
+
+-- ================== POSTBOX LOOTING SETTINGS ==================
+
+-- Postbox Settings
+Config.PostboxRequireLockpick = true -- Require lockpick item to open postboxes
+Config.PostboxLockpickTime = 5000 -- Time to lockpick postbox (ms)
+Config.PostboxStealTime = 3000 -- Time to reach inside and steal (ms)
+Config.PostboxHandStuckChance = 0.7 -- 70% chance for hand to get stuck
+Config.PostboxResetTime = 1800000 -- 30 minutes in ms (time before postbox can be looted again)
+
+-- Postbox Rewards
+Config.PostboxRewards = {
+    envelope = {
+        min = 2,
+        max = 3
+    },
+    extraItems = { -- Additional items that might be found
+        {item = 'money', min = 50, max = 200, chance = 0.3},
+        {item = 'phone', min = 1, max = 1, chance = 0.05}
+    }
+}
+
+-- Postbox Animations
+Config.PostboxAnimations = {
+    lockpick = {
+        dict = 'anim@amb@clubhouse@tutorial@bkr_tut_ig3@',
+        anim = 'machinic_loop_mechandplayer',
+        flag = 1
+    },
+    reach = {
+        dict = 'mini@repair',
+        anim = 'fixing_a_ped',
+        flag = 49
+    }
+}
