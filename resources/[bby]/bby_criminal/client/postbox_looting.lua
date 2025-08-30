@@ -3,6 +3,7 @@ local lootedPostboxes = {}
 local isLooting = false
 local isHandStuck = false
 local currentPostbox = nil
+local currentPostboxAttempts = 0
 
 -- Utility functions
 local function DebugPrint(msg)
@@ -112,7 +113,7 @@ local function LockpickPostbox(postbox)
     currentPostbox = nil
 end
 
--- Hand stuck mechanic
+-- Hand stuck mechanic (now gives reward when freed)
 local function HandleHandStuck()
     isHandStuck = true
     local playerPed = PlayerPedId()
@@ -147,21 +148,45 @@ local function HandleHandStuck()
                         type = 'success'
                     })
                     
-                    -- Give envelopes
-                    TriggerServerEvent('bby_criminal:rewardPostbox')
+                    -- Increment attempts and give reward
+                    currentPostboxAttempts = currentPostboxAttempts + 1
+                    TriggerServerEvent('bby_criminal:rewardPostboxSingle') -- Single envelope reward
                     
-                    -- Mark as fully looted with random cooldown
                     local id = GetPostboxId(currentPostbox)
-                    if lootedPostboxes[id] then
-                        lootedPostboxes[id].looted = true
-                        -- Set random cooldown between min and max
-                        lootedPostboxes[id].cooldownTime = math.random(Config.PostboxResetTimeMin, Config.PostboxResetTimeMax)
-                        DebugPrint(('Postbox %s will reset in %d minutes'):format(id, lootedPostboxes[id].cooldownTime / 60000))
-                    end
                     
-                    -- Refresh target
-                    exports.ox_target:removeLocalEntity(currentPostbox, {'lockpick_postbox', 'loot_postbox'})
-                    AddPostboxTarget(currentPostbox)
+                    -- Check if we've reached max attempts (3 envelopes)
+                    if currentPostboxAttempts >= 3 then
+                        -- Mark as fully looted
+                        if lootedPostboxes[id] then
+                            lootedPostboxes[id].looted = true
+                            lootedPostboxes[id].cooldownTime = math.random(Config.PostboxResetTimeMin, Config.PostboxResetTimeMax)
+                            DebugPrint(('Postbox %s fully looted (3 envelopes), will reset in %d minutes'):format(id, lootedPostboxes[id].cooldownTime / 60000))
+                        end
+                        
+                        lib.notify({
+                            title = 'Postbox Empty',
+                            description = 'You got all 3 envelopes!',
+                            type = 'info'
+                        })
+                        
+                        -- Reset attempts counter
+                        currentPostboxAttempts = 0
+                        
+                        -- Refresh target to remove interactions
+                        exports.ox_target:removeLocalEntity(currentPostbox, {'lockpick_postbox', 'loot_postbox'})
+                        AddPostboxTarget(currentPostbox)
+                    else
+                        lib.notify({
+                            title = 'Envelope Found',
+                            description = ('Got envelope %d/3, you can try again!'):format(currentPostboxAttempts),
+                            type = 'success'
+                        })
+                        
+                        -- Keep postbox available for more attempts
+                        if lootedPostboxes[id] then
+                            lootedPostboxes[id].attempts = currentPostboxAttempts
+                        end
+                    end
                     
                     break
                 end
@@ -169,6 +194,8 @@ local function HandleHandStuck()
             
             Wait(0)
         end
+        
+        isLooting = false
     end)
 end
 
@@ -179,6 +206,14 @@ local function LootPostbox(postbox)
     isLooting = true
     currentPostbox = postbox
     local playerPed = PlayerPedId()
+    
+    -- Get or initialize attempts for this postbox
+    local id = GetPostboxId(postbox)
+    if lootedPostboxes[id] and lootedPostboxes[id].attempts then
+        currentPostboxAttempts = lootedPostboxes[id].attempts
+    else
+        currentPostboxAttempts = 0
+    end
     
     -- Face the postbox
     local postboxCoords = GetEntityCoords(postbox)
@@ -202,40 +237,14 @@ local function LootPostbox(postbox)
             combat = true
         }
     }) then
-        -- Check if hand gets stuck (70% chance)
-        if math.random() < Config.PostboxHandStuckChance then
-            lib.notify({
-                title = 'Oh no!',
-                description = 'Your hand is stuck in the postbox!',
-                type = 'error'
-            })
-            HandleHandStuck()
-        else
-            -- Success without getting stuck
-            ClearPedTasks(playerPed)
-            
-            -- Give envelopes
-            TriggerServerEvent('bby_criminal:rewardPostbox')
-            
-            -- Mark as looted with random cooldown
-            local id = GetPostboxId(postbox)
-            if lootedPostboxes[id] then
-                lootedPostboxes[id].looted = true
-                -- Set random cooldown between min and max
-                lootedPostboxes[id].cooldownTime = math.random(Config.PostboxResetTimeMin, Config.PostboxResetTimeMax)
-                DebugPrint(('Postbox %s will reset in %d minutes'):format(id, lootedPostboxes[id].cooldownTime / 60000))
-            end
-            
-            lib.notify({
-                title = 'Success',
-                description = 'You found some envelopes!',
-                type = 'success'
-            })
-            
-            -- Refresh target
-            exports.ox_target:removeLocalEntity(postbox, {'lockpick_postbox', 'loot_postbox'})
-            AddPostboxTarget(postbox)
-        end
+        -- Always get hand stuck when reaching in
+        lib.notify({
+            title = 'Oh no!',
+            description = 'Your hand is stuck in the postbox!',
+            type = 'error'
+        })
+        HandleHandStuck()
+        -- Note: HandleHandStuck now manages the rewards and looting status
     else
         -- Cancelled
         ClearPedTasks(playerPed)

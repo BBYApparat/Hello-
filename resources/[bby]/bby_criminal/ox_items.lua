@@ -20,6 +20,13 @@ return {
         weight = 10,
         stack = true,
         close = true,
-        description = 'A sealed envelope, might contain something valuable'
+        consume = 1,
+        client = {
+            status = { thirst = -5 }, -- Small excitement boost
+            anim = { dict = 'mp_arresting', clip = 'a_uncuff' },
+            prop = { model = 'prop_cs_envelope_01', pos = vec3(0.02, 0.02, -0.02), rot = vec3(0.0, 0.0, 0.0) },
+            usetime = 2500
+        },
+        description = 'A sealed envelope from a postbox. Open it to see what\'s inside!'
     }
 }

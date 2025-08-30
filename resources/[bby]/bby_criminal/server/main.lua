@@ -119,7 +119,36 @@ end, false, {help = 'Give yourself a crowbar'})
 
 -- ================== POSTBOX LOOTING REWARDS ==================
 
--- Reward player for looting postbox
+-- Reward player for single envelope (new system)
+RegisterNetEvent('bby_criminal:rewardPostboxSingle')
+AddEventHandler('bby_criminal:rewardPostboxSingle', function()
+    local source = source
+    local xPlayer = ESX.GetPlayerFromId(source)
+    
+    if not xPlayer then return end
+    
+    -- Give single envelope
+    if exports.ox_inventory:CanCarryItem(source, 'envelope', 1) then
+        exports.ox_inventory:AddItem(source, 'envelope', 1)
+        
+        TriggerClientEvent('ox_lib:notify', source, {
+            title = 'Found!',
+            description = 'You found an envelope!',
+            type = 'success'
+        })
+        
+        -- Log the theft
+        print(('[bby_criminal:postbox] Player %s (ID: %s) got 1 envelope from postbox'):format(xPlayer.getName(), source))
+    else
+        TriggerClientEvent('ox_lib:notify', source, {
+            title = 'Error',
+            description = 'Your pockets are full!',
+            type = 'error'
+        })
+    end
+end)
+
+-- Legacy reward function (kept for compatibility but not used)
 RegisterNetEvent('bby_criminal:rewardPostbox')
 AddEventHandler('bby_criminal:rewardPostbox', function()
     local source = source
@@ -127,7 +156,7 @@ AddEventHandler('bby_criminal:rewardPostbox', function()
     
     if not xPlayer then return end
     
-    -- Give envelope rewards
+    -- Give envelope rewards (old system - 2-3 at once)
     local envelopeCount = math.random(Config.PostboxRewards.envelope.min, Config.PostboxRewards.envelope.max)
     
     if exports.ox_inventory:CanCarryItem(source, 'envelope', envelopeCount) then
