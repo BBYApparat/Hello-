@@ -127,10 +127,20 @@ AddEventHandler('bby_criminal:rewardPostboxSingle', function()
     
     if not xPlayer then return end
     
-    -- Give single envelope
-    if exports.ox_inventory:CanCarryItem(source, 'envelope', 1) then
-        exports.ox_inventory:AddItem(source, 'envelope', 1)
-        
+    -- Try different methods to add the item
+    local success = false
+    
+    -- Method 1: Try ox_inventory first without checking (sometimes CanCarryItem is bugged)
+    local added = exports.ox_inventory:AddItem(source, 'envelope', 1)
+    if added then
+        success = true
+    else
+        -- Method 2: Try ESX method as fallback
+        xPlayer.addInventoryItem('envelope', 1)
+        success = true
+    end
+    
+    if success then
         TriggerClientEvent('ox_lib:notify', source, {
             title = 'Found!',
             description = 'You found an envelope!',
@@ -142,9 +152,10 @@ AddEventHandler('bby_criminal:rewardPostboxSingle', function()
     else
         TriggerClientEvent('ox_lib:notify', source, {
             title = 'Error',
-            description = 'Your pockets are full!',
+            description = 'Failed to give envelope - check item exists in inventory!',
             type = 'error'
         })
+        print(('[bby_criminal:postbox] ERROR: Failed to give envelope to %s (ID: %s)'):format(xPlayer.getName(), source))
     end
 end)
 
@@ -260,6 +271,28 @@ ESX.RegisterCommand('givelockpick', 'admin', function(xPlayer, args, showError)
         type = 'success'
     })
 end, false, {help = 'Give yourself a lockpick'})
+
+-- Admin command to give envelope (for testing)
+ESX.RegisterCommand('giveenvelope', 'admin', function(xPlayer, args, showError)
+    local amount = tonumber(args[1]) or 1
+    local success = exports.ox_inventory:AddItem(xPlayer.source, 'envelope', amount)
+    
+    if success then
+        TriggerClientEvent('ox_lib:notify', xPlayer.source, {
+            title = 'Admin',
+            description = ('You received %d envelope(s)'):format(amount),
+            type = 'success'
+        })
+    else
+        -- Try ESX method
+        xPlayer.addInventoryItem('envelope', amount)
+        TriggerClientEvent('ox_lib:notify', xPlayer.source, {
+            title = 'Admin',
+            description = ('Gave %d envelope(s) via ESX'):format(amount),
+            type = 'info'
+        })
+    end
+end, false, {help = 'Give yourself envelope(s)', arguments = {{name = 'amount', help = 'Number of envelopes', type = 'number'}}})
 
 -- Version check
 CreateThread(function()

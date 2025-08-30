@@ -1,7 +1,11 @@
 local ESX = exports['es_extended']:getSharedObject()
 
--- Make envelope a usable item
-ESX.RegisterUsableItem('envelope', function(source)
+-- Wait a bit for everything to load
+CreateThread(function()
+    Wait(1000)
+    
+    -- Register envelope as usable item
+    ESX.RegisterUsableItem('envelope', function(source)
     local xPlayer = ESX.GetPlayerFromId(source)
     
     if not xPlayer then return end
@@ -51,4 +55,5 @@ ESX.RegisterUsableItem('envelope', function(source)
             })
         end
     end
+    end)
 end)
